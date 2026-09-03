@@ -1,0 +1,6 @@
+Module Test
+Subclass Object
+
+	Open Class main
+		If[x ! 0]
+			::Printer.display["Bad"]

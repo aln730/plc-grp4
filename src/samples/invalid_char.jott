@@ -1,0 +1,12 @@
+Module Test
+Subclass Object
+
+	Open Class main
+		Integer x$
+
+		x = 5 @ 3
+
+		::Printer.display["Hello!"]
+
+		If[x ! 0]
+			::Printer.display["Bad"]

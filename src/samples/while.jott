@@ -1,0 +1,11 @@
+Module Countdown
+Subclass Object
+
+	Open Class main
+		Integer x
+
+		x = 5
+
+		While[x > 0]
+			::Printer.display[x]
+			x = x - 1

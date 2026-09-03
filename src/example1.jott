@@ -1,0 +1,46 @@
+Include Sample
+Include Text
+
+Module TextProcessing Subclass Processor
+    Closed Integer size
+    Shared String name
+
+    #Constructor
+    Open TextProcessing[ s:Integer, name:String ]
+        Self.size = s
+        Self.name = name
+
+    #getter and setter for name
+    Open setName -> name:String
+        Self.name = name
+
+    Open getName <- String
+        <- Self.name
+
+    Shared setNameAndSize -> n:String, s:Integer <- Integer
+        Self.name = n
+        Self.size = s
+        <- Self.size
+
+    #only set name if size is bigger
+    Shared setNameGreater -> n:String, s:Integer <- Boolean
+        If[Self.size < s]
+            Self.name = n
+            Self.size = s
+            <- True
+        Otherwise
+            <- False
+
+    #print name x number of times
+    Closed printNameX -> x:Integer
+        While[ x > 0 ]
+            ::Printer.display[Self.name]
+            x = x -1
+
+    Open testSample
+        Sample sample
+        sample = Create Sample[Self.name]
+        ::Printer.display[::sample.output[]]
+
+    Open testText -> s:String <- String
+        <- ::Text.process[s]

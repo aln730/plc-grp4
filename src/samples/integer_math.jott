@@ -1,0 +1,12 @@
+Module MathTest Subclass Object
+
+	Open Class main
+		Integer x
+		Integer y
+		Integer z
+
+		x = 10
+		y = 5
+		z = x + y
+
+		::Printer.display[z]

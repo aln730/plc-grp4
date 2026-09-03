@@ -1,0 +1,15 @@
+Module ListExample
+Subclass Object
+
+	Open Class main
+		List l
+
+		l = Create List[]
+
+		::l.add["Andrew"]
+		::l.add[5]
+		::l.add["Computer"]
+
+		::Printer.display[::l.first[]]
+		::Printer.display[::l.last[]]
+		::Printer.display[::l.count[]]

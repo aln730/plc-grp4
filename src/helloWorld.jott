@@ -1,0 +1,3 @@
+Module HelloWorld Subclass Object
+    Open main
+        ::Printer.display["HelloWorld"]

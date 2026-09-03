@@ -1,0 +1,16 @@
+Include Person
+Include Student
+
+Module TestInheritance
+Subclass Object
+
+	Open Class main
+		Student s
+
+		s = Create Student["Scott", 12345]
+
+		::Printer.display[::s.getName[]]
+		::Printer.display[::s.getStudentId[]]
+
+		::s.speak[]
+``

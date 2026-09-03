@@ -1,0 +1,13 @@
+Module Person
+Subclass Object
+
+	Open String name
+
+	Open Person -> n:String
+		Self.name = n
+
+	Open getName <- String
+		<- Self.name
+
+	Open speak
+		::Printer.display["I am a person"]

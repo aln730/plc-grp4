@@ -1,0 +1,13 @@
+Module DoubleMath
+Subclass Object
+
+	Open Class main
+		Double a
+		Double b
+		Double c
+
+		a = 10.5
+		b = 2.0
+		c = a / b
+
+		::Printer.display[c]

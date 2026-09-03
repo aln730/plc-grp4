@@ -1,0 +1,7 @@
+Module BadProgram
+Subclass Object
+
+	Open Class main
+		Integer x
+
+		x = 3.5

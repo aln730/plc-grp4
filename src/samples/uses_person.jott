@@ -1,0 +1,11 @@
+Include Person
+
+Module TestPerson
+Subclass Object
+
+	Open Class main
+		Person p
+
+		p = Create Person["Scott"]
+
+		::Printer.display[::p.getName[]]

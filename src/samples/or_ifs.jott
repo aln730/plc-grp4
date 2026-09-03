@@ -1,0 +1,16 @@
+Module GradeTest
+Subclass Object
+
+	Open Class main
+		Integer grade
+
+		grade = 85
+
+		If[grade >= 90]
+			::Printer.display["A"]
+		OrIf[grade >= 80]
+			::Printer.display["B"]
+		OrIf[grade >= 70]
+			::Printer.display["C"]
+		Otherwise
+			::Printer.display["F"]

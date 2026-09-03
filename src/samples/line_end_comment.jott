@@ -1,0 +1,5 @@
+Module Test
+Subclass Object
+
+	Open Class main
+		::Printer.display["Hello"] # print greeting

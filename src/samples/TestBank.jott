@@ -1,0 +1,17 @@
+Include BankAccount
+
+Module TestBank
+Subclass Object
+
+	Open Class main
+		BankAccount acct
+
+		acct = Create BankAccount[100.0]
+
+		::acct.deposit[50.0]
+
+		::Printer.display[::acct.getBalance[]]
+
+		::acct.withdraw[25.0]
+
+		::Printer.display[::acct.getBalance[]]

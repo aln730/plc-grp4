@@ -1,0 +1,12 @@
+Module ConditionalTest
+Subclass Object
+
+	Open Class main
+		Integer x
+
+		x = 10
+
+		If[x > 5]
+			::Printer.display["Greater"]
+		Otherwise
+			::Printer.display["Not Greater"]

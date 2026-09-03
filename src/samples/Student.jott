@@ -1,0 +1,16 @@
+Include Person
+
+Module Student
+Subclass Person
+
+	Open Integer studentId
+
+	Open Student -> n:String, id:Integer
+		Self.name = n
+		Self.studentId = id
+
+	Open getStudentId <- Integer
+		<- Self.studentId
+
+	Open speak
+		::Printer.display["I am a student"]
