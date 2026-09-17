@@ -1,14 +1,8 @@
 package provided;
-import java.util.ArrayList;
-import java.util.Scanner;
-
-import testing.FileDiff;
-
-import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Scanner;
 
 public class JotlinTokenizer {
 
@@ -195,7 +189,7 @@ public class JotlinTokenizer {
     public static JotlinToken tokenize_tab(String fileName, int lineNumber, boolean useSpaces) {
         return new JotlinToken("\t", TokenType.Indent, fileName, lineNumber);
     }
-}
+
     private static boolean isSymbolStart(char c) {
         return c == '[' || c == ']' || c == ':' || c == ',' || c == '.';
     }
