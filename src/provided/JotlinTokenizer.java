@@ -17,7 +17,6 @@ public class JotlinTokenizer {
                 for(int i = 0; i<line.length(); i++) {
                     lineChars.add(line.charAt(i));
                 }
-                // is this while loop even going forward in the line?
                 while(lineChars.size() > 0) {
                     boolean beginning = true; //is start of line?
                     if(Character.isDigit(lineChars.getFirst()) || lineChars.getFirst() == '.') {
