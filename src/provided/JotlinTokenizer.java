@@ -17,46 +17,50 @@ public class JotlinTokenizer {
                 for(int i = 0; i < line.length(); i++) {
                     lineChars.add(line.charAt(i));
                 }
+
+                boolean beginning = true; //is start of line?
+                
                 while(!lineChars.isEmpty()){
-                    boolean beginning = true; //is start of line?
-                    char first = lineChars.getFirst();
                     if(Character.isDigit(lineChars.getFirst()) || lineChars.getFirst() == '.') {
                         JotlinToken token = tokenize_numbers(lineChars,fileName,lineNumber);
                         tokens.add(token);
+                        beginning = false;
                     }
-                    if (isSymbolStart(first)) {
+                    else if (isSymbolStart(lineChars.getFirst())) {
                         JotlinToken token = tokenize_symbol(lineChars, fileName, lineNumber);
                         tokens.add(token);
+                        beginning = false;
                     }
                     else if (lineChars.getFirst() == ' ') {
                         //tab can be made up 4 spaces but only at beginning of line
-                        if (beginning) {
-                            if (check_tab(lineChars)) {
-                                tokens.add(tokenize_tab(fileName,lineNumber, true));
-                                beginning = false;
-                            }
+                        if (beginning && check_tab(lineChars)) {
+                            tokens.add(tokenize_tab(fileName,lineNumber, true));
+                            beginning = false;
                         }
-                        lineChars.removeFirst();
+                        else {
+                            lineChars.removeFirst();
+                        }
                     }
                     else if (lineChars.getFirst() == '#') {
-                        continue; //comments are thrown away
+                        lineChars.clear(); //comments are thrown away
                     }
                     else if (lineChars.getFirst() == '\t') {
                         tokens.add(tokenize_tab(fileName,lineNumber, false));
                         lineChars.removeFirst();
+                        beginning = false;
                     }
-                    if(Character.isUpperCase(lineChars.getFirst()) || Character.isLowerCase(lineChars.getFirst()) || lineChars.getFirst() == '\"'){
+                    else if(Character.isUpperCase(lineChars.getFirst()) || Character.isLowerCase(lineChars.getFirst()) || lineChars.getFirst() == '\"'){
                         JotlinToken token = tokenizeStrings(lineChars, fileName, lineNumber);
                         tokens.add(token);
+                        beginning = false;
                     }
                     else {
                         throw new IllegalStateException(
-                            "Unhandled character '" + first + "' at line number " + lineNumber);
+                            "Unhandled character '" + lineChars.getFirst() + "' at line number " + lineNumber);
                     }
                 }
                 tokens.add(tokenize_newline(fileName, lineNumber));
                 lineNumber++;
- 
             }
 
             return tokens;
@@ -80,7 +84,7 @@ public class JotlinTokenizer {
             isString = true;
             tokenList.add(line.getFirst());
             line.removeFirst();
-            while(!line.isEmpty() || line.getFirst() != '\"'){
+            while(!line.isEmpty() && line.getFirst() != '\"'){
                 tokenList.add(line.getFirst());
                 line.removeFirst();
             }
@@ -189,7 +193,7 @@ public class JotlinTokenizer {
     public static JotlinToken tokenize_tab(String fileName, int lineNumber, boolean useSpaces) {
         return new JotlinToken("\t", TokenType.Indent, fileName, lineNumber);
     }
-
+    
     private static boolean isSymbolStart(char c) {
         return c == '[' || c == ']' || c == ':' || c == ',' || c == '.';
     }
