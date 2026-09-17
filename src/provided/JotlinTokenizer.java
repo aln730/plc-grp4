@@ -23,7 +23,6 @@ public class JotlinTokenizer {
                     if(Character.isDigit(lineChars.getFirst()) || lineChars.getFirst() == '.') {
                         JotlinToken token = tokenize_numbers(lineChars,fileName,lineNumber);
                         tokens.add(token);
-                        beginning = false;
                     }
                     else if (lineChars.getFirst() == ' ') {
                         //tab can be made up 4 spaces but only at beginning of line
@@ -41,7 +40,6 @@ public class JotlinTokenizer {
                     else if (lineChars.getFirst() == '\t') {
                         tokens.add(tokenize_tab(fileName,lineNumber, false));
                         lineChars.removeFirst();
-                        beginning = false;
                     }   
                 }
                 tokens.add(tokenize_newline(fileName, lineNumber));
