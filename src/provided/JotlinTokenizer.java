@@ -1,9 +1,8 @@
 package provided;
-
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Scanner;
+import java.io.File;
+import java.io.FileNotFoundException;
 
 public class JotlinTokenizer {
 
@@ -20,13 +19,8 @@ public class JotlinTokenizer {
                 }
                 while(lineChars.size() > 0) {
                     boolean beginning = true; //is start of line?
-                    char first = lineChars.getFirst();
                     if(Character.isDigit(lineChars.getFirst()) || lineChars.getFirst() == '.') {
                         JotlinToken token = tokenize_numbers(lineChars,fileName,lineNumber);
-                        tokens.add(token);
-                    }
-                    if (isSymbolStart(first)) {
-                        JotlinToken token = tokenize_symbol(lineChars, fileName, lineNumber);
                         tokens.add(token);
                     }
                     else if (lineChars.getFirst() == ' ') {
@@ -43,22 +37,30 @@ public class JotlinTokenizer {
                         continue; //comments are thrown away
                     }
                     else if (lineChars.getFirst() == '\t') {
-                        tokens.add(tokenize_tab(fileName,lineNumber, false));
+                        try{
+                            if (beginning) {
+                                tokens.add(tokenize_tab(fileName,lineNumber, false));
+                                beginning = false;
+                            }
+                            else {
+                                throw new IllegalArgumentException("Tab character found in middle of line");
+                            }
+                        }
+                        catch (IllegalArgumentException e) {
+                            System.out.println(e.getMessage());
+                            return null;
+                        }
+                        
                         lineChars.removeFirst();
-                    }
-                    else {
-                        throw new IllegalStateException(
-                            "Unhandled character '" + first + "' at line number " + lineNumber);
-                    }
+                    }   
                 }
                 tokens.add(tokenize_newline(fileName, lineNumber));
                 lineNumber++;
                 
             }
-
             return tokens;
         }
-        catch (FileNotFoundException e) {
+        catch(FileNotFoundException e) {
             System.out.println("Provided filename not found: " + fileName);
             return null;
         }
@@ -125,49 +127,5 @@ public class JotlinTokenizer {
 
     public static JotlinToken tokenize_tab(String fileName, int lineNumber, boolean useSpaces) {
         return new JotlinToken("\t", TokenType.Indent, fileName, lineNumber);
-    }
-}
-    private static boolean isSymbolStart(char c) {
-        return c == '[' || c == ']' || c == ':' || c == ',' || c == '.';
-    }
-
-    public static JotlinToken tokenize_symbol(
-            ArrayList<Character> line,
-            String fileName,
-            int lineNumber) {
-
-        char curr = line.getFirst();
-
-        if (curr == '[') {
-            line.removeFirst();
-            return new JotlinToken("[", TokenType.L_Bracket, fileName, lineNumber);
-        }
-
-        if (curr == ']') {
-            line.removeFirst();
-            return new JotlinToken("]", TokenType.R_Bracket, fileName, lineNumber);
-        }
-
-        if (curr == ':') {
-            line.removeFirst();
-
-            if (!line.isEmpty() && line.getFirst() == ':') {
-                line.removeFirst();
-                return new JotlinToken("::", TokenType.FC_Header, fileName, lineNumber);
-            }
-            return new JotlinToken(":", TokenType.Colon, fileName, lineNumber);
-        }
-
-        if (curr == ',') {
-            line.removeFirst();
-            return new JotlinToken(",", TokenType.Comma, fileName, lineNumber);
-        }
-
-        if (curr == '.') {
-            line.removeFirst();
-            return new JotlinToken(".", TokenType.Dot, fileName, lineNumber);
-        }
-
-        return null;
     }
 }
