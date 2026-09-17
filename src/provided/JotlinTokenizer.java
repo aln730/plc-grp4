@@ -20,27 +20,54 @@ public class JotlinTokenizer {
             while(reader.hasNextLine()) {
                 String line = reader.nextLine();
                 ArrayList<Character> lineChars = new ArrayList<>();
-                for(int i = 0; i <line.length(); i++){
+                for(int i = 0; i < line.length(); i++) {
                     lineChars.add(line.charAt(i));
                 }
                 while(!lineChars.isEmpty()){
+                    boolean beginning = true; //is start of line?
+                    char first = lineChars.getFirst();
                     if(Character.isDigit(lineChars.getFirst()) || lineChars.getFirst() == '.') {
                         JotlinToken token = tokenize_numbers(lineChars,fileName,lineNumber);
                         tokens.add(token);
+                    }
+                    if (isSymbolStart(first)) {
+                        JotlinToken token = tokenize_symbol(lineChars, fileName, lineNumber);
+                        tokens.add(token);
+                    }
+                    else if (lineChars.getFirst() == ' ') {
+                        //tab can be made up 4 spaces but only at beginning of line
+                        if (beginning) {
+                            if (check_tab(lineChars)) {
+                                tokens.add(tokenize_tab(fileName,lineNumber, true));
+                                beginning = false;
+                            }
+                        }
+                        lineChars.removeFirst();
+                    }
+                    else if (lineChars.getFirst() == '#') {
+                        continue; //comments are thrown away
+                    }
+                    else if (lineChars.getFirst() == '\t') {
+                        tokens.add(tokenize_tab(fileName,lineNumber, false));
+                        lineChars.removeFirst();
                     }
                     if(Character.isUpperCase(lineChars.getFirst()) || Character.isLowerCase(lineChars.getFirst()) || lineChars.getFirst() == '\"'){
                         JotlinToken token = tokenizeStrings(lineChars, fileName, lineNumber);
                         tokens.add(token);
                     }
-                    else if (lineChars.getFirst() == ' '){
-                        lineChars.removeFirst();
+                    else {
+                        throw new IllegalStateException(
+                            "Unhandled character '" + first + "' at line number " + lineNumber);
                     }
                 }
+                tokens.add(tokenize_newline(fileName, lineNumber));
                 lineNumber++;
+ 
             }
+
             return tokens;
         }
-        catch(FileNotFoundException e) {
+        catch (FileNotFoundException e) {
             System.out.println("Provided filename not found: " + fileName);
             return null;
         }
@@ -143,5 +170,73 @@ public class JotlinTokenizer {
                 return new JotlinToken(token,TokenType.Integer,filename,lineNumber);
             }
         }
+    }
+
+    public static JotlinToken tokenize_newline(String fileName, int lineNumber) {
+        return new JotlinToken("\n", TokenType.LineEnd, fileName, lineNumber);
+    }
+
+    public static boolean check_tab(ArrayList<Character> line) {
+        int spaceCount = 0;
+        while (true) {
+            if (line.getFirst() == ' ') {
+                spaceCount++;
+                line.removeFirst();
+                if (spaceCount == 4) {
+                    return true;
+                }
+            }
+            else {
+                return false;
+            }
+        }
+    }
+
+    public static JotlinToken tokenize_tab(String fileName, int lineNumber, boolean useSpaces) {
+        return new JotlinToken("\t", TokenType.Indent, fileName, lineNumber);
+    }
+}
+    private static boolean isSymbolStart(char c) {
+        return c == '[' || c == ']' || c == ':' || c == ',' || c == '.';
+    }
+
+    public static JotlinToken tokenize_symbol(
+            ArrayList<Character> line,
+            String fileName,
+            int lineNumber) {
+
+        char curr = line.getFirst();
+
+        if (curr == '[') {
+            line.removeFirst();
+            return new JotlinToken("[", TokenType.L_Bracket, fileName, lineNumber);
+        }
+
+        if (curr == ']') {
+            line.removeFirst();
+            return new JotlinToken("]", TokenType.R_Bracket, fileName, lineNumber);
+        }
+
+        if (curr == ':') {
+            line.removeFirst();
+
+            if (!line.isEmpty() && line.getFirst() == ':') {
+                line.removeFirst();
+                return new JotlinToken("::", TokenType.FC_Header, fileName, lineNumber);
+            }
+            return new JotlinToken(":", TokenType.Colon, fileName, lineNumber);
+        }
+
+        if (curr == ',') {
+            line.removeFirst();
+            return new JotlinToken(",", TokenType.Comma, fileName, lineNumber);
+        }
+
+        if (curr == '.') {
+            line.removeFirst();
+            return new JotlinToken(".", TokenType.Dot, fileName, lineNumber);
+        }
+
+        return null;
     }
 }
