@@ -3,7 +3,8 @@
 Authors: Lucas Foster, Arnav Gawas, Avalon Gomez, Alora Smith, Joey Tam
 
 How to build project: open JotlinTokenizerTester and call your *input file*, *output file*, and *compare file* in that order
-
+1: Navigate to testing folder
+2: Run  java JotlinTokenizerTester.java /path/to/input.jott output.txt /path/to/compare.txt
 The project is to create a compiler to translate Jotlin to Java, it has been split into phases with each phase representing a different component of the compiler. 
 
 The project has been built through Java and any third party packages
