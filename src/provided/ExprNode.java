@@ -88,8 +88,7 @@ public class ExprNode {
         //                     return new ExprNode(op1,math,null,op2,null,null); 
         //                 }
         //                 return new ExprNode(op1,null,rel,op2,null,null); 
-        //             }
-            
+        //             }      
         //         }
         // else {
         //     throw new IllegalArgumentException("Doesn't follow expression node format");
