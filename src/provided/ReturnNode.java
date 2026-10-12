@@ -13,7 +13,6 @@ public class ReturnNode implements JotlinTree {
     }
 
     public static ReturnNode parse(ArrayList<JotlinToken> tokens) {
-        // grammar has no <TBS> here, but returns are indented in practice
         int depth = 0;
         while (!tokens.isEmpty() && tokens.get(0).getTokenType() == TokenType.Indent) {
             tokens.remove(0);

@@ -4,14 +4,14 @@ import java.util.ArrayList;
 
 public class IfStmtNode implements JotlinTree {
 
+    //Depth is the layer of the line of code
     private final int depth;
     private final ExprNode condition;
     private final BodyNode body;
     private final ArrayList<OrIfNode> orIfs;
     private final OtherwiseNode otherwise;   // null if absent
 
-    private IfStmtNode(int depth, ExprNode condition, BodyNode body,
-                       ArrayList<OrIfNode> orIfs, OtherwiseNode otherwise) {
+    private IfStmtNode(int depth, ExprNode condition, BodyNode body, ArrayList<OrIfNode> orIfs, OtherwiseNode otherwise) {
         this.depth = depth;
         this.condition = condition;
         this.body = body;

@@ -10,8 +10,7 @@ public class AsmtStmtNode implements JotlinTree {
     private final KeywordNode className;
     private final ParamsNode params;
 
-    private AsmtStmtNode(int depth, IdNode id, ExprNode expr,
-                         KeywordNode className, ParamsNode params) {
+    private AsmtStmtNode(int depth, IdNode id, ExprNode expr, KeywordNode className, ParamsNode params) {
         this.depth = depth;
         this.id = id;
         this.expr = expr;
