@@ -5,16 +5,13 @@ import java.util.ArrayList;
 public class NumNode {
 
     public static JotlinTree parse(ArrayList<JotlinToken> tokens) {
-        if (tokens.isEmpty()) {
-            throw new IllegalArgumentException("Expected a number but found end of input");
-        }
 
-        TokenType type = tokens.get(0).getTokenType();
+        JotlinToken first = tokens.get(0);
 
-        if (type == TokenType.Integer) {
+        if (first.getTokenType() == TokenType.Integer) {
             return IntegerNode.parse(tokens);
         }
-        else if (type == TokenType.Double) {
+        else if (first.getTokenType() == TokenType.Double) {
             return DoubleNode.parse(tokens);
         }
         else {

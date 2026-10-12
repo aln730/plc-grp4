@@ -11,16 +11,12 @@ public class IntegerNode implements JotlinTree {
     }
 
     public static IntegerNode parse(ArrayList<JotlinToken> tokens) {
-        if (tokens.isEmpty()) {
-            throw new IllegalArgumentException("Expected an Integer token but found end of input");
-        }
-
         JotlinToken first = tokens.get(0);
 
         if (first.getTokenType() != TokenType.Integer) {
             throw new IllegalArgumentException(
                 "Error on " + first + ": expected an Integer token");
-        }
+        }   
 
         tokens.remove(0);
         return new IntegerNode(first.getToken());

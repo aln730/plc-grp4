@@ -11,10 +11,6 @@ public class DoubleNode implements JotlinTree {
     }
 
     public static DoubleNode parse(ArrayList<JotlinToken> tokens) {
-        if (tokens.isEmpty()) {
-            throw new IllegalArgumentException("Expected a Double token but found end of input");
-        }
-
         JotlinToken first = tokens.get(0);
 
         if (first.getTokenType() != TokenType.Double) {
