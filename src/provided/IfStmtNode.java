@@ -20,7 +20,7 @@ public class IfStmtNode implements JotlinTree {
     }
 
     public static IfStmtNode parse(ArrayList<JotlinToken> tokens) {
-        // the tab count is this If's depth; OrIf/Otherwise must match it
+        // the number of tabs is this If's depth
         int depth = 0;
         while (!tokens.isEmpty() && tokens.get(0).getTokenType() == TokenType.Indent) {
             tokens.remove(0);
@@ -57,8 +57,7 @@ public class IfStmtNode implements JotlinTree {
         return new IfStmtNode(depth, condition, body, orIfs, otherwise);
     }
 
-    // Peeks at the next non-blank line without consuming it. True only if it has exactly
-    // `depth` tabs followed by the keyword, so nested Ifs attach their Otherwise correctly.
+    // Looks ahead at the next non-blank line. Returns true if it contains 'depth' amount of tabs followed by keyword.
     private static boolean nextLineStartsWith(ArrayList<JotlinToken> tokens, int depth, String keyword) {
         int i = 0;
         while (i < tokens.size() && tokens.get(i).getTokenType() == TokenType.LineEnd) {
