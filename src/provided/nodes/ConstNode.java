@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import provided.*;
 
-public class ConstNode {
+public class ConstNode implements JotlinTree{
     private JotlinToken node;
     private JotlinToken keyword;
     private JotlinToken[] params;
@@ -48,5 +48,23 @@ public class ConstNode {
             tokens.remove(0);
         }
         return new ConstNode(null, null, null, null);
+    }
+
+    @Override
+    public boolean validate() throws Exception {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'validate'");
+    }
+
+    @Override
+    public String convertToJava() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'convertToJava'");
+    }
+
+    @Override
+    public String convertToJotlin() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'convertToJotlin'");
     }
 }

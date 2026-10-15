@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import provided.*;
 
 
-public class WhileNode {
+public class WhileNode implements JotlinTree{
     
     private ExprNode expr;
     private JotlinToken body;
@@ -41,6 +41,24 @@ public class WhileNode {
         
         //BodyNode body = BodyNode.parse(tokens)
         return new WhileNode(expr, null);
+    }
+
+    @Override
+    public boolean validate() throws Exception {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'validate'");
+    }
+
+    @Override
+    public String convertToJava() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'convertToJava'");
+    }
+
+    @Override
+    public String convertToJotlin() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'convertToJotlin'");
     }
  
 }

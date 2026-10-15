@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import provided.*;
 
 
-public class OrIfNode {
+public class OrIfNode implements JotlinTree {
     private ExprNode expr;
     private JotlinToken body;
 
@@ -42,5 +42,23 @@ public class OrIfNode {
         }
         
         return new OrIfNode(expr, null);
+    }
+
+    @Override
+    public boolean validate() throws Exception {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'validate'");
+    }
+
+    @Override
+    public String convertToJava() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'convertToJava'");
+    }
+
+    @Override
+    public String convertToJotlin() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'convertToJotlin'");
     }
 }

@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import provided.*;
 
 
-public class NumNode {
+public class NumNode implements JotlinTree{
 
     public static JotlinTree parse(ArrayList<JotlinToken> tokens) {
 
@@ -21,5 +21,23 @@ public class NumNode {
             throw new IllegalArgumentException(
                 "Error on " + tokens.get(0) + ": expected Integer or Double");
         }
+    }
+
+    @Override
+    public boolean validate() throws Exception {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'validate'");
+    }
+
+    @Override
+    public String convertToJava() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'convertToJava'");
+    }
+
+    @Override
+    public String convertToJotlin() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'convertToJotlin'");
     }
 }
