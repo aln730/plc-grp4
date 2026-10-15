@@ -1,14 +1,19 @@
-package provided;
+package provided.nodes;
 import java.util.ArrayList;
 
+import provided.*;
 
-public class MathOpNode {
+
+public class MathOpNode implements JotlinTree{
     private JotlinToken token;
 
     public MathOpNode(JotlinToken token) {
         this.token = token;
     }
     public static MathOpNode parse(ArrayList<JotlinToken> tokens) {
+        if(tokens.size() < 1) {
+            throw new IllegalArgumentException("Not enough tokens for math operation");
+        }
         JotlinToken first = tokens.getFirst();
         if(first.getTokenType() == TokenType.MathOp) {
             tokens.removeFirst();
@@ -17,12 +22,17 @@ public class MathOpNode {
         throw new IllegalArgumentException("Expected MathOp token");
     }
 
-    public String convertToJott() {
+    public String convertToJotlin() {
         return token.getToken();
     }
 
     public String convertToJava() {
         return token.getToken();
+    }
+    @Override
+    public boolean validate() throws Exception {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'validate'");
     }
 
 }
