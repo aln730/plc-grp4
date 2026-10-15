@@ -16,7 +16,7 @@ public class FBodyNode implements JotlinTree{
     public FBodyNode(ArrayList<VarDecNode> varDecNodes, ArrayList<BodyStmtNode> bodyStmtNodes, ReturnNode returnVal,NewLineNode newLines) {
         this.varDecNodes = varDecNodes;
         this.bodyStmtNodes = bodyStmtNodes;
-        this.returnVal = returnVall;
+        this.returnVal = returnVal;
         this.newLines = newLines;
     }
 
@@ -83,6 +83,7 @@ public class FBodyNode implements JotlinTree{
         }
         java += returnVal.convertToJava();
         java += newLines.convertToJava();
+        return java;
     }
 
     @Override
@@ -95,7 +96,8 @@ public class FBodyNode implements JotlinTree{
             jotlin += bodyStmtNodes.get(i).convertToJotlin();
         }
         jotlin += returnVal.convertToJotlin();
-        jotlin += newLines.convertToJotlin();    
+        jotlin += newLines.convertToJotlin();  
+        return jotlin;  
     }
 
 }

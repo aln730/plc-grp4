@@ -105,4 +105,10 @@ public class ExprNode implements JotlinTree{
             return sNode.convertToJava();
         }
     }
+
+    @Override
+    public boolean validate() throws Exception {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'validate'");
+    }
 }

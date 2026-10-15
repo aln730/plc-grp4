@@ -82,15 +82,18 @@ public class ClassBodyNode implements JotlinTree {
     @Override
     public boolean validate() throws Exception {
         //todo
+        return false;
     }
 
     @Override
     public String convertToJava() {
         //todo
+        return null;
     }
 
     @Override
     public String convertToJotlin() {
         //todo
+        return null;
     }
 }

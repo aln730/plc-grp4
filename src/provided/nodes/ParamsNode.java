@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import provided.*;
 
 
-public class ParamsNode {
+public class ParamsNode implements JotlinTree{
     private final ArrayList<ExprNode> params;
 
     private ParamsNode(ArrayList<ExprNode> params) {
@@ -38,15 +38,21 @@ public class ParamsNode {
         return result.toString();
     }
 
-    public String convertToJott() {
+    public String convertToJotlin() {
         StringBuilder result = new StringBuilder();
         for (int i = 0; i < params.size(); i++) {
             if (i > 0) {
                 result.append(", ");
             }
-            result.append(params.get(i).convertToJott());
+            result.append(params.get(i).convertToJotlin());
         }
         return result.toString();
+    }
+
+    @Override
+    public boolean validate() throws Exception {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'validate'");
     }
 }
 

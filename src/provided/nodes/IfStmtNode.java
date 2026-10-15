@@ -42,7 +42,7 @@ public class IfStmtNode implements JotlinTree {
         expect(tokens, TokenType.LineEnd, "end of line");
         skipNewlines(tokens);
 
-        BodyNode body = BodyNode.parse(tokens, depth + 1);
+        BodyNode body = BodyNode.parse(tokens);
 
         ArrayList<OrIfNode> orIfs = new ArrayList<>();
         while (nextLineStartsWith(tokens, depth, "OrIf")) {
