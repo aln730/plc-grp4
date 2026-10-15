@@ -29,7 +29,7 @@ public class ExprNode implements JotlinTree{
             StringNode string = StringNode.parse(tokens);
             return new ExprNode(null,null,null,null,string,null); 
         }
-        if(first.getToken().equals("False") || first.getToken().equals("True")){
+        else if(first.getToken().equals("False") || first.getToken().equals("True")){
             BooleanNode bool = BooleanNode.parse(tokens);
             return new ExprNode(null,null,null,null,null,bool);
         }

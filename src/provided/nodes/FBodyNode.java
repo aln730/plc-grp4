@@ -27,7 +27,6 @@ public class FBodyNode implements JotlinTree{
         JotlinToken first = tokens.getFirst();
         ArrayList<VarDecNode> varNodes = new ArrayList<>();
         ArrayList<BodyStmtNode> bodyNodes = new ArrayList<>();
-        tokens.removeFirst();
         boolean loop = true;
         while(loop) {
             try {

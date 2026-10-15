@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import provided.*;
 
 
-public class FuncDefNode {
+public class FuncDefNode implements JotlinTree{
     private JotlinToken node;
     private JotlinToken keyword;
     private IdNode id;
@@ -62,5 +62,23 @@ public class FuncDefNode {
         }
 
         return new FuncDefNode(null, null, null, null, null, null);
+    }
+
+    @Override
+    public boolean validate() throws Exception {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'validate'");
+    }
+
+    @Override
+    public String convertToJava() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'convertToJava'");
+    }
+
+    @Override
+    public String convertToJotlin() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'convertToJotlin'");
     }
 }

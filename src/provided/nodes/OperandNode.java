@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import provided.*;
 
 
-public class OperandNode {
+public class OperandNode implements JotlinTree{
 
     public static JotlinTree parse(ArrayList<JotlinToken> tokens){
         JotlinToken first = tokens.get(0);
@@ -17,6 +17,24 @@ public class OperandNode {
         } else{
             throw new IllegalArgumentException("operand must be Identifier, Num, or Func call");
         }
+    }
+
+    @Override
+    public boolean validate() throws Exception {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'validate'");
+    }
+
+    @Override
+    public String convertToJava() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'convertToJava'");
+    }
+
+    @Override
+    public String convertToJotlin() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'convertToJotlin'");
     }
 
 
