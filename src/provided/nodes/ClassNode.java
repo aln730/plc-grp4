@@ -1,5 +1,8 @@
-package provided;
+package provided.nodes;
 import java.util.ArrayList;
+
+import provided.*;
+
 
 public class ClassNode implements JotlinTree {
     private final ArrayList<IncludeNode> includes;

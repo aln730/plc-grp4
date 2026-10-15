@@ -1,6 +1,9 @@
-package provided;
+package provided.nodes;
 
 import java.util.ArrayList;
+
+import provided.*;
+
 
 public class ClassBodyNode implements JotlinTree {
     private final ArrayList<InstVarNode> instVars;

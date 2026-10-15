@@ -1,5 +1,8 @@
-package provided;
+package provided.nodes;
 import java.util.ArrayList;
+
+import provided.*;
+
 
 public class VarDecNode implements JotlinTree {
     private final JotlinToken type;

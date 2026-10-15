@@ -1,5 +1,7 @@
-package provided;
+package provided.nodes;
 import java.util.ArrayList;
+import provided.*;
+
 
 public class ClassDefNode implements JotlinTree {
     private final JotlinToken moduleName;

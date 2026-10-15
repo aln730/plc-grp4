@@ -1,6 +1,8 @@
-package provided;
+package provided.nodes;
 
 import java.util.ArrayList;
+
+import provided.*;
 
 public class BodyStmtNode implements JotlinTree {
 
