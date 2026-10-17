@@ -5,6 +5,7 @@ import provided.*;
 
 public class OperandNode implements JotlinTree {
     private JotlinTree op;
+//< operand > -> < identifier > | <num > | < func_call >
 
     public OperandNode(JotlinTree op) {
         this.op = op;
@@ -28,7 +29,10 @@ public class OperandNode implements JotlinTree {
 
     @Override
     public boolean validate() throws Exception {
-        throw new UnsupportedOperationException("Unimplemented method 'validate'");
+        if (operand == null) {
+            return false;
+        }
+        return operand.validate();
     }
 
     @Override

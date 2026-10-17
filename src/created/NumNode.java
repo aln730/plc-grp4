@@ -29,19 +29,16 @@ public class NumNode implements JotlinTree{
 
     @Override
     public boolean validate() throws Exception {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'validate'");
+        return number != null && number.validate();
     }
 
     @Override
     public String convertToJava() {
-        // TODO Auto-generated method stub
-        return number.convertToJava();
+        return number == null ? "" : number.convertToJava();
     }
 
     @Override
     public String convertToJotlin() {
-        // TODO Auto-generated method stub
-        return number.convertToJotlin();
+        return number == null ? "" : number.convertToJotlin();
     }
 }

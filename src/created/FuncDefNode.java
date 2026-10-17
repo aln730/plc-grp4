@@ -3,6 +3,7 @@ package created;
 import java.util.ArrayList;
 import provided.*;
 
+//< func_def > -> <tab > < a_mod > < static > < id > < f_params > < f_return > < NLS > < f_body >
 
 public class FuncDefNode implements JotlinTree{
     private AmodNode node;
@@ -29,9 +30,7 @@ public class FuncDefNode implements JotlinTree{
         }
         tokens.remove(0);
         AmodNode a_mod = AmodNode.parse(tokens);
-        //assuming a_mod is not a node
         StaticNode stat = StaticNode.parse(tokens);
-        //assuming static is not a node
         JotlinToken id = tokens.get(0);
         if(id.getTokenType() != TokenType.Id){
             throw new IllegalArgumentException("expected id");
@@ -47,26 +46,48 @@ public class FuncDefNode implements JotlinTree{
 
         FBodyNode fBody = FBodyNode.parse(tokens);
 
-        return new FuncDefNode(a_mod, stat, id, param, ret, newLine, fBody);
+        return new FuncDefNode(a_mod, stat, newId, param, ret, newLine, fBody);
     }
 
     @Override
     public boolean validate() throws Exception {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'validate'");
+       return node.validate() && stat.validate() && id.validate() && params.validate() 
+       && rtrn.validate() && newline.validate() && body.validate();
     }
 
     @Override
     public String convertToJava() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'convertToJava'");
+        StringBuilder result = new StringBuilder();
+        String modifier = node.convertToJava();
+        if (modifier != null && !modifier.isEmpty()) {
+            result.append(modifier).append(" ");
+        }
+        String staticModifier = stat.convertToJava();
+        if (staticModifier != null && !staticModifier.isEmpty()) {
+            result.append(staticModifier).append(" ");
+        }
+        result.append(rtrn.convertToJava()).append(" ").append(id.convertToJava()).append("(");
+        result.append(params.convertToJava());
+        result.append(") {\n");
+        result.append(body.convertToJava());
+        result.append("\n}");
+        return result.toString();
     }
 
     @Override
     public String convertToJotlin() {
-        // TODO Auto-generated method stub
-        String jotlin = "\t";
-        jotlin += (node.convertToJotlin() + stat.convertToJotlin() + id.getToken() + params.convertToJotlin() + rtrn.convertToJotlin() +newline.convertToJotlin() +body.convertToJotlin());
-        return jotlin;
+        StringBuilder result = new StringBuilder();
+        result.append("\t");
+        result.append(node.convertToJotlin()).append(" ");
+        result.append(stat.convertToJotlin());
+        result.append(id.convertToJotlin());
+        result.append(params.convertToJotlin());
+        result.append(rtrn.convertToJotlin());
+        if (newline != null) {
+            result.append(newline.convertToJotlin());
+        }
+        result.append(body.convertToJotlin());
+        return result.toString();
     }
+
 }

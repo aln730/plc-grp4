@@ -6,10 +6,12 @@ import provided.*;
 public class OtherwiseNode implements JotlinTree {
     private final int depth;
     private final BodyNode body;
+    private final NewLineNode newLine;
 
     private OtherwiseNode(int depth, BodyNode body) {
         this.depth = depth;
         this.body = body;
+        this.newLine = newLine;
     }
 
     public static OtherwiseNode parse(ArrayList<JotlinToken> tokens) {
@@ -28,9 +30,7 @@ public class OtherwiseNode implements JotlinTree {
         if (tokens.isEmpty() || tokens.get(0).getTokenType() != TokenType.LineEnd) {
             throw new IllegalArgumentException("Expected newline after Otherwise");
         }
-        while (!tokens.isEmpty() && tokens.get(0).getTokenType() == TokenType.LineEnd) {
-            tokens.remove(0);
-        }
+        NewLineNode newLine = NewLineNode.parse(tokens);
         BodyNode body = BodyNode.parse(tokens);
         return new OtherwiseNode(depth, body);
     }

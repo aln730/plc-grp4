@@ -29,10 +29,16 @@ public class MathOpNode implements JotlinTree{
     public String convertToJava() {
         return token.getToken();
     }
+    
     @Override
     public boolean validate() throws Exception {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'validate'");
+        if (token == null || token.getToken() == null) {
+            return false;
+        }
+        if (token.getTokenType() != TokenType.MathOp) {
+            return false;
+        }
+        String op = token.getToken();
+        return op.equals("+") || op.equals("-") || op.equals("*") || op.equals("/") || op.equals("%");
     }
-
 }

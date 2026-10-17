@@ -8,14 +8,13 @@ public class FBodyNode implements JotlinTree {
     private ArrayList<VarDecNode> varDecNodes;
     private ArrayList<BodyStmtNode> bodyStmtNodes;
     private ReturnNode returnVal;
-    private NewLineNode newLines;
 
-    public FBodyNode(ArrayList<VarDecNode> varDecNodes, ArrayList<BodyStmtNode> bodyStmtNodes,
-                     ReturnNode returnVal, NewLineNode newLines) {
+
+
+    public FBodyNode(ArrayList<VarDecNode> varDecNodes, ArrayList<BodyStmtNode> bodyStmtNodes, ReturnNode returnVal) {
         this.varDecNodes = varDecNodes;
         this.bodyStmtNodes = bodyStmtNodes;
         this.returnVal = returnVal;
-        this.newLines = newLines;
     }
 
     public static FBodyNode parse(ArrayList<JotlinToken> tokens) {
@@ -101,7 +100,23 @@ public class FBodyNode implements JotlinTree {
 
     @Override
     public boolean validate() throws Exception {
-        throw new UnsupportedOperationException("Unimplemented method 'validate'");
+        if (varDecNodes == null || bodyStmtNodes == null) {
+            return false;
+        }
+        for (VarDecNode varNode : varDecNodes) {
+            if (varNode == null || !varNode.validate()) {
+                return false;
+            }
+        }
+        for (BodyStmtNode bodyNode : bodyStmtNodes) {
+            if (bodyNode == null || !bodyNode.validate()) {
+                return false;
+            }
+        }
+        if (returnVal == null || !returnVal.validate()) {
+            return false;
+        }
+        return newLines != null && newLines.validate();
     }
 
     @Override
@@ -113,12 +128,7 @@ public class FBodyNode implements JotlinTree {
         for (int i = 0; i < bodyStmtNodes.size(); i++) {
             java += bodyStmtNodes.get(i).convertToJava();
         }
-        if (returnVal != null) {
-            java += returnVal.convertToJava();
-        }
-        if (newLines != null) {
-            java += newLines.convertToJava();
-        }
+        java += returnVal.convertToJava();
         return java;
     }
 
@@ -131,12 +141,7 @@ public class FBodyNode implements JotlinTree {
         for (int i = 0; i < bodyStmtNodes.size(); i++) {
             jotlin += bodyStmtNodes.get(i).convertToJotlin();
         }
-        if (returnVal != null) {
-            jotlin += returnVal.convertToJotlin();
-        }
-        if (newLines != null) {
-            jotlin += newLines.convertToJotlin();
-        }
-        return jotlin;
+        jotlin += returnVal.convertToJotlin();
+        return jotlin;  
     }
 }

@@ -49,10 +49,18 @@ public class ParamsNode implements JotlinTree{
         return result.toString();
     }
 
+    
     @Override
     public boolean validate() throws Exception {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'validate'");
+        if (params == null) {
+            return false;
+        }
+        for (ExprNode expr : params) {
+            if (expr == null || !expr.validate()) {
+                return false;
+            }
+        }
+        return true;
     }
 }
 
