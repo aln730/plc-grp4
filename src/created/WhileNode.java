@@ -7,18 +7,20 @@ import provided.*;
 
 public class WhileNode implements JotlinTree{
     
+    private TabNode tabs;
     private ExprNode expr;
+    private NewLineNode newLine;
     private BodyNode body;
 
-    private WhileNode(ExprNode e, BodyNode b){
+    private WhileNode(TabNode t,ExprNode e, NewLineNode nl, BodyNode b){
+        tabs = t;
         expr = e;
         body = b;
+        newLine = nl;
     }
     
     public static WhileNode parse(ArrayList<JotlinToken> tokens){
-        while(!tokens.isEmpty() && tokens.get(0).getTokenType() == TokenType.Indent){
-            tokens.remove(0);
-        }
+        TabNode tabs = TabNode.parse(tokens);
         JotlinToken first = tokens.get(0);
         if(first.getTokenType() != TokenType.Keyword || !first.getToken().equals("While")){
             throw new IllegalArgumentException("Expecting keyword or while to start while loop");
@@ -35,12 +37,10 @@ public class WhileNode implements JotlinTree{
         if(first.getTokenType() != TokenType.R_Bracket){
             throw new IllegalArgumentException("Expecting right bracket");
         }
-        while(!tokens.isEmpty() && tokens.get(0).getTokenType() == TokenType.LineEnd){
-            tokens.remove(0);
-        }
+        NewLineNode newLine = NewLineNode.parse(tokens);
         
         BodyNode body = BodyNode.parse(tokens);
-        return new WhileNode(expr, body);
+        return new WhileNode(tabs,expr, newLine, body);
     }
 
     @Override

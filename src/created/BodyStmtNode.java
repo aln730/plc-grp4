@@ -41,11 +41,14 @@ public class BodyStmtNode implements JotlinTree {
             }
             AsmtStmtNode asmt = AsmtStmtNode.parse(tokens);
             NewLineNode newLines = NewLineNode.parse(tokens);
-            return new BodyStmtNode(null,asmt,newLines);
+            return new BodyStmtNode(tabs,asmt,newLines);
         }
-        throw new IllegalArgumentException(
-            "Unexpected token in body statement: " + first
-        );
+        else {
+            throw new IllegalArgumentException(
+                "Unexpected token in body statement: " + first
+            );
+        }
+    }
     }
 
     @Override

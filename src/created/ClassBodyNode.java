@@ -22,18 +22,21 @@ public class ClassBodyNode implements JotlinTree {
         ArrayList<InstVarNode> instVars = new ArrayList<>();
         ArrayList<ConstNode> constants = new ArrayList<>();
         ArrayList<FuncDefNode> functions = new ArrayList<>();
+        NewLineNode nl = null;
+        if(!startsInstVar(tokens)) {
+            nl = NewLineNode.parse(tokens);
+        }
         while (startsInstVar(tokens)) {
             instVars.add(InstVarNode.parse(tokens));
         }
-        NewLineNode nl = NewLineNode.parse(tokens);
         while (startsConst(tokens)) {
             constants.add(ConstNode.parse(tokens));
         }
-        consumeNewlines(tokens);
+        // consumeNewlines(tokens);
         while (startsFuncDef(tokens)) {
             functions.add(FuncDefNode.parse(tokens));
         }
-        consumeNewlines(tokens);
+        // consumeNewlines(tokens);
         return new ClassBodyNode(instVars, nl,constants, functions);
     }
 
@@ -42,8 +45,7 @@ public class ClassBodyNode implements JotlinTree {
             return false;
         }
         return tokens.get(0).getTokenType() == TokenType.Indent && tokens.get(1).getTokenType() == TokenType.Keyword
-                && (tokens.get(2).getTokenType() == TokenType.Id
-                || tokens.get(2).getTokenType() == TokenType.Keyword);
+                && (tokens.get(2).getTokenType() == TokenType.Id);
     }
 
     private static boolean startsConst(ArrayList<JotlinToken> tokens) {
