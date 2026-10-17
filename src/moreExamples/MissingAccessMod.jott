@@ -1,0 +1,23 @@
+#Tests a missing access modifier
+#Will pass phase 1 but fail phase 2
+
+Include NonExistFile
+
+Module Test Subclass Object
+	NonExistFile size
+	
+	Closed Test -> s:NonExistFile
+		Self.size = s
+
+	Open getSize <- NonExistFile
+		<- Self.size
+
+	Open setSize -> s:NonExistFile
+		Self.size = s
+		
+	Open Class createTest -> s:NonExistFile <- Test
+		NonExistFile s
+		Test t
+		s = Create NonExistFile[ "hello" ]
+		t = Create Test[ s ]
+		<- t

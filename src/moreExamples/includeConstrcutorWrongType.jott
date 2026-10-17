@@ -1,0 +1,26 @@
+#Tests a wrong data type into include constrcutor.
+#Will pass phase 3 but fail phase 4
+# this is validated in phase 4
+# assume ExistingClass does not have a constructor that takes in a string
+
+Include ExistingClass
+
+Module Test Subclass Object
+	Closed ExistingClass size
+	
+	Closed Test -> s:ExistingClass
+		Self.size = s
+
+	Open getSize <- ExistingClass
+		<- Self.size
+
+	Open setSize -> s:ExistingClass
+		Self.size = s
+		
+	Open Class createTest -> s:ExistingClass <- Test
+		ExistingClass s
+		Test t
+		s = Create ExistingClass[ "hello" ]
+		::Printer.display[::s.getName[]]
+		t = Create Test[ s ]
+		<- t

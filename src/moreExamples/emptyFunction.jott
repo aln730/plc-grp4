@@ -1,0 +1,22 @@
+#Tests a empty function body
+#Will pass phase 1 but fail phase 2
+#Notice there is a phase 3 error but we ignore it becuse it fails phase 2
+
+Include ExistingClass
+
+Module Test Subclass Object
+	Closed ExistingClass size
+	
+	Closed WrongName -> s:NonExistFile
+		Self.size = s
+
+	Open getSize <- NonExistFile
+		<- Self.size
+
+	Open setSize -> s:NonExistFile
+		
+	Open Class createTest -> s:NonExistFile <- Test
+		NonExistFile s
+		Test t
+		s = Create NonExistFile[ "hello" ]
+		t = Create Test[ s ]

@@ -1,0 +1,28 @@
+#Tests a if expression is not a boolean type.
+#Will pass phase 2 but fail phase 3
+# this is validated in phase 3
+
+Include ExistingClass
+
+Module Test Subclass Object
+	Closed ExistingClass size
+	
+	Closed Test -> s:ExistingClass
+		Self.size = s
+
+	Open getSize <- ExistingClass
+		<- Self.size
+
+	Open setSize -> s:ExistingClass
+		If[ s ]
+			Self.size = 0
+		Otherwise
+			Self.size = s
+		
+	Open Class createTest -> s:ExistingClass <- Test
+		ExistingClass s 
+		Test t
+		s = Create ExistingClass[ "hello" ]
+		::Printer.display[::s.getName[]]
+		t = Create Test[ 5 ]
+		<- t
