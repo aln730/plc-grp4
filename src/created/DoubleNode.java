@@ -1,25 +1,28 @@
-package provided;
+package created;
 
 import java.util.ArrayList;
 
-public class IdNode implements JotlinTree {
+import provided.*;
+
+
+public class DoubleNode implements JotlinTree {
 
     private final String value;
 
-    private IdNode(String value) {
+    private DoubleNode(String value) {
         this.value = value;
     }
 
-    public static IdNode parse(ArrayList<JotlinToken> tokens) {
+    public static DoubleNode parse(ArrayList<JotlinToken> tokens) {
         JotlinToken first = tokens.get(0);
 
-        if (first.getTokenType() != TokenType.Id) {
+        if (first.getTokenType() != TokenType.Double) {
             throw new IllegalArgumentException(
-                "Error on " + first + ": expected an Id token");
+                "Error on " + first + ": expected a Double token");
         }
 
         tokens.remove(0);
-        return new IdNode(first.getToken());
+        return new DoubleNode(first.getToken());
     }
 
     @Override

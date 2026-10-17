@@ -1,17 +1,23 @@
-package provided;
+package created;
 
 import java.util.ArrayList;
+
+import provided.*;
+
 
 public class InstVarNode implements JotlinTree {
 
     private final AmodNode amod;
     private final KeywordNode type;
     private final IdNode id;
+    private final NewLineNode nl;
 
-    private InstVarNode(AmodNode amod, KeywordNode type, IdNode id) {
+
+    private InstVarNode(AmodNode amod, KeywordNode type, IdNode id,NewLineNode nl) {
         this.amod = amod;
         this.type = type;
         this.id = id;
+        this.nl = nl;
     }
 
     public static InstVarNode parse(ArrayList<JotlinToken> tokens) {
@@ -33,10 +39,8 @@ public class InstVarNode implements JotlinTree {
             throw new IllegalArgumentException("Syntax Error\nExpected a newline after instance variable.\n"
                 + location(tokens));
         }
-        while (!tokens.isEmpty() && tokens.get(0).getTokenType() == TokenType.LineEnd) {
-            tokens.remove(0);
-        }
-        return new InstVarNode(amod, type, id);
+        NewLineNode nl = NewLineNode.parse(tokens);
+        return new InstVarNode(amod, type, id,nl);
     }
 
     private static String location(ArrayList<JotlinToken> tokens) {

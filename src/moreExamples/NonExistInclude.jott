@@ -1,0 +1,23 @@
+#Tests a non-existing include
+#Will pass phase 3 but fail linking in phase 4
+
+Include NonExistFile
+
+Module Test Subclass Object
+	Closed NonExistFile size
+	
+	Closed Test -> s:NonExistFile
+		Self.size = s
+
+	Open getSize <- NonExistFile
+		<- Self.size
+
+	Open setSize -> s:NonExistFile
+		Self.size = s
+		
+	Open Class createTest -> s:NonExistFile <- Test
+		NonExistFile s
+		Test t
+		s = Create NonExistFile[ "hello" ]
+		t = Create Test[ s ]
+		<- t

@@ -1,5 +1,4 @@
-Module DoubleMath
-Subclass Object
+Module DoubleMath Subclass Object
 
 	Open Class main
 		Double a

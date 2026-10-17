@@ -1,0 +1,42 @@
+#Tests a valid while loop.
+#function does have a return
+#Will pass phase 3 and 4 assuming ExistingClass is good
+# this is validated in phase 3
+
+Include ExistingClass
+
+Module Test Subclass Object
+	Closed ExistingClass size
+	
+	Closed Test -> s:ExistingClass
+		Self.size = s
+
+	Open getSize <- ExistingClass
+		If[Self.size < 0]
+			::Printer.display["lessThanZero"]
+		OrIf[Self.size > 0]
+			<- Self.size
+		<- 0
+
+	Open setSize -> s:ExistingClass
+		If[ s ]
+			Self.size = 0
+		Otherwise
+			Self.size = s
+			
+	Closed fib -> times:Integer <- Integer
+		Integer result
+		result = 1
+		
+		While[times > 0]
+			result = result * times
+			times = times - 1
+		<- result
+		
+	Open Class createTest -> s:ExistingClass <- Test
+		ExistingClass s
+        Test t
+		s = Create ExistingClass[ "hello" ]
+		::Printer.display[::s.getName[]]
+		t = Create Test[ 5 ]
+		<- t
