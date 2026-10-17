@@ -12,15 +12,24 @@ public class FReturnNode implements JotlinTree{
     }
 
     public static FReturnNode parse(ArrayList<JotlinToken> tokens) {
-        // <f_return> -> <- <keyword> | epsilon
-        if (tokens.isEmpty() || tokens.getFirst().getTokenType() != TokenType.L_Arrow) {
-            return new FReturnNode(null);   // no return type
+        if(tokens.size() < 1) {
+            throw new IllegalArgumentException("Not enough tokens for return");
         }
-        tokens.removeFirst();
-        if (tokens.isEmpty() || tokens.getFirst().getTokenType() != TokenType.Keyword) {
+        JotlinToken first = tokens.getFirst();
+        if(first.getTokenType() == TokenType.L_Arrow) {
+            tokens.removeFirst();
+            if(tokens.size() > 0) {
+                first = tokens.removeFirst();
+                if (first.getTokenType() == TokenType.Keyword) {
+                    return new FReturnNode(first);
+                }
+            }
             throw new IllegalArgumentException("Left arrow should be followed by keyword");
         }
-        return new FReturnNode(tokens.removeFirst());
+        else if(first.getTokenType() == TokenType.String && first.getToken().equals("")) {
+            return new FReturnNode(first);
+        }
+        throw new IllegalArgumentException("Return node must follow the format of <- keyword or an empty string");
     }
 
     @Override

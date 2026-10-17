@@ -1,6 +1,7 @@
 package created;
 
 import java.util.ArrayList;
+
 import provided.*;
 
 public class BodyStmtNode implements JotlinTree {
@@ -16,58 +17,82 @@ public class BodyStmtNode implements JotlinTree {
     }
 
     public static BodyStmtNode parse(ArrayList<JotlinToken> tokens) {
-        int i = 0;
-        while (i < tokens.size() && tokens.get(i).getTokenType() == TokenType.Indent) {
-            i++;
+        if (tokens.isEmpty()) {
+            throw new IllegalArgumentException(
+                "Expected a body statement"
+            );
         }
-        if (i >= tokens.size()) {
-            throw new IllegalArgumentException("Expected a body statement");
+        JotlinToken first = tokens.get(0);
+        if (first.getTokenType() == TokenType.Indent && tokens.size() > 1) {
+            if (tokens.get(1).getTokenType() == TokenType.Keyword
+                && tokens.get(1).getToken().equals("If")) {
+                    IfStmtNode ifstat = IfStmtNode.parse(tokens);
+                    return new BodyStmtNode(null,ifstat,null);
+            }
+            else if (tokens.get(1).getTokenType() == TokenType.Keyword
+                && tokens.get(1).getToken().equals("While")) {
+                    WhileNode whl = WhileNode.parse(tokens);
+                    return new BodyStmtNode(null,whl,null);
+                }
+            else if (tokens.get(1).getTokenType() == TokenType.FC_Header) {
+                        TabNode tabs = TabNode.parse(tokens);
+                        FunccallNode funccall = FunccallNode.parse(tokens);
+                        NewLineNode newLines = NewLineNode.parse(tokens);
+                return new BodyStmtNode(tabs,funccall,newLines);
+            }
+            else {
+                AsmtStmtNode asmt = AsmtStmtNode.parse(tokens);
+                NewLineNode newLines = NewLineNode.parse(tokens);
+                return new BodyStmtNode(null,asmt,newLines);
+            }
         }
-        JotlinToken first = tokens.get(i);
-
-        if (first.getTokenType() == TokenType.Keyword && first.getToken().equals("If")) {
-            return new BodyStmtNode(null, IfStmtNode.parse(tokens), null);
+        else {
+            throw new IllegalArgumentException(
+                "Unexpected token in body statement: " + first
+            );
         }
-        if (first.getTokenType() == TokenType.Keyword && first.getToken().equals("While")) {
-            return new BodyStmtNode(null, WhileNode.parse(tokens), null);
-        }
-        if (first.getTokenType() == TokenType.FC_Header) {
-            TabNode tabs = TabNode.parse(tokens);
-            FunccallNode funccall = FunccallNode.parse(tokens);
-            NewLineNode newLines = NewLineNode.parse(tokens);
-            return new BodyStmtNode(tabs, funccall, newLines);
-        }
-        if (first.getTokenType() == TokenType.Id
-                || (first.getTokenType() == TokenType.Keyword
-                    && i + 1 < tokens.size()
-                    && tokens.get(i + 1).getTokenType() == TokenType.Dot)) {
-            AsmtStmtNode asmt = AsmtStmtNode.parse(tokens);
-            NewLineNode newLines = NewLineNode.parse(tokens);
-            return new BodyStmtNode(null, asmt, newLines);
-        }
-        throw new IllegalArgumentException("Unexpected token in body statement: " + first);
     }
 
     @Override
     public boolean validate() throws Exception {
-        return statement.validate();
+        if (statement == null) {
+            return false;
+        }
+        if (!statement.validate()) {
+            return false;
+        }
+        if (tabs != null && !tabs.validate()) {
+            return false;
+        }
+        if (newLines != null && !newLines.validate()) {
+            return false;
+        }
+        return true;
     }
 
     @Override
     public String convertToJava() {
-        return statement.convertToJava();
+        StringBuilder result = new StringBuilder();
+        if (tabs != null) {
+            result.append(tabs.convertToJava());
+        }
+        result.append(statement.convertToJava());
+        if (newLines != null) {
+            result.append(newLines.convertToJava());
+        }
+        return result.toString();
     }
 
     @Override
     public String convertToJotlin() {
-        String out = "";
+        StringBuilder result = new StringBuilder();
         if (tabs != null) {
-            out += tabs.convertToJotlin();
+            result.append(tabs.convertToJotlin());
         }
-        out += statement.convertToJotlin();
+        result.append(statement.convertToJotlin());
         if (newLines != null) {
-            out += newLines.convertToJotlin();
+            result.append(newLines.convertToJotlin());
         }
-        return out;
+        return result.toString();
     }
 }
