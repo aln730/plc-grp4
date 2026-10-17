@@ -19,9 +19,19 @@ public class JotlinParser {
 
         return root;
     }
+
     public static void main(String[] args) {
-      ArrayList<JotlinToken> tokens = JotlinTokenizer.tokenize(args[0]);  
-      JotlinTree tree = parse(tokens);
-      System.out.println(tree.convertToJotlin());
+        for (String path : args) {
+            System.out.println(path);
+            try {
+                JotlinTree tree = parse(JotlinTokenizer.tokenize(path));
+                tree.convertToJotlin();
+                tree.validate();
+                tree.convertToJava();
+                System.out.println("OKOK....");
+            } catch (Exception e) {
+                System.out.println("FAILED....." + e);
+            }
+        }
     }
 }
