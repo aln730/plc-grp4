@@ -53,7 +53,7 @@ public class BodyNode implements JotlinTree {
                 || x.getTokenType() == TokenType.Id
                 || (x.getTokenType() == TokenType.Keyword && i + 1 < t.size()
                     && t.get(i + 1).getTokenType() == TokenType.Dot)
-                    && (x.getToken().equals("If") || x.getToken().equals("While"));
+                    || (x.getToken().equals("If") || x.getToken().equals("While"));
     }
 
     private static boolean nextIsReturn(ArrayList<JotlinToken> t) {
