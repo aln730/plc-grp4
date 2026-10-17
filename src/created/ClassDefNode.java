@@ -34,12 +34,6 @@ public class ClassDefNode implements JotlinTree {
         }
         JotlinToken moduleName = first;
         tokens.remove(0);
-        if (tokens.isEmpty() || tokens.get(0).getTokenType() != TokenType.LineEnd) {
-            throw new IllegalArgumentException("Expected line ending after module name");
-        }
-        while (!tokens.isEmpty() && tokens.get(0).getTokenType() == TokenType.LineEnd) {
-            tokens.remove(0);
-        }
         if (tokens.isEmpty()) {
             throw new IllegalArgumentException("Expected Subclass");
         }

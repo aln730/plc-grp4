@@ -8,12 +8,12 @@ import provided.*;
 public class AsmtStmtNode implements JotlinTree {
 
     private final TabNode tabs;
-    private final IdNode id;
+    private final IdentifierNode id;
     private final ExprNode expr;
     private final KeywordNode className;
     private final ParamsNode params;
 
-    private AsmtStmtNode(TabNode tabs, IdNode id, ExprNode expr, KeywordNode className, ParamsNode params) {
+    private AsmtStmtNode(TabNode tabs, IdentifierNode id, ExprNode expr, KeywordNode className, ParamsNode params) {
         this.tabs = tabs;
         this.id = id;
         this.expr = expr;
@@ -24,7 +24,7 @@ public class AsmtStmtNode implements JotlinTree {
     public static AsmtStmtNode parse(ArrayList<JotlinToken> tokens) {
         TabNode tabs = TabNode.parse(tokens);
 
-        IdNode id = IdNode.parse(tokens);
+        IdentifierNode id = IdentifierNode.parse(tokens);
 
         JotlinToken assign = tokens.get(0);
         if (assign.getTokenType() != TokenType.Assign) {
