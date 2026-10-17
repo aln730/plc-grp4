@@ -23,30 +23,20 @@ public class ClassBodyNode implements JotlinTree {
     ArrayList<ConstNode> constants = new ArrayList<>();
     ArrayList<FuncDefNode> functions = new ArrayList<>();
 
+    consumeNewlines(tokens);
     while (startsInstVar(tokens)) {
         instVars.add(InstVarNode.parse(tokens));
+        consumeNewlines(tokens);
     }
-    NewLineNode nl = null;
-    if (!tokens.isEmpty() && tokens.get(0).getTokenType() == TokenType.LineEnd) {
-        nl = NewLineNode.parse(tokens);
+    while (startsConst(tokens)) {
+        constants.add(ConstNode.parse(tokens));
+        consumeNewlines(tokens);
     }
-    consumeNewlines(tokens);
-
-    while (startsInstVar(tokens) || startsConst(tokens) || startsFuncDef(tokens)) {
-        while (startsInstVar(tokens)) {
-            instVars.add(InstVarNode.parse(tokens));
-            consumeNewlines(tokens);
-        }
-        while (startsConst(tokens)) {
-            constants.add(ConstNode.parse(tokens));
-            consumeNewlines(tokens);
-        }
-        while (startsFuncDef(tokens)) {
-            functions.add(FuncDefNode.parse(tokens));
-            consumeNewlines(tokens);
-        }
+    while (startsFuncDef(tokens)) {
+        functions.add(FuncDefNode.parse(tokens));
+        consumeNewlines(tokens);
     }
-    return new ClassBodyNode(instVars, nl, constants, functions);
+    return new ClassBodyNode(instVars, null, constants, functions);
 }
 
 private static boolean isAccessModifier(String text) {

@@ -43,6 +43,11 @@ public class FBodyNode implements JotlinTree {
             skipBlankLines(tokens);
         }
 
+        if (varNodes.isEmpty() && bodyNodes.isEmpty() && returnNode == null) {
+            throw new IllegalArgumentException("Syntax Error\nFunction body cannot be empty.\n"
+                + (tokens.isEmpty() ? "" : tokens.get(0).getFileName() + ":" + tokens.get(0).getLineNumber()));
+        }
+
         return new FBodyNode(varNodes, bodyNodes, returnNode, null);
     }
 
