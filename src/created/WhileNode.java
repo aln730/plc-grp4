@@ -8,10 +8,12 @@ import provided.*;
 public class WhileNode implements JotlinTree{
     
     private ExprNode expr;
+    private NewLineNode newLine;
     private BodyNode body;
 
-    private WhileNode(ExprNode e, BodyNode b){
+    private WhileNode(ExprNode e, NewLineNode n, BodyNode b){
         expr = e;
+        newLine = n;
         body = b;
     }
     
@@ -35,18 +37,15 @@ public class WhileNode implements JotlinTree{
         if(first.getTokenType() != TokenType.R_Bracket){
             throw new IllegalArgumentException("Expecting right bracket");
         }
-        while(!tokens.isEmpty() && tokens.get(0).getTokenType() == TokenType.LineEnd){
-            tokens.remove(0);
-        }
-        
+
+        NewLineNode newLine = NewLineNode.parse(tokens);
         BodyNode body = BodyNode.parse(tokens);
-        return new WhileNode(expr, body);
+        return new WhileNode(expr, newLine, body);
     }
 
     @Override
     public boolean validate() throws Exception {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'validate'");
+        return expr.validate() && newLine.validate() && body.validate();
     }
 
     @Override

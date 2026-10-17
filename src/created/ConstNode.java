@@ -38,8 +38,7 @@ public class ConstNode implements JotlinTree{
 
     @Override
     public boolean validate() throws Exception {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'validate'");
+        return node.validate() && keyword.validate() && params.validate() && body.validate() && newLine.validate();
     }
 
     @Override
