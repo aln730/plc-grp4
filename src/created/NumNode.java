@@ -7,6 +7,12 @@ import provided.*;
 
 public class NumNode implements JotlinTree{
 
+    private final JotlinTree number;
+
+    public NumNode(JotlinTree number) {
+        this.number = number;
+    }
+
     public static JotlinTree parse(ArrayList<JotlinToken> tokens) {
 
         JotlinToken first = tokens.get(0);
@@ -25,19 +31,16 @@ public class NumNode implements JotlinTree{
 
     @Override
     public boolean validate() throws Exception {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'validate'");
+        return number != null && number.validate();
     }
 
     @Override
     public String convertToJava() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'convertToJava'");
+        return number == null ? "" : number.convertToJava();
     }
 
     @Override
     public String convertToJotlin() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'convertToJotlin'");
+        return number == null ? "" : number.convertToJotlin();
     }
 }

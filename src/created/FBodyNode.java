@@ -68,8 +68,23 @@ public class FBodyNode implements JotlinTree{
 
     @Override
     public boolean validate() throws Exception {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'validate'");
+        if (varDecNodes == null || bodyStmtNodes == null) {
+            return false;
+        }
+        for (VarDecNode varNode : varDecNodes) {
+            if (varNode == null || !varNode.validate()) {
+                return false;
+            }
+        }
+        for (BodyStmtNode bodyNode : bodyStmtNodes) {
+            if (bodyNode == null || !bodyNode.validate()) {
+                return false;
+            }
+        }
+        if (returnVal == null || !returnVal.validate()) {
+            return false;
+        }
+        return newLines != null && newLines.validate();
     }
 
     @Override

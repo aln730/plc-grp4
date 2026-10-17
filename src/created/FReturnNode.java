@@ -34,18 +34,29 @@ public class FReturnNode implements JotlinTree{
 
     @Override
     public boolean validate() throws Exception {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'validate'");
+        if (keyword == null || keyword.getToken() == null) {
+            return false;
+        }
+        if (keyword.getTokenType() == TokenType.Keyword) {
+            return !keyword.getToken().isEmpty();
+        }
+        return keyword.getTokenType() == TokenType.String && keyword.getToken().isEmpty();
     }
 
     @Override
     public String convertToJava() {
-        return "return " + keyword.getToken();
+        if (keyword == null || keyword.getTokenType() == TokenType.String) {
+            return "";
+        }
+        return keyword.getToken();
     }
 
     @Override
     public String convertToJotlin() {
-        return "<-" + keyword.getToken();
+        if (keyword == null || keyword.getTokenType() == TokenType.String) {
+            return "";
+        }
+        return "<- " + keyword.getToken();
     }
 
 }
