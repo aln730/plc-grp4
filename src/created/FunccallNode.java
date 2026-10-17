@@ -1,15 +1,15 @@
 package created;
 
 import java.util.ArrayList;
-
 import provided.*;
 
+//< func_call > -> :: < identifier >[ < parms >]
 
 public class FunccallNode implements JotlinTree{
         public static IdentifierNode name;
-        public static JotlinToken[] params;
+        public static ArrayList<ExprNode> params;
 
-        public FunccallNode(IdentifierNode n, JotlinToken[] p){
+        public FunccallNode(IdentifierNode n, ArrayList<ExprNode> p){
             name = n;
             params = p;
         }
@@ -25,6 +25,7 @@ public class FunccallNode implements JotlinTree{
         }
         tokens.remove(0);
         //expresion node arraylist called params
+        ArrayList<ExprNode> params = new ArrayList<>();
         Boolean first = true;
         while(tokens.get(0).getTokenType() != TokenType.R_Bracket){
             if(!first){
@@ -34,13 +35,13 @@ public class FunccallNode implements JotlinTree{
                 tokens.remove(0);
             }
             first = false;
-            //add to params
+            params.add(ExprNode.parse(tokens));
         }
         if(tokens.get(0).getTokenType() != TokenType.R_Bracket){
             throw new IllegalArgumentException("Expected right bracket");
         }
         tokens.remove(0);
-        return new FunccallNode(name, null);
+        return new FunccallNode(name, params);
     }
 
 	@Override

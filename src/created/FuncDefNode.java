@@ -1,9 +1,9 @@
 package created;
 
 import java.util.ArrayList;
-
 import provided.*;
 
+//< func_def > -> <tab > < a_mod > < static > < id > < f_params > < f_return > < NLS > < f_body >
 
 public class FuncDefNode implements JotlinTree{
     private AmodNode node;
@@ -30,9 +30,7 @@ public class FuncDefNode implements JotlinTree{
         }
         tokens.remove(0);
         AmodNode a_mod = AmodNode.parse(tokens);
-        //assuming a_mod is not a node
         StaticNode stat = StaticNode.parse(tokens);
-        //assuming static is not a node
         JotlinToken id = tokens.get(0);
         if(id.getTokenType() != TokenType.Id){
             throw new IllegalArgumentException("expected id");

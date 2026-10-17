@@ -1,8 +1,9 @@
 package created;
 
 import java.util.ArrayList;
-
 import provided.*;
+
+//< const > -> <tab > < a_mod > < keyword > < f_params > < body > < NLS >
 
 public class ConstNode implements JotlinTree{
     private AmodNode node;
@@ -24,14 +25,11 @@ public class ConstNode implements JotlinTree{
             throw new IllegalArgumentException("expected tab");
         }
         tokens.remove(0);
-         //keywordNode.parse(tokens)
-         AmodNode a_mod = AmodNode.parse(tokens);
-        //assuming a_mod is not a node
+        AmodNode a_mod = AmodNode.parse(tokens);
         KeywordNode key = KeywordNode.parse(tokens);
          //keywordNode.parse(tokens)
         FParamsNode fparam = FParamsNode.parse(tokens);
         BodyNode bdy = BodyNode.parse(tokens);
-        //body parse(tokens)
         if(tokens.get(0).getTokenType() != TokenType.LineEnd){
             throw new IllegalArgumentException("Expected new line");
         }

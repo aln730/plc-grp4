@@ -3,6 +3,7 @@ package created;
 import java.util.ArrayList;
 import provided.*;
 
+//< operand > -> < identifier > | <num > | < func_call >
 
 public class OperandNode implements JotlinTree{
 
