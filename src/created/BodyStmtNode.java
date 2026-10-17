@@ -55,19 +55,44 @@ public class BodyStmtNode implements JotlinTree {
 
     @Override
     public boolean validate() throws Exception {
-        //todo
-        return statement.validate();
+        if (statement == null) {
+            return false;
+        }
+        if (!statement.validate()) {
+            return false;
+        }
+        if (tabs != null && !tabs.validate()) {
+            return false;
+        }
+        if (newLines != null && !newLines.validate()) {
+            return false;
+        }
+        return true;
     }
 
     @Override
     public String convertToJava() {
-        //todo
-        return statement.convertToJava();
+        StringBuilder result = new StringBuilder();
+        if (tabs != null) {
+            result.append(tabs.convertToJava());
+        }
+        result.append(statement.convertToJava());
+        if (newLines != null) {
+            result.append(newLines.convertToJava());
+        }
+        return result.toString();
     }
 
     @Override
     public String convertToJotlin() {
-        //todo
-        return statement.convertToJotlin();
+        StringBuilder result = new StringBuilder();
+        if (tabs != null) {
+            result.append(tabs.convertToJotlin());
+        }
+        result.append(statement.convertToJotlin());
+        if (newLines != null) {
+            result.append(newLines.convertToJotlin());
+        }
+        return result.toString();
     }
 }

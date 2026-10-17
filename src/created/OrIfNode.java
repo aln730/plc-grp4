@@ -45,21 +45,20 @@ public class OrIfNode implements JotlinTree {
         return new OrIfNode(tabs,expr, nl1,body,nl2);
     }
 
+    
     @Override
     public boolean validate() throws Exception {
-        boolean flag = expr.validate() && body.validate();
-        return flag;
+        return expr != null && expr.validate() && body != null && body.validate();
     }
 
     @Override
     public String convertToJava() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'convertToJava'");
+        return "else if (" + expr.convertToJava() + ") {\n" + body.convertToJava() + "\n}";
     }
 
     @Override
     public String convertToJotlin() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'convertToJotlin'");
+        return "OrIf [" + expr.convertToJotlin() + "]\n" + body.convertToJotlin();
     }
+
 }

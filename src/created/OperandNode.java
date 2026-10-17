@@ -7,6 +7,12 @@ import provided.*;
 
 public class OperandNode implements JotlinTree{
 
+    private JotlinTree operand;
+
+    public OperandNode(JotlinTree operand) {
+        this.operand = operand;
+    }
+
     public static JotlinTree parse(ArrayList<JotlinToken> tokens){
         JotlinToken first = tokens.get(0);
         if(first.getTokenType() == TokenType.Keyword || first.getTokenType() == TokenType.Id){
@@ -22,20 +28,34 @@ public class OperandNode implements JotlinTree{
 
     @Override
     public boolean validate() throws Exception {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'validate'");
+        if (operand == null) {
+            return false;
+        }
+        return operand.validate();
     }
 
     @Override
     public String convertToJava() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'convertToJava'");
+        if (operand instanceof IdentifierNode) {
+            return operand.convertToJava();
+        } else if (operand instanceof IntegerNode || operand instanceof DoubleNode) {
+            return operand.convertToJava();
+        } else if (operand instanceof FunccallNode) {
+            return operand.convertToJava();
+        }
+        return "";
     }
 
     @Override
     public String convertToJotlin() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'convertToJotlin'");
+        if (operand instanceof IdentifierNode) {
+            return operand.convertToJotlin();
+        } else if (operand instanceof IntegerNode || operand instanceof DoubleNode) {
+            return operand.convertToJotlin();
+        } else if (operand instanceof FunccallNode) {
+            return operand.convertToJotlin();
+        }
+        return "";
     }
 
 

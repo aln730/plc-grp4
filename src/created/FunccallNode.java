@@ -44,25 +44,53 @@ public class FunccallNode implements JotlinTree{
         return new FunccallNode(name, params);
     }
 
-	@Override
-	public boolean validate() throws Exception {
-		boolean flag = name.validate();
-        for(ExprNode e : params){
-            flag = flag && e.validate();
+	
+    @Override
+    public boolean validate() throws Exception {
+        if (name == null || params == null) {
+            return false;
         }
-        return flag;
-	}
+        if (!name.validate()) {
+            return false;
+        }
+        for (ExprNode e : params) {
+            if (e == null || !e.validate()) {
+                return false;
+            }
+        }
+        return true;
+    }
 
-	@Override
-	public String convertToJava() {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException("Unimplemented method 'convertToJava'");
-	}
+    @Override
+    public String convertToJava() {
+        StringBuilder result = new StringBuilder();
+        result.append(name.convertToJava());
+        result.append("(");
+        for (int i = 0; i < params.size(); i++) {
+            if (i > 0) {
+                result.append(", ");
+            }
+            result.append(params.get(i).convertToJava());
+        }
+        result.append(")");
+        return result.toString();
+    }
 
-	@Override
-	public String convertToJotlin() {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException("Unimplemented method 'convertToJotlin'");
-	}
+    @Override
+    public String convertToJotlin() {
+        StringBuilder result = new StringBuilder();
+        result.append("::");
+        result.append(name.convertToJotlin());
+        result.append("[");
+        for (int i = 0; i < params.size(); i++) {
+            if (i > 0) {
+                result.append(", ");
+            }
+            result.append(params.get(i).convertToJotlin());
+        }
+        result.append("]");
+        return result.toString();
+    }
+
 
 }

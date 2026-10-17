@@ -24,10 +24,20 @@ public class IntegerNode implements JotlinTree {
         return new IntegerNode(first.getToken());
     }
 
+    
     @Override
     public boolean validate() throws Exception {
-        return true;
+        if (value == null || value.isEmpty()) {
+            return false;
+        }
+        try {
+            Integer.parseInt(value);
+            return true;
+        } catch (NumberFormatException e) {
+            return false;
+        }
     }
+
 
     @Override
     public String convertToJava() {

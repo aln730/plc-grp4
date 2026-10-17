@@ -57,13 +57,37 @@ public class FuncDefNode implements JotlinTree{
 
     @Override
     public String convertToJava() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'convertToJava'");
+        StringBuilder result = new StringBuilder();
+        String modifier = node.convertToJava();
+        if (modifier != null && !modifier.isEmpty()) {
+            result.append(modifier).append(" ");
+        }
+        String staticModifier = stat.convertToJava();
+        if (staticModifier != null && !staticModifier.isEmpty()) {
+            result.append(staticModifier).append(" ");
+        }
+        result.append(rtrn.convertToJava()).append(" ").append(id.convertToJava()).append("(");
+        result.append(params.convertToJava());
+        result.append(") {\n");
+        result.append(body.convertToJava());
+        result.append("\n}");
+        return result.toString();
     }
 
     @Override
     public String convertToJotlin() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'convertToJotlin'");
+        StringBuilder result = new StringBuilder();
+        result.append("\t");
+        result.append(node.convertToJotlin()).append(" ");
+        result.append(stat.convertToJotlin());
+        result.append(id.convertToJotlin());
+        result.append(params.convertToJotlin());
+        result.append(rtrn.convertToJotlin());
+        if (newline != null) {
+            result.append(newline.convertToJotlin());
+        }
+        result.append(body.convertToJotlin());
+        return result.toString();
     }
+
 }
