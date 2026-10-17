@@ -6,12 +6,14 @@ import provided.*;
 public class ClassDefNode implements JotlinTree {
     private final JotlinToken moduleName;
     private final JotlinToken subclassName;
+    private final boolean oneLine;
     private final NewLineNode newLines;
     private final ClassBodyNode classBody;
 
-    private ClassDefNode(JotlinToken moduleName, JotlinToken subclassName, NewLineNode newLines, ClassBodyNode classBody) {
+    private ClassDefNode(JotlinToken moduleName, JotlinToken subclassName, boolean oneLine, NewLineNode newLines, ClassBodyNode classBody) {
         this.moduleName = moduleName;
         this.subclassName = subclassName;
+        this.oneLine = oneLine;
         this.classBody = classBody;
         this.newLines = newLines;
     }
@@ -34,12 +36,15 @@ public class ClassDefNode implements JotlinTree {
         }
         JotlinToken moduleName = first;
         tokens.remove(0);
-        if (tokens.isEmpty() || tokens.get(0).getTokenType() != TokenType.LineEnd) {
-            throw new IllegalArgumentException("Expected line ending after module name");
+
+        boolean oneLine = true;
+        if (!tokens.isEmpty() && tokens.get(0).getTokenType() == TokenType.LineEnd) {
+            oneLine = false;
+            while (!tokens.isEmpty() && tokens.get(0).getTokenType() == TokenType.LineEnd) {
+                tokens.remove(0);
+            }
         }
-        while (!tokens.isEmpty() && tokens.get(0).getTokenType() == TokenType.LineEnd) {
-            tokens.remove(0);
-        }
+
         if (tokens.isEmpty()) {
             throw new IllegalArgumentException("Expected Subclass");
         }
@@ -62,7 +67,7 @@ public class ClassDefNode implements JotlinTree {
         }
         NewLineNode nl = NewLineNode.parse(tokens);
         ClassBodyNode classBody = ClassBodyNode.parse(tokens);
-        return new ClassDefNode(moduleName, subclassName, nl,classBody);
+        return new ClassDefNode(moduleName, subclassName, oneLine, nl, classBody);
     }
 
     @Override
@@ -81,6 +86,8 @@ public class ClassDefNode implements JotlinTree {
 
     @Override
     public String convertToJotlin() {
-        return "Module " + moduleName.getToken() + "\nSubclass " + subclassName.getToken() + "\n" + classBody.convertToJotlin();
+        String separator = oneLine ? " " : "\n";
+        return "Module " + moduleName.getToken() + separator + "Subclass " + subclassName.getToken() + "\n" + classBody.convertToJotlin();
     }
 }
+

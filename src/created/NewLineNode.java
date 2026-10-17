@@ -1,7 +1,6 @@
 package created;
 
 import java.util.ArrayList;
-
 import provided.*;
 
 
@@ -41,11 +40,11 @@ public class NewLineNode implements JotlinTree {
 
     @Override
     public String convertToJava() {
-        return "\n";
+        return "\n".repeat(count);
     }
 
     @Override
     public String convertToJotlin() {
-        return "\n";
+        return "\n".repeat(count);
     }
 }

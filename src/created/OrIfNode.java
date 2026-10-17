@@ -3,62 +3,67 @@ package created;
 import java.util.ArrayList;
 import provided.*;
 
-
 public class OrIfNode implements JotlinTree {
-    private ExprNode expr;
-    private JotlinToken body;
+    private final int depth;
+    private final ExprNode expr;
+    private final BodyNode body;
 
-    private OrIfNode(ExprNode e, JotlinToken b){
-        expr = e;
-        body = b;
+    private OrIfNode(int depth, ExprNode e, BodyNode b) {
+        this.depth = depth;
+        this.expr = e;
+        this.body = b;
     }
-    
-    public static OrIfNode parse(ArrayList<JotlinToken> tokens){
-        while(!tokens.isEmpty() && tokens.get(0).getTokenType() == TokenType.Indent){
+
+    public static OrIfNode parse(ArrayList<JotlinToken> tokens) {
+        int depth = 0;
+        while (!tokens.isEmpty() && tokens.get(0).getTokenType() == TokenType.Indent) {
             tokens.remove(0);
+            depth++;
+        }
+        if (tokens.isEmpty()) {
+            throw new IllegalArgumentException("Expecting OrIf");
         }
         JotlinToken first = tokens.get(0);
-        if(first.getTokenType() != TokenType.Keyword || !first.getToken().equals("While")){
-            throw new IllegalArgumentException("Expecting keyword or while to start while loop");
+        if (first.getTokenType() != TokenType.Keyword || !first.getToken().equals("OrIf")) {
+            throw new IllegalArgumentException("Error on " + first + ": expected 'OrIf'");
         }
         tokens.remove(0);
 
-        first = tokens.get(0);
-        if(first.getTokenType() != TokenType.L_Bracket){
+        if (tokens.isEmpty() || tokens.get(0).getTokenType() != TokenType.L_Bracket) {
             throw new IllegalArgumentException("Expecting left bracket");
         }
         tokens.remove(0);
+
         ExprNode expr = ExprNode.parse(tokens);
-        first = tokens.get(0);
-        if(first.getTokenType() != TokenType.R_Bracket){
+
+        if (tokens.isEmpty() || tokens.get(0).getTokenType() != TokenType.R_Bracket) {
             throw new IllegalArgumentException("Expecting right bracket");
         }
-        while(!tokens.isEmpty() && tokens.get(0).getTokenType() == TokenType.LineEnd){
+        tokens.remove(0);
+
+        if (tokens.isEmpty() || tokens.get(0).getTokenType() != TokenType.LineEnd) {
+            throw new IllegalArgumentException("Expecting end of line after OrIf condition");
+        }
+        while (!tokens.isEmpty() && tokens.get(0).getTokenType() == TokenType.LineEnd) {
             tokens.remove(0);
         }
-        //BodyNode body = BodyNode.parse(tokens)
-        while(!tokens.isEmpty() && tokens.get(0).getTokenType() == TokenType.LineEnd){
-            tokens.remove(0);
-        }
-        
-        return new OrIfNode(expr, null);
+
+        BodyNode body = BodyNode.parse(tokens);
+        return new OrIfNode(depth, expr, body);
     }
 
     @Override
     public boolean validate() throws Exception {
-        // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'validate'");
     }
 
     @Override
     public String convertToJava() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'convertToJava'");
+        return "else if (" + expr.convertToJava() + ") " + body.convertToJava() + "\n";
     }
 
     @Override
     public String convertToJotlin() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'convertToJotlin'");
+        return "\t".repeat(depth) + "OrIf[" + expr.convertToJotlin() + "]\n" + body.convertToJotlin();
     }
 }

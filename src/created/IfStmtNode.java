@@ -1,7 +1,6 @@
 package created;
 
 import java.util.ArrayList;
-
 import provided.*;
 
 
@@ -107,8 +106,8 @@ public class IfStmtNode implements JotlinTree {
     @Override
     public String convertToJava() {
         StringBuilder sb = new StringBuilder();
-        sb.append("if (").append(condition.convertToJava()).append(") {\n");
-        sb.append(body.convertToJava()).append("}\n");
+        sb.append("if (").append(condition.convertToJava()).append(") ");
+        sb.append(body.convertToJava()).append("\n");
         for (OrIfNode o : orIfs) {
             sb.append(o.convertToJava());
         }

@@ -20,7 +20,7 @@ public class FParamsNode implements JotlinTree{
         tokens.removeFirst();
         FParamNode node = FParamNode.parse(tokens);
         nodes.add(node);
-        while(tokens.getFirst().getToken().equals(",")) {
+        while(!tokens.isEmpty() && tokens.getFirst().getTokenType() == TokenType.Comma) {
             tokens.removeFirst();
             try {
                 node = FParamNode.parse(tokens);

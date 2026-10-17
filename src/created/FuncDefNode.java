@@ -1,7 +1,6 @@
 package created;
 
 import java.util.ArrayList;
-
 import provided.*;
 
 
@@ -9,12 +8,12 @@ public class FuncDefNode implements JotlinTree{
     private AmodNode node;
     private StaticNode stat;
     private JotlinToken id;
-    private FParamNode params;
+    private FParamsNode params;
     private FReturnNode rtrn;
     private NewLineNode newline;
     private FBodyNode body;
 
-    private FuncDefNode(AmodNode n, StaticNode s, JotlinToken i, FParamNode p, FReturnNode r, NewLineNode nl, FBodyNode b){
+    private FuncDefNode(AmodNode n, StaticNode s, JotlinToken i, FParamsNode p, FReturnNode r, NewLineNode nl, FBodyNode b){
         node = n;
         stat = s;
         id = i;
@@ -38,7 +37,7 @@ public class FuncDefNode implements JotlinTree{
             throw new IllegalArgumentException("expected id");
         }
         tokens.remove(0);
-        FParamNode param = FParamNode.parse(tokens);
+        FParamsNode param = FParamsNode.parse(tokens);
         FReturnNode ret = FReturnNode.parse(tokens);
 
         if(tokens.get(0).getTokenType() != TokenType.LineEnd) {

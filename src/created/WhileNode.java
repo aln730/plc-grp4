@@ -1,7 +1,6 @@
 package created;
 
 import java.util.ArrayList;
-
 import provided.*;
 
 
@@ -35,6 +34,7 @@ public class WhileNode implements JotlinTree{
         if(first.getTokenType() != TokenType.R_Bracket){
             throw new IllegalArgumentException("Expecting right bracket");
         }
+        tokens.remove(0);
         while(!tokens.isEmpty() && tokens.get(0).getTokenType() == TokenType.LineEnd){
             tokens.remove(0);
         }
@@ -50,10 +50,9 @@ public class WhileNode implements JotlinTree{
     }
 
     @Override
-    public String convertToJava() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'convertToJava'");
-    }
+public String convertToJava() {
+    return "while (" + expr.convertToJava() + ") " + body.convertToJava();
+}
 
     @Override
     public String convertToJotlin() {
