@@ -22,10 +22,10 @@ public class ClassBodyNode implements JotlinTree {
         ArrayList<InstVarNode> instVars = new ArrayList<>();
         ArrayList<ConstNode> constants = new ArrayList<>();
         ArrayList<FuncDefNode> functions = new ArrayList<>();
-        NewLineNode nl = null;
-        if(!startsInstVar(tokens)) {
-            nl = NewLineNode.parse(tokens);
-        }
+        // NewLineNode nl = null;
+        // if(!startsInstVar(tokens)) {
+        //     nl = NewLineNode.parse(tokens);
+        // }
         while (startsInstVar(tokens)) {
             instVars.add(InstVarNode.parse(tokens));
         }
@@ -37,7 +37,7 @@ public class ClassBodyNode implements JotlinTree {
             functions.add(FuncDefNode.parse(tokens));
         }
         // consumeNewlines(tokens);
-        return new ClassBodyNode(instVars, nl,constants, functions);
+        return new ClassBodyNode(instVars, null,constants, functions);
     }
 
     private static boolean startsInstVar(ArrayList<JotlinToken> tokens) {

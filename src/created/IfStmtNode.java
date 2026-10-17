@@ -117,7 +117,7 @@ public class IfStmtNode implements JotlinTree {
     @Override
     public String convertToJotlin() {
         StringBuilder sb = new StringBuilder();
-        sb.append("\t".repeat(depth)).append("If[").append(condition.convertToJotlin()).append("]\n");
+        sb.append(tabs.convertToJotlin()).append("If[").append(condition.convertToJotlin()).append("]\n");
         sb.append(body.convertToJotlin());
         for (OrIfNode o : orIfs) {
             sb.append(o.convertToJotlin());

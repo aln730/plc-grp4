@@ -9,15 +9,13 @@ public class FBodyNode implements JotlinTree{
     private ArrayList<VarDecNode> varDecNodes;
     private ArrayList<BodyStmtNode> bodyStmtNodes;
     private ReturnNode returnVal;
-    private NewLineNode newLines;
 
 
 
-    public FBodyNode(ArrayList<VarDecNode> varDecNodes, ArrayList<BodyStmtNode> bodyStmtNodes, ReturnNode returnVal,NewLineNode newLines) {
+    public FBodyNode(ArrayList<VarDecNode> varDecNodes, ArrayList<BodyStmtNode> bodyStmtNodes, ReturnNode returnVal) {
         this.varDecNodes = varDecNodes;
         this.bodyStmtNodes = bodyStmtNodes;
         this.returnVal = returnVal;
-        this.newLines = newLines;
     }
 
     public static FBodyNode parse(ArrayList<JotlinToken> tokens) {
@@ -56,13 +54,7 @@ public class FBodyNode implements JotlinTree{
         catch (IllegalArgumentException e) {
             throw new IllegalArgumentException("FBody missing return");
         }
-        try {
-            newLine = NewLineNode.parse(tokens);
-        }
-        catch (IllegalArgumentException e) {
-            throw new IllegalArgumentException("FBody missing new line");
-        }
-        return new FBodyNode(varNodes,bodyNodes,returnNode,newLine);
+        return new FBodyNode(varNodes,bodyNodes,returnNode);
 
     }
 
@@ -82,7 +74,6 @@ public class FBodyNode implements JotlinTree{
             java += bodyStmtNodes.get(i).convertToJava();
         }
         java += returnVal.convertToJava();
-        java += newLines.convertToJava();
         return java;
     }
 
@@ -96,7 +87,6 @@ public class FBodyNode implements JotlinTree{
             jotlin += bodyStmtNodes.get(i).convertToJotlin();
         }
         jotlin += returnVal.convertToJotlin();
-        jotlin += newLines.convertToJotlin();  
         return jotlin;  
     }
 

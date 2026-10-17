@@ -37,17 +37,10 @@ public class WhileNode implements JotlinTree{
         if(first.getTokenType() != TokenType.R_Bracket){
             throw new IllegalArgumentException("Expecting right bracket");
         }
-<<<<<<< HEAD
         NewLineNode newLine = NewLineNode.parse(tokens);
         
         BodyNode body = BodyNode.parse(tokens);
         return new WhileNode(tabs,expr, newLine, body);
-=======
-
-        NewLineNode newLine = NewLineNode.parse(tokens);
-        BodyNode body = BodyNode.parse(tokens);
-        return new WhileNode(expr, newLine, body);
->>>>>>> 5f427f3eecfa7bb1c422031fadbcca039852420d
     }
 
     @Override

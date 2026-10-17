@@ -10,7 +10,7 @@ public class OrIfNode implements JotlinTree {
     private ExprNode expr;
     private NewLineNode newline1;
     private BodyNode body;
-    private NewLineNode newline2
+    private NewLineNode newline2;
 
     private OrIfNode(TabNode t,ExprNode e, NewLineNode nl1, BodyNode b, NewLineNode nl2){
         tabs = t;

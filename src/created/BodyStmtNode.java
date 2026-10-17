@@ -49,7 +49,6 @@ public class BodyStmtNode implements JotlinTree {
             );
         }
     }
-    }
 
     @Override
     public boolean validate() throws Exception {
