@@ -32,13 +32,19 @@ public class ClassBodyNode implements JotlinTree {
     }
     consumeNewlines(tokens);
 
-    while (startsConst(tokens)) {
-        constants.add(ConstNode.parse(tokens));
-        consumeNewlines(tokens);
-    }
-    while (startsFuncDef(tokens)) {
-        functions.add(FuncDefNode.parse(tokens));
-        consumeNewlines(tokens);
+    while (startsInstVar(tokens) || startsConst(tokens) || startsFuncDef(tokens)) {
+        while (startsInstVar(tokens)) {
+            instVars.add(InstVarNode.parse(tokens));
+            consumeNewlines(tokens);
+        }
+        while (startsConst(tokens)) {
+            constants.add(ConstNode.parse(tokens));
+            consumeNewlines(tokens);
+        }
+        while (startsFuncDef(tokens)) {
+            functions.add(FuncDefNode.parse(tokens));
+            consumeNewlines(tokens);
+        }
     }
     return new ClassBodyNode(instVars, nl, constants, functions);
 }
@@ -92,11 +98,23 @@ private static boolean startsFuncDef(ArrayList<JotlinToken> tokens) {
     return next < tokens.size() && tokens.get(next).getTokenType() == TokenType.Id;
 }
 
-    private static void consumeNewlines(ArrayList<JotlinToken> tokens) {
-        while (!tokens.isEmpty() && tokens.get(0).getTokenType() == TokenType.LineEnd) {
-            tokens.remove(0);
+private static void consumeNewlines(ArrayList<JotlinToken> t) {
+    while (!t.isEmpty()) {
+        int i = 0;
+        while (i < t.size() && t.get(i).getTokenType() == TokenType.Indent) {
+            i++;
+        }
+        if (i < t.size() && t.get(i).getTokenType() != TokenType.LineEnd) {
+            return;
+        }
+        for (int k = 0; k < i; k++) {
+            t.remove(0);
+        }
+        if (!t.isEmpty()) {
+            t.remove(0);
         }
     }
+}
 
     @Override
     public boolean validate() throws Exception {

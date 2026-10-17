@@ -47,8 +47,17 @@ public class FBodyNode implements JotlinTree {
     }
 
     private static void skipBlankLines(ArrayList<JotlinToken> t) {
-        while (!t.isEmpty() && t.get(0).getTokenType() == TokenType.LineEnd) {
-            t.remove(0);
+        while (!t.isEmpty()) {
+            int i = skipTabs(t);
+            if (i < t.size() && t.get(i).getTokenType() != TokenType.LineEnd) {
+                return;
+            }
+            for (int k = 0; k < i; k++) {
+                t.remove(0);
+            }
+            if (!t.isEmpty()) {
+                t.remove(0);
+            }
         }
     }
 
