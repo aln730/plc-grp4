@@ -1,7 +1,6 @@
 package created;
 
 import java.util.ArrayList;
-
 import provided.*;
 
 
@@ -40,6 +39,6 @@ public class ReturnNode implements JotlinTree {
 
     @Override
     public String convertToJotlin() {
-        return "\t".repeat(depth) + "<-" + expr.convertToJotlin();
+        return "<-" + expr.convertToJotlin();
     }
 }

@@ -12,7 +12,7 @@ public class StaticNode implements JotlinTree{
         this.keyword = keyword;
     }
 
-    public StaticNode parse(ArrayList<JotlinToken> tokens) {
+    public static StaticNode parse(ArrayList<JotlinToken> tokens) {
         if(tokens.size() < 0) {
             throw new IllegalArgumentException("Excepted static token, instead got no tokens");
         }
