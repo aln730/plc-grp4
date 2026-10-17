@@ -11,7 +11,7 @@ public class OperandNode implements JotlinTree{
         if(first.getTokenType() == TokenType.Keyword || first.getTokenType() == TokenType.Id){
             return IdentifierNode.parse(tokens);
         } else if (first.getTokenType() == TokenType.Integer || first.getTokenType() == TokenType.Double){
-            return null; //return NumNode.parse
+            return NumNode.parse(tokens); //return NumNode.parse
         } else if (first.getTokenType() == TokenType.FC_Header){
             return FunccallNode.parse(tokens);
         } else{

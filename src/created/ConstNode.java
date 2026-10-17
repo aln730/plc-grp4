@@ -7,11 +7,11 @@ import provided.*;
 public class ConstNode implements JotlinTree{
     private AmodNode node;
     private KeywordNode keyword;
-    private FParamNode params;
+    private FParamsNode params;
     private BodyNode body;
     private NewLineNode newLine;
 
-    private ConstNode(AmodNode n, KeywordNode k, FParamNode p, BodyNode b, NewLineNode nl){
+    private ConstNode(AmodNode n, KeywordNode k, FParamsNode p, BodyNode b, NewLineNode nl){
         node = n;
         keyword = k;
         params = p;
@@ -29,7 +29,7 @@ public class ConstNode implements JotlinTree{
         //assuming a_mod is not a node
         KeywordNode key = KeywordNode.parse(tokens);
          //keywordNode.parse(tokens)
-        FParamNode fparam = FParamNode.parse(tokens);
+        FParamsNode fparam = FParamsNode.parse(tokens);
         BodyNode bdy = BodyNode.parse(tokens);
         //body parse(tokens)
         if(tokens.get(0).getTokenType() != TokenType.LineEnd){
