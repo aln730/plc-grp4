@@ -1,0 +1,25 @@
+#Tests a non-existing parent class.
+#Will pass phase 3 but fail phase 4
+# this is validated in phase 4
+
+Include ExistingClass
+
+Module Test Subclass NonExistFile
+	Closed ExistingClass size
+	
+	Closed Test -> s:ExistingClass
+		Self.size = s
+
+	Open getSize <- ExistingClass
+		<- Self.size
+
+	Open setSize -> s:ExistingClass
+		Self.size = s
+		
+	Open Class createTest -> s:NonExistFile <- Test
+		NonExistFile s
+		Test t
+		s = Create ExistingClass[ "hello" ]
+		::Printer.display[::s.getName[]]
+		t = Create Test[ 5 ]
+		<- t

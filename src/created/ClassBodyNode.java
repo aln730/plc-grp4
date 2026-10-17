@@ -1,9 +1,7 @@
 package created;
 
 import java.util.ArrayList;
-
 import provided.*;
-
 
 public class ClassBodyNode implements JotlinTree {
     private final ArrayList<InstVarNode> instVars;
@@ -44,14 +42,12 @@ public class ClassBodyNode implements JotlinTree {
             return false;
         }
         return tokens.get(0).getTokenType() == TokenType.Indent && tokens.get(1).getTokenType() == TokenType.Keyword
-                && tokens.get(2).getTokenType() == TokenType.Id;
+                && (tokens.get(2).getTokenType() == TokenType.Id
+                || tokens.get(2).getTokenType() == TokenType.Keyword);
     }
 
     private static boolean startsConst(ArrayList<JotlinToken> tokens) {
-        if (tokens.size() < 2) {
-            return false;
-        }
-        if (tokens.get(0).getTokenType() != TokenType.Indent) {
+        if (tokens.size() < 2 || tokens.get(0).getTokenType() != TokenType.Indent) {
             return false;
         }
         String modifier = tokens.get(1).getToken();
@@ -59,10 +55,7 @@ public class ClassBodyNode implements JotlinTree {
     }
 
     private static boolean startsFuncDef(ArrayList<JotlinToken> tokens) {
-        if (tokens.size() < 3) {
-            return false;
-        }
-        if (tokens.get(0).getTokenType() != TokenType.Indent) {
+        if (tokens.size() < 3 || tokens.get(0).getTokenType() != TokenType.Indent) {
             return false;
         }
         String modifier = tokens.get(1).getToken();
@@ -73,31 +66,62 @@ public class ClassBodyNode implements JotlinTree {
         if (tokens.get(next).getTokenType() == TokenType.Keyword && tokens.get(next).getToken().equals("Class")) {
             next++;
         }
-        return next < tokens.size() && tokens.get(next).getTokenType() == TokenType.Id;
+        return next < tokens.size() && (tokens.get(next).getTokenType() == TokenType.Id || tokens.get(next).getTokenType() == TokenType.Keyword);
     }
 
     private static void consumeNewlines(ArrayList<JotlinToken> tokens) {
-        while (!tokens.isEmpty()
-                && tokens.get(0).getTokenType() == TokenType.LineEnd) {
+        while (!tokens.isEmpty() && tokens.get(0).getTokenType() == TokenType.LineEnd) {
             tokens.remove(0);
         }
     }
 
     @Override
     public boolean validate() throws Exception {
-        //todo
-        return false;
+        for (InstVarNode instVar : instVars) {
+            if (!instVar.validate()) {
+                return false;
+            }
+        }
+        for (ConstNode constant : constants) {
+            if (!constant.validate()) {
+                return false;
+            }
+        }
+        for (FuncDefNode function : functions) {
+            if (!function.validate()) {
+                return false;
+            }
+        }
+        return true;
     }
 
     @Override
     public String convertToJava() {
-        //todo
-        return null;
+        StringBuilder result = new StringBuilder();
+        for (InstVarNode instVar : instVars) {
+            result.append(instVar.convertToJava()).append("\n");
+        }
+        for (ConstNode constant : constants) {
+            result.append(constant.convertToJava()).append("\n");
+        }
+        for (FuncDefNode function : functions) {
+            result.append(function.convertToJava()).append("\n");
+        }
+        return result.toString();
     }
 
     @Override
     public String convertToJotlin() {
-        //todo
-        return null;
+        StringBuilder result = new StringBuilder();
+        for (InstVarNode instVar : instVars) {
+            result.append(instVar.convertToJotlin()).append("\n");
+        }
+        for (ConstNode constant : constants) {
+            result.append(constant.convertToJotlin()).append("\n");
+        }
+        for (FuncDefNode function : functions) {
+            result.append(function.convertToJotlin()).append("\n");
+        }
+        return result.toString();
     }
 }
