@@ -42,7 +42,7 @@ public class FBodyNode implements JotlinTree {
             skipBlankLines(tokens);
         }
 
-        return new FBodyNode(varNodes, bodyNodes, returnNode, null);
+        return new FBodyNode(varNodes, bodyNodes, returnNode);
     }
 
     private static void skipBlankLines(ArrayList<JotlinToken> t) {
@@ -116,7 +116,7 @@ public class FBodyNode implements JotlinTree {
         if (returnVal == null || !returnVal.validate()) {
             return false;
         }
-        return newLines != null && newLines.validate();
+        return true;
     }
 
     @Override

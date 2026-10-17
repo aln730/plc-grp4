@@ -6,12 +6,12 @@ import provided.*;
 public class OtherwiseNode implements JotlinTree {
     private final int depth;
     private final BodyNode body;
-    private final NewLineNode newLine;
+    // private final NewLineNode newLine;
 
     private OtherwiseNode(int depth, BodyNode body) {
         this.depth = depth;
         this.body = body;
-        this.newLine = newLine;
+        // this.newLine = newLine;
     }
 
     public static OtherwiseNode parse(ArrayList<JotlinToken> tokens) {

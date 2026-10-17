@@ -64,7 +64,7 @@ public class FParamsNode implements JotlinTree{
         if (params.isEmpty()) {
             return "";
         }
-        StringBuilder result = new StringBuilder(" -> ");
+        result.append(" -> ");
         for (int i = 0; i < params.size(); i++) {
             if (i > 0) {
                 result.append(", ");
