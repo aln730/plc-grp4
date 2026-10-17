@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import provided.*;
 
+//< func_def > -> <tab > < a_mod > < static > < id > < f_params > < f_return > < NLS > < f_body
 
 public class FuncDefNode implements JotlinTree{
     private AmodNode node;

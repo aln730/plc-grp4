@@ -3,12 +3,13 @@ package created;
 import java.util.ArrayList;
 import provided.*;
 
+//< orif > -> <TBS > OrIf [ < expr >] < NLS > < body > < NLS 
 
 public class OrIfNode implements JotlinTree {
     private ExprNode expr;
-    private JotlinToken body;
+    private BodyNode body;
 
-    private OrIfNode(ExprNode e, JotlinToken b){
+    private OrIfNode(ExprNode e, BodyNode b){
         expr = e;
         body = b;
     }
@@ -36,12 +37,12 @@ public class OrIfNode implements JotlinTree {
         while(!tokens.isEmpty() && tokens.get(0).getTokenType() == TokenType.LineEnd){
             tokens.remove(0);
         }
-        //BodyNode body = BodyNode.parse(tokens)
+        BodyNode body = BodyNode.parse(tokens);
         while(!tokens.isEmpty() && tokens.get(0).getTokenType() == TokenType.LineEnd){
             tokens.remove(0);
         }
         
-        return new OrIfNode(expr, null);
+        return new OrIfNode(expr, body);
     }
 
     @Override
