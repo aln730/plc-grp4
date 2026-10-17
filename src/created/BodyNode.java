@@ -14,8 +14,9 @@ public class BodyNode implements JotlinTree {
 
     public static BodyNode parse(ArrayList<JotlinToken> tokens) {
         ArrayList<BodyStmtNode> statements = new ArrayList<>();
-        while (!tokens.isEmpty() && !(tokens.get(0).getTokenType() == TokenType.L_Arrow)) {
-            statements.add(BodyStmtNode.parse(tokens));
+        while (!tokens.isEmpty() && tokens.get(0).getTokenType() != TokenType.L_Arrow) {
+            BodyStmtNode body = BodyStmtNode.parse(tokens);
+            statements.add(body);
         }
         if (tokens.isEmpty()) {
             throw new IllegalArgumentException("Expected a return statement at the end of the body");

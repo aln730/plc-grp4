@@ -27,14 +27,17 @@ public class ClassBodyNode implements JotlinTree {
         //     nl = NewLineNode.parse(tokens);
         // }
         while (startsInstVar(tokens)) {
-            instVars.add(InstVarNode.parse(tokens));
+            InstVarNode inst = InstVarNode.parse(tokens);
+            instVars.add(inst);
         }
         while (startsConst(tokens)) {
-            constants.add(ConstNode.parse(tokens));
+            ConstNode con = ConstNode.parse(tokens);
+            constants.add(con);
         }
         // consumeNewlines(tokens);
         while (startsFuncDef(tokens)) {
-            functions.add(FuncDefNode.parse(tokens));
+            FuncDefNode funcDef = FuncDefNode.parse(tokens);
+            functions.add(funcDef);
         }
         // consumeNewlines(tokens);
         return new ClassBodyNode(instVars, null,constants, functions);

@@ -18,7 +18,8 @@ public class ClassNode implements JotlinTree {
         //     tokens.remove(0);
         // }
         while (!tokens.isEmpty() && tokens.get(0).getTokenType() == TokenType.Keyword && tokens.get(0).getToken().equals("Include")) {
-            includes.add(IncludeNode.parse(tokens));
+            IncludeNode include = IncludeNode.parse(tokens);
+            includes.add(include);
             // while (!tokens.isEmpty() && tokens.get(0).getTokenType() == TokenType.LineEnd) {
             //     tokens.remove(0);
             // }

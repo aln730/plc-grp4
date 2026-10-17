@@ -27,11 +27,10 @@ public class ConstNode implements JotlinTree{
         tokens.remove(0);
         AmodNode a_mod = AmodNode.parse(tokens);
         KeywordNode key = KeywordNode.parse(tokens);
-         //keywordNode.parse(tokens)
         FParamsNode fparam = FParamsNode.parse(tokens);
         BodyNode bdy = BodyNode.parse(tokens);
         if(tokens.get(0).getTokenType() != TokenType.LineEnd){
-            throw new IllegalArgumentException("Expected new line");
+            throw new IllegalArgumentException("Expected new line after body node");
         }
         NewLineNode nl = NewLineNode.parse(tokens);
         return new ConstNode(a_mod,key,fparam,bdy,nl);
