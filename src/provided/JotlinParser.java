@@ -24,10 +24,7 @@ public class JotlinParser {
         for (String path : args) {
             System.out.println(path);
             try {
-                JotlinTree tree = parse(JotlinTokenizer.tokenize(path));
-                tree.convertToJotlin();
-                tree.validate();
-                tree.convertToJava();
+                parse(JotlinTokenizer.tokenize(path));
                 System.out.println("OKOK....");
             } catch (Exception e) {
                 System.out.println("FAILED....." + e);
