@@ -6,9 +6,11 @@ import provided.*;
 
 public class IncludeNode implements JotlinTree {
     private final JotlinToken id;
+    private NewLineNode nl;
 
-    private IncludeNode(JotlinToken id) {
+    private IncludeNode(JotlinToken id, NewLineNode nl) {
         this.id = id;
+        this.nl = nl;
     }
 
     public static IncludeNode parse(ArrayList<JotlinToken> tokens) {
@@ -32,10 +34,8 @@ public class IncludeNode implements JotlinTree {
         if (tokens.isEmpty() || tokens.get(0).getTokenType() != TokenType.LineEnd) {
             throw new IllegalArgumentException("Expected line ending after Include statement");
         }
-        while (!tokens.isEmpty() && tokens.get(0).getTokenType() == TokenType.LineEnd) {
-            tokens.remove(0);
-        }
-        return new IncludeNode(id);
+        NewLineNode nl = NewLineNode.parse(tokens);
+        return new IncludeNode(id,nl);
     }
 
     @Override

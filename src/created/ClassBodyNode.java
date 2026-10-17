@@ -7,13 +7,17 @@ import provided.*;
 
 public class ClassBodyNode implements JotlinTree {
     private final ArrayList<InstVarNode> instVars;
+    private final NewLineNode newLines;
     private final ArrayList<ConstNode> constants;
     private final ArrayList<FuncDefNode> functions;
 
-    private ClassBodyNode(ArrayList<InstVarNode> instVars, ArrayList<ConstNode> constants, ArrayList<FuncDefNode> functions) {
+
+    private ClassBodyNode(ArrayList<InstVarNode> instVars, NewLineNode newLines,ArrayList<ConstNode> constants, ArrayList<FuncDefNode> functions) {
         this.instVars = instVars;
         this.constants = constants;
         this.functions = functions;
+        this.newLines = newLines;
+
     }
 
     public static ClassBodyNode parse(ArrayList<JotlinToken> tokens) {
@@ -23,7 +27,7 @@ public class ClassBodyNode implements JotlinTree {
         while (startsInstVar(tokens)) {
             instVars.add(InstVarNode.parse(tokens));
         }
-        consumeNewlines(tokens);
+        NewLineNode nl = NewLineNode.parse(tokens);
         while (startsConst(tokens)) {
             constants.add(ConstNode.parse(tokens));
         }
@@ -32,7 +36,7 @@ public class ClassBodyNode implements JotlinTree {
             functions.add(FuncDefNode.parse(tokens));
         }
         consumeNewlines(tokens);
-        return new ClassBodyNode(instVars, constants, functions);
+        return new ClassBodyNode(instVars, nl,constants, functions);
     }
 
     private static boolean startsInstVar(ArrayList<JotlinToken> tokens) {

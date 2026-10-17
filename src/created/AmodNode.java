@@ -1,7 +1,7 @@
 package created;
 import java.util.ArrayList;
-
 import provided.*;
+
 
 public class AmodNode implements JotlinTree {
 

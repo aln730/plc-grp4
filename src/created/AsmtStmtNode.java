@@ -7,14 +7,14 @@ import provided.*;
 
 public class AsmtStmtNode implements JotlinTree {
 
-    private final int depth;
+    private final TabNode tabs;
     private final IdNode id;
     private final ExprNode expr;
     private final KeywordNode className;
     private final ParamsNode params;
 
-    private AsmtStmtNode(int depth, IdNode id, ExprNode expr, KeywordNode className, ParamsNode params) {
-        this.depth = depth;
+    private AsmtStmtNode(TabNode tabs, IdNode id, ExprNode expr, KeywordNode className, ParamsNode params) {
+        this.tabs = tabs;
         this.id = id;
         this.expr = expr;
         this.className = className;
@@ -22,11 +22,7 @@ public class AsmtStmtNode implements JotlinTree {
     }
 
     public static AsmtStmtNode parse(ArrayList<JotlinToken> tokens) {
-        int depth = 0;
-        while (!tokens.isEmpty() && tokens.get(0).getTokenType() == TokenType.Indent) {
-            tokens.remove(0);
-            depth++;
-        }
+        TabNode tabs = TabNode.parse(tokens);
 
         IdNode id = IdNode.parse(tokens);
 
@@ -58,11 +54,11 @@ public class AsmtStmtNode implements JotlinTree {
             }
             tokens.remove(0);
 
-            return new AsmtStmtNode(depth, id, null, className, params);
+            return new AsmtStmtNode(tabs, id, null, className, params);
         }
 
         ExprNode expr = ExprNode.parse(tokens);
-        return new AsmtStmtNode(depth, id, expr, null, null);
+        return new AsmtStmtNode(tabs, id, expr, null, null);
     }
 
     @Override
@@ -84,11 +80,10 @@ public class AsmtStmtNode implements JotlinTree {
 
     @Override
     public String convertToJotlin() {
-        String tabs = "\t".repeat(depth);
         if (expr != null) {
-            return tabs + id.convertToJotlin() + " = " + expr.convertToJotlin();
+            return tabs.convertToJotlin() + id.convertToJotlin() + " = " + expr.convertToJotlin();
         }
         String args = (params == null) ? "" : params.convertToJotlin();
-        return tabs + id.convertToJotlin() + " = Create " + className.convertToJotlin() + "[" + args + "]";
+        return tabs.convertToJotlin() + id.convertToJotlin() + " = Create " + className.convertToJotlin() + "[" + args + "]";
     }
 }

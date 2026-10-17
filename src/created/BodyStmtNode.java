@@ -7,16 +7,13 @@ import provided.*;
 public class BodyStmtNode implements JotlinTree {
 
     private final JotlinTree statement;
-    private final WhileNode whileNode;
+    private final TabNode tabs;
+    private final NewLineNode newLines;
 
-    private BodyStmtNode(JotlinTree statement) {
+    public BodyStmtNode(TabNode tabs, JotlinTree statement, NewLineNode newLines) {
+        this.tabs = tabs;
         this.statement = statement;
-        this.whileNode = null;
-    }
-
-    private BodyStmtNode(WhileNode whileNode) {
-        this.statement = null;
-        this.whileNode = whileNode;
+        this.newLines = newLines;
     }
 
     public static BodyStmtNode parse(ArrayList<JotlinToken> tokens) {
@@ -28,18 +25,23 @@ public class BodyStmtNode implements JotlinTree {
         JotlinToken first = tokens.get(0);
         if (first.getTokenType() == TokenType.Keyword
                 && first.getToken().equals("If")) {
-            return new BodyStmtNode(IfStmtNode.parse(tokens));
+            return new BodyStmtNode(null,IfStmtNode.parse(tokens),null);
         }
         if (first.getTokenType() == TokenType.Keyword
                 && first.getToken().equals("While")) {
-            return new BodyStmtNode(WhileNode.parse(tokens));
+            return new BodyStmtNode(null,WhileNode.parse(tokens),null);
         }
         if (first.getTokenType() == TokenType.Indent) {
+            TabNode tabs = TabNode.parse(tokens);
             if (tokens.size() > 1
-                    && tokens.get(1).getTokenType() == TokenType.FC_Header) {
-                return new BodyStmtNode(FunccallNode.parse(tokens));
+                    && tokens.get(0).getTokenType() == TokenType.FC_Header) {
+                        FunccallNode funccall = FunccallNode.parse(tokens);
+                        NewLineNode newLines = NewLineNode.parse(tokens);
+                return new BodyStmtNode(tabs,funccall,newLines);
             }
-            return new BodyStmtNode(AsmtStmtNode.parse(tokens));
+            AsmtStmtNode asmt = AsmtStmtNode.parse(tokens);
+            NewLineNode newLines = NewLineNode.parse(tokens);
+            return new BodyStmtNode(null,asmt,newLines);
         }
         throw new IllegalArgumentException(
             "Unexpected token in body statement: " + first

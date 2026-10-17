@@ -6,12 +6,14 @@ import provided.*;
 public class ClassDefNode implements JotlinTree {
     private final JotlinToken moduleName;
     private final JotlinToken subclassName;
+    private final NewLineNode newLines;
     private final ClassBodyNode classBody;
 
-    private ClassDefNode(JotlinToken moduleName, JotlinToken subclassName, ClassBodyNode classBody) {
+    private ClassDefNode(JotlinToken moduleName, JotlinToken subclassName, NewLineNode newLines, ClassBodyNode classBody) {
         this.moduleName = moduleName;
         this.subclassName = subclassName;
         this.classBody = classBody;
+        this.newLines = newLines;
     }
 
     public static ClassDefNode parse(ArrayList<JotlinToken> tokens) {
@@ -52,11 +54,9 @@ public class ClassDefNode implements JotlinTree {
         if (tokens.isEmpty() || tokens.get(0).getTokenType() != TokenType.LineEnd) {
             throw new IllegalArgumentException("Expected line ending after class definition header");
         }
-        while (!tokens.isEmpty() && tokens.get(0).getTokenType() == TokenType.LineEnd) {
-            tokens.remove(0);
-        }
+        NewLineNode nl = NewLineNode.parse(tokens);
         ClassBodyNode classBody = ClassBodyNode.parse(tokens);
-        return new ClassDefNode(moduleName, subclassName, classBody);
+        return new ClassDefNode(moduleName, subclassName, nl,classBody);
     }
 
     @Override

@@ -8,9 +8,9 @@ import provided.*;
 public class WhileNode implements JotlinTree{
     
     private ExprNode expr;
-    private JotlinToken body;
+    private BodyNode body;
 
-    private WhileNode(ExprNode e, JotlinToken b){
+    private WhileNode(ExprNode e, BodyNode b){
         expr = e;
         body = b;
     }
@@ -39,8 +39,8 @@ public class WhileNode implements JotlinTree{
             tokens.remove(0);
         }
         
-        //BodyNode body = BodyNode.parse(tokens)
-        return new WhileNode(expr, null);
+        BodyNode body = BodyNode.parse(tokens);
+        return new WhileNode(expr, body);
     }
 
     @Override

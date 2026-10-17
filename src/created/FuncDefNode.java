@@ -6,19 +6,21 @@ import provided.*;
 
 
 public class FuncDefNode implements JotlinTree{
-    private JotlinToken node;
-    private JotlinToken keyword;
-    private IdNode id;
-    private JotlinToken[] params;
-    private JotlinToken rtrn;
-    private JotlinToken body;
+    private AmodNode node;
+    private StaticNode stat;
+    private JotlinToken id;
+    private FParamNode params;
+    private FReturnNode rtrn;
+    private NewLineNode newline;
+    private FBodyNode body;
 
-    private FuncDefNode(JotlinToken n, JotlinToken k, IdNode i, JotlinToken[] p, JotlinToken r, JotlinToken b){
+    private FuncDefNode(AmodNode n, StaticNode s, JotlinToken i, FParamNode p, FReturnNode r, NewLineNode nl, FBodyNode b){
         node = n;
-        keyword = k;
+        stat = s;
         id = i;
         params = p;
         rtrn = r;
+        newline = nl;
         body = b;
     }
 
@@ -27,41 +29,26 @@ public class FuncDefNode implements JotlinTree{
             throw new IllegalArgumentException("expected tab");
         }
         tokens.remove(0);
-        JotlinToken first = tokens.get(0);
-        if(!first.getToken().equals("a_mod")){
-            throw new IllegalArgumentException("expected a_mod");
-        }
+        AmodNode a_mod = AmodNode.parse(tokens);
         //assuming a_mod is not a node
-        tokens.remove(0);
-        first = tokens.get(0);
-        if(!first.getToken().equals("static")){
-            throw new IllegalArgumentException("expected static");
-        }
+        StaticNode stat = StaticNode.parse(tokens);
         //assuming static is not a node
-        tokens.remove(0);
-        first = tokens.get(0);
-        if(first.getTokenType() != TokenType.Id){
+        JotlinToken id = tokens.get(0);
+        if(id.getTokenType() != TokenType.Id){
             throw new IllegalArgumentException("expected id");
         }
         tokens.remove(0);
-        first = tokens.get(0);
-        try{
-            //param parse(tokens) for f params and f return
-        } catch (IllegalArgumentException e) {
-            throw e;
-        }
+        FParamNode param = FParamNode.parse(tokens);
+        FReturnNode ret = FReturnNode.parse(tokens);
 
-        while(!tokens.isEmpty() && tokens.get(0).getTokenType() == TokenType.LineEnd){
-            tokens.remove(0);
+        if(tokens.get(0).getTokenType() != TokenType.LineEnd) {
+            throw new IllegalArgumentException("Expected new line in function def");
         }
+        NewLineNode newLine = NewLineNode.parse(tokens);
 
-         try{
-            //param parse(tokens) for f body
-        } catch (IllegalArgumentException e) {
-            throw e;
-        }
+        FBodyNode fBody = FBodyNode.parse(tokens);
 
-        return new FuncDefNode(null, null, null, null, null, null);
+        return new FuncDefNode(a_mod, stat, id, param, ret, newLine, fBody);
     }
 
     @Override

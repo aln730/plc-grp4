@@ -5,12 +5,16 @@ import provided.*;
 
 
 public class VarDecNode implements JotlinTree {
+    private final TabNode tabs;
     private final JotlinToken type;
     private final JotlinToken id;
+    private final NewLineNode newLine;
 
-    private VarDecNode(JotlinToken type, JotlinToken id) {
+    private VarDecNode(TabNode tabs, JotlinToken type, JotlinToken id, NewLineNode newLine) {
+        this.tabs = tabs;
         this.type = type;
         this.id = id;
+        this.newLine = newLine;
     }
 
     public static VarDecNode parse(ArrayList<JotlinToken> tokens) {
@@ -18,9 +22,7 @@ public class VarDecNode implements JotlinTree {
                 || tokens.get(0).getTokenType() != TokenType.Indent) {
             throw new IllegalArgumentException("Expected indentation before variable declaration");
         }
-        while (!tokens.isEmpty() && tokens.get(0).getTokenType() == TokenType.Indent) {
-            tokens.remove(0);
-        }
+        TabNode tabs = TabNode.parse(tokens);
         if (tokens.isEmpty() || tokens.get(0).getTokenType() != TokenType.Keyword) {
             throw new IllegalArgumentException("Expected a type keyword in variable declaration");
         }
@@ -32,10 +34,8 @@ public class VarDecNode implements JotlinTree {
         if (tokens.isEmpty() || tokens.get(0).getTokenType() != TokenType.LineEnd) {
             throw new IllegalArgumentException("Expected a newline after variable declaration");
         }
-        while (!tokens.isEmpty() && tokens.get(0).getTokenType() == TokenType.LineEnd) {
-            tokens.remove(0);
-        }
-        return new VarDecNode(type, id);
+        NewLineNode nl = NewLineNode.parse(tokens);
+        return new VarDecNode(tabs,type, id,nl);
     }
 
     @Override

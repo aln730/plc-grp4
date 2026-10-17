@@ -7,21 +7,15 @@ import provided.*;
 
 public class ReturnNode implements JotlinTree {
 
-    private final int depth;
     private final ExprNode expr;
+    private final NewLineNode nl;
 
-    private ReturnNode(int depth, ExprNode expr) {
-        this.depth = depth;
+    private ReturnNode(ExprNode expr, NewLineNode nl) {
         this.expr = expr;
+        this.nl = nl;
     }
 
     public static ReturnNode parse(ArrayList<JotlinToken> tokens) {
-        int depth = 0;
-        while (!tokens.isEmpty() && tokens.get(0).getTokenType() == TokenType.Indent) {
-            tokens.remove(0);
-            depth++;    
-        }
-
         JotlinToken first = tokens.get(0);
 
         if (first.getTokenType() != TokenType.L_Arrow) {
@@ -30,7 +24,8 @@ public class ReturnNode implements JotlinTree {
 
         tokens.remove(0);
         ExprNode expr = ExprNode.parse(tokens);
-        return new ReturnNode(depth, expr);
+        NewLineNode nl = NewLineNode.parse(tokens);
+        return new ReturnNode(expr, nl);
     }
 
     @Override
