@@ -1,5 +1,4 @@
-Module Countdown
-Subclass Object
+Module Countdown Subclass Object
 
 	Open Class main
 		Integer x

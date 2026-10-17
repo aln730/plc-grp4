@@ -1,5 +1,4 @@
-Module Person
-Subclass Object
+Module Person Subclass Object
 
 	Open String name
 

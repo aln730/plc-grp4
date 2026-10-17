@@ -1,5 +1,4 @@
-Module ConditionalTest
-Subclass Object
+Module ConditionalTest Subclass Object
 
 	Open Class main
 		Integer x
@@ -9,4 +8,4 @@ Subclass Object
 		If[x > 5]
 			::Printer.display["Greater"]
 		Otherwise
-			::Printer.display["Not Greater"]
+			::Printer.display["NotGreater"]

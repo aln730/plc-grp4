@@ -1,7 +1,6 @@
 Include Person
 
-Module TestPerson
-Subclass Object
+Module TestPerson Subclass Object
 
 	Open Class main
 		Person p

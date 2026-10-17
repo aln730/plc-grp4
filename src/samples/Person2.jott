@@ -1,5 +1,4 @@
-Module Person
-Subclass Object
+Module Person Subclass Object
 
 	Open String name
 
@@ -10,4 +9,4 @@ Subclass Object
 		<- Self.name
 
 	Open speak
-		::Printer.display["I am a person"]
+		::Printer.display["Iamaperson"]
