@@ -3,18 +3,17 @@ package created;
 import java.util.ArrayList;
 import provided.*;
 
-//< func_def > -> <tab > < a_mod > < static > < id > < f_params > < f_return > < NLS > < f_body >
 
 public class FuncDefNode implements JotlinTree{
     private AmodNode node;
     private StaticNode stat;
-    private IdNode id;
+    private JotlinToken id;
     private FParamsNode params;
     private FReturnNode rtrn;
     private NewLineNode newline;
     private FBodyNode body;
 
-    private FuncDefNode(AmodNode n, StaticNode s, IdNode i, FParamsNode p, FReturnNode r, NewLineNode nl, FBodyNode b){
+    private FuncDefNode(AmodNode n, StaticNode s, JotlinToken i, FParamsNode p, FReturnNode r, NewLineNode nl, FBodyNode b){
         node = n;
         stat = s;
         id = i;
@@ -30,8 +29,13 @@ public class FuncDefNode implements JotlinTree{
         }
         tokens.remove(0);
         AmodNode a_mod = AmodNode.parse(tokens);
+        //assuming a_mod is not a node
         StaticNode stat = StaticNode.parse(tokens);
-        IdNode id = IdNode.parse(tokens);
+        //assuming static is not a node
+        JotlinToken id = tokens.get(0);
+        if(id.getTokenType() != TokenType.Id){
+            throw new IllegalArgumentException("expected id");
+        }
         tokens.remove(0);
         FParamsNode param = FParamsNode.parse(tokens);
         FReturnNode ret = FReturnNode.parse(tokens);
@@ -48,43 +52,19 @@ public class FuncDefNode implements JotlinTree{
 
     @Override
     public boolean validate() throws Exception {
-       return node.validate() && stat.validate() && id.validate() && params.validate() 
-       && rtrn.validate() && newline.validate() && body.validate();
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'validate'");
     }
 
     @Override
     public String convertToJava() {
-        StringBuilder result = new StringBuilder();
-        String modifier = node.convertToJava();
-        if (modifier != null && !modifier.isEmpty()) {
-            result.append(modifier).append(" ");
-        }
-        String staticModifier = stat.convertToJava();
-        if (staticModifier != null && !staticModifier.isEmpty()) {
-            result.append(staticModifier).append(" ");
-        }
-        result.append(rtrn.convertToJava()).append(" ").append(id.convertToJava()).append("(");
-        result.append(params.convertToJava());
-        result.append(") {\n");
-        result.append(body.convertToJava());
-        result.append("\n}");
-        return result.toString();
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'convertToJava'");
     }
 
     @Override
     public String convertToJotlin() {
-        StringBuilder result = new StringBuilder();
-        result.append("\t");
-        result.append(node.convertToJotlin()).append(" ");
-        result.append(stat.convertToJotlin());
-        result.append(id.convertToJotlin());
-        result.append(params.convertToJotlin());
-        result.append(rtrn.convertToJotlin());
-        if (newline != null) {
-            result.append(newline.convertToJotlin());
-        }
-        result.append(body.convertToJotlin());
-        return result.toString();
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'convertToJotlin'");
     }
-
 }

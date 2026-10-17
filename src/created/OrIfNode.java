@@ -52,20 +52,18 @@ public class OrIfNode implements JotlinTree {
         return new OrIfNode(depth, expr, body);
     }
 
-    
     @Override
     public boolean validate() throws Exception {
-        return expr != null && expr.validate() && body != null && body.validate();
+        throw new UnsupportedOperationException("Unimplemented method 'validate'");
     }
 
     @Override
     public String convertToJava() {
-        return "else if (" + expr.convertToJava() + ") {\n" + body.convertToJava() + "\n}";
+        return "else if (" + expr.convertToJava() + ") " + body.convertToJava() + "\n";
     }
 
     @Override
     public String convertToJotlin() {
-        return "OrIf [" + expr.convertToJotlin() + "]\n" + body.convertToJotlin();
+        return "\t".repeat(depth) + "OrIf[" + expr.convertToJotlin() + "]\n" + body.convertToJotlin();
     }
-
 }

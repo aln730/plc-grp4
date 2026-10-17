@@ -1,6 +1,7 @@
 package created;
 
 import java.util.ArrayList;
+
 import provided.*;
 
 
@@ -44,23 +45,20 @@ public class IdentifierNode implements JotlinTree{
 
 	@Override
 	public boolean validate() throws Exception {
-		return !token1.getToken().isEmpty() && !token2.getToken().isEmpty();
+		// TODO Auto-generated method stub
+		throw new UnsupportedOperationException("Unimplemented method 'validate'");
 	}
 
 	@Override
-    public String convertToJava() {
-        if (token1 == null) {
-            return token2.getToken();
-        }
-        return token1.getToken() + "." + token2.getToken();
-    }
+	public String convertToJava() {
+		// TODO Auto-generated method stub
+		throw new UnsupportedOperationException("Unimplemented method 'convertToJava'");
+	}
 
-    @Override
-    public String convertToJotlin() {
-        if (token1 == null) {
-            return token2.getToken();
-        }
-        return token1.getToken() + "." + token2.getToken();
-    }
+	@Override
+	public String convertToJotlin() {
+		// TODO Auto-generated method stub
+		throw new UnsupportedOperationException("Unimplemented method 'convertToJotlin'");
+	}
 
 }

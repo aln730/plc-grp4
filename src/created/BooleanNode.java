@@ -32,7 +32,8 @@ public class BooleanNode implements JotlinTree{
 
     @Override
     public boolean validate() throws Exception {
-        return token != null && token.getTokenType() == TokenType.Keyword && (token.getToken().equals("True") || token.getToken().equals("False"));
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'validate'");
     }
 
 }

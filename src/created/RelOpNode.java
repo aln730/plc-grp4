@@ -30,25 +30,10 @@ public class RelOpNode implements JotlinTree{
     public String convertToJava() {
         return token.getToken();
     }
-
     @Override
     public boolean validate() throws Exception {
-        if (token == null) {
-            return false;
-        }
-        if (token.getTokenType() != TokenType.RelOp) {
-            return false;
-        }
-        String operator = token.getToken();
-        if (operator.equals("<") ||
-            operator.equals(">") ||
-            operator.equals("<=") ||
-            operator.equals(">=") ||
-            operator.equals("==") ||
-            operator.equals("!=")) {
-            return true;
-        }
-        return false;
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'validate'");
     }
 
 }

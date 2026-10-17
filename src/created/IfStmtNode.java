@@ -7,29 +7,27 @@ import provided.*;
 public class IfStmtNode implements JotlinTree {
 
     //Depth is the layer of the line of code
-    private final TabNode tabs;
+    private final int depth;
     private final ExprNode condition;
     private final BodyNode body;
-    private final NewLineNode newline1;
     private final ArrayList<OrIfNode> orIfs;
     private final OtherwiseNode otherwise;   // null if absent
-    private final NewLineNode newline2;
 
-
-    private IfStmtNode(TabNode tabs, ExprNode condition, BodyNode body, NewLineNode newline1, ArrayList<OrIfNode> orIfs, OtherwiseNode otherwise, NewLineNode newline2) {
-        this.tabs = tabs;
+    private IfStmtNode(int depth, ExprNode condition, BodyNode body, ArrayList<OrIfNode> orIfs, OtherwiseNode otherwise) {
+        this.depth = depth;
         this.condition = condition;
         this.body = body;
-        this.newline1 = newline1;
         this.orIfs = orIfs;
         this.otherwise = otherwise;
-        this.newline2 = newline2;
-
     }
 
     public static IfStmtNode parse(ArrayList<JotlinToken> tokens) {
         // the number of tabs is this If's depth
-        TabNode tabs = TabNode.parse(tokens);
+        int depth = 0;
+        while (!tokens.isEmpty() && tokens.get(0).getTokenType() == TokenType.Indent) {
+            tokens.remove(0);
+            depth++;
+        }
 
         JotlinToken first = tokens.get(0);
         if (first.getTokenType() != TokenType.Keyword || !first.getToken().equals("If")) {
@@ -40,19 +38,25 @@ public class IfStmtNode implements JotlinTree {
         expect(tokens, TokenType.L_Bracket, "[");
         ExprNode condition = ExprNode.parse(tokens);
         expect(tokens, TokenType.R_Bracket, "]");
+        expect(tokens, TokenType.LineEnd, "end of line");
+        skipNewlines(tokens);
 
         BodyNode body = BodyNode.parse(tokens);
-        NewLineNode newLine1 = NewLineNode.parse(tokens);
 
         ArrayList<OrIfNode> orIfs = new ArrayList<>();
-        while (tokens.size() > 2 && tokens.get(1).getToken().equals("OrIf") && tokens.get(0).getTokenType() == TokenType.Indent) {
+        while (nextLineStartsWith(tokens, depth, "OrIf")) {
+            skipNewlines(tokens);
             orIfs.add(OrIfNode.parse(tokens));
         }
 
-        OtherwiseNode otherwise = OtherwiseNode.parse(tokens);
+        OtherwiseNode otherwise = null;
+        if (nextLineStartsWith(tokens, depth, "Otherwise")) {
+            skipNewlines(tokens);
+            otherwise = OtherwiseNode.parse(tokens);
+        }
 
-        NewLineNode newLine2 = NewLineNode.parse(tokens);
-        return new IfStmtNode(tabs, condition, body, newLine1, orIfs, otherwise, newLine2);
+        skipNewlines(tokens);
+        return new IfStmtNode(depth, condition, body, orIfs, otherwise);
     }
 
     // Looks ahead at the next non-blank line. Returns true if it contains 'depth' amount of tabs followed by keyword.
@@ -116,7 +120,7 @@ public class IfStmtNode implements JotlinTree {
     @Override
     public String convertToJotlin() {
         StringBuilder sb = new StringBuilder();
-        sb.append(tabs.convertToJotlin()).append("If[").append(condition.convertToJotlin()).append("]\n");
+        sb.append("\t".repeat(depth)).append("If[").append(condition.convertToJotlin()).append("]\n");
         sb.append(body.convertToJotlin());
         for (OrIfNode o : orIfs) {
             sb.append(o.convertToJotlin());

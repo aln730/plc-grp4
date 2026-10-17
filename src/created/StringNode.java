@@ -33,16 +33,10 @@ public class StringNode implements JotlinTree{
     public String convertToJava() {
         return '"' + token.getToken() + '"';
     }
-
     @Override
     public boolean validate() throws Exception {
-        if (token == null) {
-            return false;
-        }
-        if (token.getTokenType() != TokenType.String) {
-            return false;
-        }
-        return token.getToken() != null;
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'validate'");
     }
 
 }

@@ -108,27 +108,7 @@ public class ExprNode implements JotlinTree{
 
     @Override
     public boolean validate() throws Exception {
-        if (oNode != null && oNode2 == null) {
-            return oNode.validate();
-        }
-        if (oNode != null && oNode2 != null) {
-            if (!oNode.validate() || !oNode2.validate()) {
-                return false;
-            }
-            if (rNode != null && mNode == null) {
-                return rNode.validate();
-            }
-            if (mNode != null && rNode == null) {
-                return mNode.validate();
-            }
-            return false;
-        }
-        if (bNode != null) {
-            return bNode.validate();
-        }
-        if (sNode != null) {
-            return sNode.validate();
-        }
-        return false;
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'validate'");
     }
 }

@@ -18,7 +18,7 @@ public class ReturnNode implements JotlinTree {
         JotlinToken first = tokens.get(0);
 
         if (first.getTokenType() != TokenType.L_Arrow) {
-            return new ReturnNode(null,null);
+            throw new IllegalArgumentException("Error on " + first + ": expected '<-'");
         }
 
         tokens.remove(0);

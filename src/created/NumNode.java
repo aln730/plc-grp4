@@ -6,20 +6,16 @@ import provided.*;
 
 
 public class NumNode implements JotlinTree{
-    private JotlinTree number;
 
-    public NumNode(JotlinTree number) {
-        this.number = number;
-    }
+    public static JotlinTree parse(ArrayList<JotlinToken> tokens) {
 
-    public static NumNode parse(ArrayList<JotlinToken> tokens) {
         JotlinToken first = tokens.get(0);
 
         if (first.getTokenType() == TokenType.Integer) {
-            return new NumNode(IntegerNode.parse(tokens));
+            return IntegerNode.parse(tokens);
         }
         else if (first.getTokenType() == TokenType.Double) {
-            return new NumNode(DoubleNode.parse(tokens));
+            return DoubleNode.parse(tokens);
         }
         else {
             throw new IllegalArgumentException(
@@ -29,16 +25,19 @@ public class NumNode implements JotlinTree{
 
     @Override
     public boolean validate() throws Exception {
-        return number != null && number.validate();
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'validate'");
     }
 
     @Override
     public String convertToJava() {
-        return number == null ? "" : number.convertToJava();
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'convertToJava'");
     }
 
     @Override
     public String convertToJotlin() {
-        return number == null ? "" : number.convertToJotlin();
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'convertToJotlin'");
     }
 }

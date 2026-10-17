@@ -26,25 +26,19 @@ public class StaticNode implements JotlinTree{
 
     @Override
     public boolean validate() throws Exception {
-        if (keyword == null) {
-            return true;
-        }
-        if (keyword.getTokenType() != TokenType.Keyword) {
-            return false;
-        }
-        return keyword.getToken().equals("Class");
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'validate'");
     }
 
     @Override
     public String convertToJava() {
+        // TODO Auto-generated method stub
         return " static ";
     }
 
     @Override
     public String convertToJotlin() {
-        if (keyword == null) {
-            return "";
-        }
+        // TODO Auto-generated method stub
         return keyword.getToken();
     }
 
