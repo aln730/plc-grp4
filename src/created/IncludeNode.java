@@ -1,8 +1,7 @@
 package created;
+
 import java.util.ArrayList;
-
 import provided.*;
-
 
 public class IncludeNode implements JotlinTree {
     private final JotlinToken id;
@@ -17,24 +16,22 @@ public class IncludeNode implements JotlinTree {
         }
         JotlinToken first = tokens.get(0);
         if (first.getTokenType() != TokenType.Keyword || !first.getToken().equals("Include")) {
-            throw new IllegalArgumentException("expected 'Include'");
+            throw new IllegalArgumentException("Expected 'Include'");
         }
         tokens.remove(0);
         if (tokens.isEmpty()) {
             throw new IllegalArgumentException("Expected identifier after Include");
         }
         first = tokens.get(0);
-        if (first.getTokenType() != TokenType.Id) {
-            throw new IllegalArgumentException("expected identifier");
+        if (first.getTokenType() != TokenType.Id && first.getTokenType() != TokenType.Keyword) {
+            throw new IllegalArgumentException("Expected identifier");
         }
         JotlinToken id = first;
         tokens.remove(0);
         if (tokens.isEmpty() || tokens.get(0).getTokenType() != TokenType.LineEnd) {
             throw new IllegalArgumentException("Expected line ending after Include statement");
         }
-        while (!tokens.isEmpty() && tokens.get(0).getTokenType() == TokenType.LineEnd) {
-            tokens.remove(0);
-        }
+        tokens.remove(0);
         return new IncludeNode(id);
     }
 
