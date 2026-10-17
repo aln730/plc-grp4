@@ -21,7 +21,7 @@ public class ConstNode implements JotlinTree{
     }
 
     public static ConstNode parse(ArrayList<JotlinToken> tokens){
-        if(tokens.isEmpty() || tokens.get(0).getTokenType() != TokenType.Indent){
+        if(tokens.get(0).getTokenType() != TokenType.Indent){
             throw new IllegalArgumentException("expected tab");
         }
         tokens.remove(0);
@@ -33,7 +33,7 @@ public class ConstNode implements JotlinTree{
             throw new IllegalArgumentException("Expected new line after body node");
         }
         NewLineNode nl = NewLineNode.parse(tokens);
-        return new ConstNode(a_mod, key, fparam, bdy, nl);
+        return new ConstNode(a_mod,key,fparam,bdy,nl);
     }
 
     @Override

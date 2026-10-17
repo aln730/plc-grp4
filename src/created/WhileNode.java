@@ -49,14 +49,13 @@ public class WhileNode implements JotlinTree{
     }
 
     @Override
-public String convertToJava() {
-    return "while (" + expr.convertToJava() + ") " + body.convertToJava();
-}
+    public String convertToJava() {
+        return "while (" + expr.convertToJava() + ") {\n" + body.convertToJava() + "\n}";
+    }
 
     @Override
     public String convertToJotlin() {
-        // TODO Auto-generated method stub
-        return "While[" + expr.convertToJotlin() + "]" + body.convertToJotlin();
+        return "While [" + expr.convertToJotlin() + "]\n" + body.convertToJotlin();
     }
 
 }

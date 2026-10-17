@@ -3,53 +3,46 @@ package created;
 import java.util.ArrayList;
 import provided.*;
 
+//< orif > -> <TBS > OrIf [ < expr >] < NLS > < body > < NLS >
+
 public class OrIfNode implements JotlinTree {
-    private final int depth;
-    private final ExprNode expr;
-    private final BodyNode body;
+    private TabNode tabs;
+    private ExprNode expr;
+    private NewLineNode newline1;
+    private BodyNode body;
+    private NewLineNode newline2;
 
-    private OrIfNode(int depth, ExprNode e, BodyNode b) {
-        this.depth = depth;
-        this.expr = e;
-        this.body = b;
+    private OrIfNode(TabNode t,ExprNode e, NewLineNode nl1, BodyNode b, NewLineNode nl2){
+        tabs = t;
+        newline1 = nl1;
+        expr = e;
+        body = b;
+        newline2 = nl2;
+
     }
-
-    public static OrIfNode parse(ArrayList<JotlinToken> tokens) {
-        int depth = 0;
-        while (!tokens.isEmpty() && tokens.get(0).getTokenType() == TokenType.Indent) {
-            tokens.remove(0);
-            depth++;
-        }
-        if (tokens.isEmpty()) {
-            throw new IllegalArgumentException("Expecting OrIf");
-        }
+    
+    public static OrIfNode parse(ArrayList<JotlinToken> tokens){
+        TabNode tabs = TabNode.parse(tokens);
         JotlinToken first = tokens.get(0);
-        if (first.getTokenType() != TokenType.Keyword || !first.getToken().equals("OrIf")) {
-            throw new IllegalArgumentException("Error on " + first + ": expected 'OrIf'");
+        if(first.getTokenType() != TokenType.Keyword || !first.getToken().equals("While")){
+            throw new IllegalArgumentException("Expecting keyword or while to start while loop");
         }
         tokens.remove(0);
 
-        if (tokens.isEmpty() || tokens.get(0).getTokenType() != TokenType.L_Bracket) {
+        first = tokens.get(0);
+        if(first.getTokenType() != TokenType.L_Bracket){
             throw new IllegalArgumentException("Expecting left bracket");
         }
         tokens.remove(0);
-
         ExprNode expr = ExprNode.parse(tokens);
-
-        if (tokens.isEmpty() || tokens.get(0).getTokenType() != TokenType.R_Bracket) {
+        first = tokens.get(0);
+        if(first.getTokenType() != TokenType.R_Bracket){
             throw new IllegalArgumentException("Expecting right bracket");
         }
-        tokens.remove(0);
-
-        if (tokens.isEmpty() || tokens.get(0).getTokenType() != TokenType.LineEnd) {
-            throw new IllegalArgumentException("Expecting end of line after OrIf condition");
-        }
-        while (!tokens.isEmpty() && tokens.get(0).getTokenType() == TokenType.LineEnd) {
-            tokens.remove(0);
-        }
-
+        NewLineNode nl1 = NewLineNode.parse(tokens);
         BodyNode body = BodyNode.parse(tokens);
-        return new OrIfNode(depth, expr, body);
+        NewLineNode nl2 = NewLineNode.parse(tokens);
+        return new OrIfNode(tabs,expr, nl1,body,nl2);
     }
 
     

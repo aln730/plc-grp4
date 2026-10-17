@@ -1,5 +1,6 @@
 package created;
 import java.util.ArrayList;
+
 import provided.*;
 
 public class BodyNode implements JotlinTree {
@@ -13,52 +14,21 @@ public class BodyNode implements JotlinTree {
 
     public static BodyNode parse(ArrayList<JotlinToken> tokens) {
         ArrayList<BodyStmtNode> statements = new ArrayList<>();
-        skipBlankLines(tokens);
-        while (nextIsBodyStmt(tokens)) {
-            statements.add(BodyStmtNode.parse(tokens));
-            skipBlankLines(tokens);
+        while (!tokens.isEmpty() && tokens.get(0).getTokenType() != TokenType.L_Arrow) {
+            BodyStmtNode body = BodyStmtNode.parse(tokens);
+            statements.add(body);
         }
-        ReturnNode returnNode = null;
-        if (nextIsReturn(tokens)) {
-            while (tokens.get(0).getTokenType() == TokenType.Indent) {
-                tokens.remove(0);
-            }
-            returnNode = ReturnNode.parse(tokens);
-            skipBlankLines(tokens);
+        if (tokens.isEmpty()) {
+            throw new IllegalArgumentException("Expected a return statement at the end of the body");
         }
+        ReturnNode returnNode = ReturnNode.parse(tokens);
+        // if (tokens.isEmpty() || tokens.get(0).getTokenType() != TokenType.LineEnd) {
+        //     throw new IllegalArgumentException("Expected a newline after the return statement");
+        // }
+        // while (!tokens.isEmpty() && tokens.get(0).getTokenType() == TokenType.LineEnd) {
+        //     tokens.remove(0);
+        // }
         return new BodyNode(statements, returnNode);
-    }
-
-    private static void skipBlankLines(ArrayList<JotlinToken> t) {
-        while (!t.isEmpty() && t.get(0).getTokenType() == TokenType.LineEnd) {
-            t.remove(0);
-        }
-    }
-
-    private static int skipTabs(ArrayList<JotlinToken> t) {
-        int i = 0;
-        while (i < t.size() && t.get(i).getTokenType() == TokenType.Indent) {
-            i++;
-        }
-        return i;
-    }
-
-    private static boolean nextIsBodyStmt(ArrayList<JotlinToken> t) {
-        int i = skipTabs(t);
-        if (i >= t.size()) {
-            return false;
-        }
-        JotlinToken x = t.get(i);
-        return x.getTokenType() == TokenType.FC_Header
-                || x.getTokenType() == TokenType.Id
-                || (x.getTokenType() == TokenType.Keyword && i + 1 < t.size()
-                    && t.get(i + 1).getTokenType() == TokenType.Dot)
-                    || (x.getToken().equals("If") || x.getToken().equals("While"));
-    }
-
-    private static boolean nextIsReturn(ArrayList<JotlinToken> t) {
-        int i = skipTabs(t);
-        return i < t.size() && t.get(i).getTokenType() == TokenType.L_Arrow;
     }
 
     @Override
@@ -68,7 +38,7 @@ public class BodyNode implements JotlinTree {
                 return false;
             }
         }
-        return returnNode == null || returnNode.validate();
+        return returnNode.validate();
     }
 
     @Override
@@ -80,12 +50,9 @@ public class BodyNode implements JotlinTree {
                   .append(statement.convertToJava())
                   .append("\n");
         }
-        if (returnNode != null) {
-            result.append("    ")
-                  .append(returnNode.convertToJava())
-                  .append("\n");
-        }
-        result.append("}");
+        result.append("    ")
+              .append(returnNode.convertToJava())
+              .append("\n}");
         return result.toString();
     }
 
@@ -93,11 +60,9 @@ public class BodyNode implements JotlinTree {
     public String convertToJotlin() {
         StringBuilder result = new StringBuilder();
         for (BodyStmtNode statement : statements) {
-            result.append(statement.convertToJotlin());
+            result.append(statement.convertToJotlin()).append("\n");
         }
-        if (returnNode != null) {
-            result.append(returnNode.convertToJotlin());
-        }
+        result.append(returnNode.convertToJotlin());
         return result.toString();
     }
 }
