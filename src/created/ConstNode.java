@@ -8,11 +8,11 @@ import provided.*;
 public class ConstNode implements JotlinTree{
     private AmodNode node;
     private KeywordNode keyword;
-    private FParamNode params;
+    private FParamsNode params;
     private BodyNode body;
     private NewLineNode newLine;
 
-    private ConstNode(AmodNode n, KeywordNode k, FParamNode p, BodyNode b, NewLineNode nl){
+    private ConstNode(AmodNode n, KeywordNode k, FParamsNode p, BodyNode b, NewLineNode nl){
         node = n;
         keyword = k;
         params = p;
@@ -27,7 +27,8 @@ public class ConstNode implements JotlinTree{
         tokens.remove(0);
         AmodNode a_mod = AmodNode.parse(tokens);
         KeywordNode key = KeywordNode.parse(tokens);
-        FParamNode fparam = FParamNode.parse(tokens);
+         //keywordNode.parse(tokens)
+        FParamsNode fparam = FParamsNode.parse(tokens);
         BodyNode bdy = BodyNode.parse(tokens);
         if(tokens.get(0).getTokenType() != TokenType.LineEnd){
             throw new IllegalArgumentException("Expected new line");

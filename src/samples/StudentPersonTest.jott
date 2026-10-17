@@ -1,8 +1,7 @@
 Include Person
 Include Student
 
-Module TestInheritance
-Subclass Object
+Module TestInheritance Subclass Object
 
 	Open Class main
 		Student s
@@ -13,4 +12,4 @@ Subclass Object
 		::Printer.display[::s.getStudentId[]]
 
 		::s.speak[]
-``
+		
