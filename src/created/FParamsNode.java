@@ -9,7 +9,7 @@ public class FParamsNode implements JotlinTree{
         this.params = params;
     }
 
-    public FParamsNode parse(ArrayList<JotlinToken> tokens) {
+    public static FParamsNode parse(ArrayList<JotlinToken> tokens) {
         ArrayList<FParamNode> nodes = new ArrayList<>();
         if(tokens.size() < 1) {
             return new FParamsNode(nodes);
