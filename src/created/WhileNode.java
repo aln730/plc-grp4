@@ -15,8 +15,8 @@ public class WhileNode implements JotlinTree{
     private WhileNode(TabNode t,ExprNode e, NewLineNode nl, BodyNode b){
         tabs = t;
         expr = e;
-        body = b;
         newLine = nl;
+        body = b;
     }
     
     public static WhileNode parse(ArrayList<JotlinToken> tokens){
@@ -37,16 +37,22 @@ public class WhileNode implements JotlinTree{
         if(first.getTokenType() != TokenType.R_Bracket){
             throw new IllegalArgumentException("Expecting right bracket");
         }
+<<<<<<< HEAD
         NewLineNode newLine = NewLineNode.parse(tokens);
         
         BodyNode body = BodyNode.parse(tokens);
         return new WhileNode(tabs,expr, newLine, body);
+=======
+
+        NewLineNode newLine = NewLineNode.parse(tokens);
+        BodyNode body = BodyNode.parse(tokens);
+        return new WhileNode(expr, newLine, body);
+>>>>>>> 5f427f3eecfa7bb1c422031fadbcca039852420d
     }
 
     @Override
     public boolean validate() throws Exception {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'validate'");
+        return expr.validate() && newLine.validate() && body.validate();
     }
 
     @Override

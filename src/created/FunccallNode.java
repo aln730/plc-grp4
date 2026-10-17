@@ -46,8 +46,11 @@ public class FunccallNode implements JotlinTree{
 
 	@Override
 	public boolean validate() throws Exception {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException("Unimplemented method 'validate'");
+		boolean flag = name.validate();
+        for(ExprNode e : params){
+            flag = flag && e.validate();
+        }
+        return flag;
 	}
 
 	@Override

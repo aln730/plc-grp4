@@ -20,7 +20,7 @@ public class JotlinParser {
         return root;
     }
     public static void main(String[] args) {
-      ArrayList<JotlinToken> tokens = JotlinTokenizer.tokenize("C:\\Users\\Alora\\plc-grp4\\src\\samples\\constructor_example.jott");  
+      ArrayList<JotlinToken> tokens = JotlinTokenizer.tokenize(args[0]);  
       JotlinTree tree = parse(tokens);
       System.out.println(tree.convertToJotlin());
     }

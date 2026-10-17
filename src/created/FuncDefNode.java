@@ -8,13 +8,13 @@ import provided.*;
 public class FuncDefNode implements JotlinTree{
     private AmodNode node;
     private StaticNode stat;
-    private JotlinToken id;
-    private FParamsNode params;
+    private IdNode id;
+    private FParamNode params;
     private FReturnNode rtrn;
     private NewLineNode newline;
     private FBodyNode body;
 
-    private FuncDefNode(AmodNode n, StaticNode s, JotlinToken i, FParamsNode p, FReturnNode r, NewLineNode nl, FBodyNode b){
+    private FuncDefNode(AmodNode n, StaticNode s, IdNode i, FParamNode p, FReturnNode r, NewLineNode nl, FBodyNode b){
         node = n;
         stat = s;
         id = i;
@@ -35,8 +35,8 @@ public class FuncDefNode implements JotlinTree{
         if(id.getTokenType() != TokenType.Id){
             throw new IllegalArgumentException("expected id");
         }
-        tokens.remove(0);
-        FParamsNode param = FParamsNode.parse(tokens);
+        IdNode newId = IdNode.parse(tokens);
+        FParamNode param = FParamNode.parse(tokens);
         FReturnNode ret = FReturnNode.parse(tokens);
 
         if(tokens.get(0).getTokenType() != TokenType.LineEnd) {
@@ -46,13 +46,13 @@ public class FuncDefNode implements JotlinTree{
 
         FBodyNode fBody = FBodyNode.parse(tokens);
 
-        return new FuncDefNode(a_mod, stat, id, param, ret, newLine, fBody);
+        return new FuncDefNode(a_mod, stat, newId, param, ret, newLine, fBody);
     }
 
     @Override
     public boolean validate() throws Exception {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'validate'");
+       return node.validate() && stat.validate() && id.validate() && params.validate() 
+       && rtrn.validate() && newline.validate() && body.validate();
     }
 
     @Override
