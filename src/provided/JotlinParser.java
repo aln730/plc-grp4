@@ -1,6 +1,4 @@
 package provided;
-import created.*;
-
 import created.ClassNode;
 import java.util.ArrayList;
 
@@ -25,9 +23,9 @@ public class JotlinParser {
             System.out.println(path);
             try {
                 parse(JotlinTokenizer.tokenize(path));
-                System.out.println("OKOK....");
+                System.out.println("PASS");
             } catch (Exception e) {
-                System.out.println("FAILED....." + e);
+                System.out.println("FAIL: " + e);
             }
         }
     }
