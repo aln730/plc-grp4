@@ -1,7 +1,6 @@
 Include Person
 
-Module Student
-Subclass Person
+Module Student Subclass Person
 
 	Open Integer studentId
 
@@ -13,4 +12,4 @@ Subclass Person
 		<- Self.studentId
 
 	Open speak
-		::Printer.display["I am a student"]
+		::Printer.display["Iamastudent"]
