@@ -47,8 +47,8 @@ public class OrIfNode implements JotlinTree {
 
     @Override
     public boolean validate() throws Exception {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'validate'");
+        boolean flag = expr.validate() && body.validate();
+        return flag;
     }
 
     @Override
