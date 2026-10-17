@@ -3,7 +3,7 @@ package created;
 import java.util.ArrayList;
 import provided.*;
 
-//< orif > -> <TBS > OrIf [ < expr >] < NLS > < body > < NLS 
+//< orif > -> <TBS > OrIf [ < expr >] < NLS > < body > < NLS >
 
 public class OrIfNode implements JotlinTree {
     private ExprNode expr;

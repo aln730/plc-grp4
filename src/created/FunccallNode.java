@@ -3,7 +3,7 @@ package created;
 import java.util.ArrayList;
 import provided.*;
 
-//< func_call > -> :: < identifier >[ < parms >
+//< func_call > -> :: < identifier >[ < parms >]
 
 public class FunccallNode implements JotlinTree{
         public static IdentifierNode name;
