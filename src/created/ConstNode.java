@@ -48,7 +48,8 @@ public class ConstNode implements JotlinTree{
 
     @Override
     public String convertToJotlin() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'convertToJotlin'");
+        String jotlin = "\t";
+        jotlin += (node.convertToJotlin() + keyword.convertToJotlin() + params.convertToJotlin() + body.convertToJotlin() + newLine.convertToJotlin());
+        return jotlin;
     }
 }

@@ -57,7 +57,7 @@ public String convertToJava() {
     @Override
     public String convertToJotlin() {
         // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'convertToJotlin'");
+        return "While[" + expr.convertToJotlin() + "]" + body.convertToJotlin();
     }
  
 }

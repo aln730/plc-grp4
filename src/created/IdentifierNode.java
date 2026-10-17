@@ -57,8 +57,12 @@ public class IdentifierNode implements JotlinTree{
 
 	@Override
 	public String convertToJotlin() {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException("Unimplemented method 'convertToJotlin'");
+		String jotlin = "";
+        jotlin += token1.getToken();
+        if(token2 != null) {
+            jotlin += ":" + token2.getToken();
+        }
+        return jotlin;
 	}
 
 }

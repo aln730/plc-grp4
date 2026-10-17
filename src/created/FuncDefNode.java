@@ -65,6 +65,8 @@ public class FuncDefNode implements JotlinTree{
     @Override
     public String convertToJotlin() {
         // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'convertToJotlin'");
+        String jotlin = "\t";
+        jotlin += (node.convertToJotlin() + stat.convertToJotlin() + id.getToken() + params.convertToJotlin() + rtrn.convertToJotlin() +newline.convertToJotlin() +body.convertToJotlin());
+        return jotlin;
     }
 }
