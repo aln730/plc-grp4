@@ -19,66 +19,102 @@ public class ClassBodyNode implements JotlinTree {
     }
 
     public static ClassBodyNode parse(ArrayList<JotlinToken> tokens) {
-        ArrayList<InstVarNode> instVars = new ArrayList<>();
-        ArrayList<ConstNode> constants = new ArrayList<>();
-        ArrayList<FuncDefNode> functions = new ArrayList<>();
-        // NewLineNode nl = null;
-        // if(!startsInstVar(tokens)) {
-        //     nl = NewLineNode.parse(tokens);
-        // }
+    ArrayList<InstVarNode> instVars = new ArrayList<>();
+    ArrayList<ConstNode> constants = new ArrayList<>();
+    ArrayList<FuncDefNode> functions = new ArrayList<>();
+
+    while (startsInstVar(tokens)) {
+        instVars.add(InstVarNode.parse(tokens));
+    }
+    NewLineNode nl = null;
+    if (!tokens.isEmpty() && tokens.get(0).getTokenType() == TokenType.LineEnd) {
+        nl = NewLineNode.parse(tokens);
+    }
+    consumeNewlines(tokens);
+
+    while (startsInstVar(tokens) || startsConst(tokens) || startsFuncDef(tokens)) {
         while (startsInstVar(tokens)) {
-            InstVarNode inst = InstVarNode.parse(tokens);
-            instVars.add(inst);
+            instVars.add(InstVarNode.parse(tokens));
+            consumeNewlines(tokens);
         }
         while (startsConst(tokens)) {
-            ConstNode con = ConstNode.parse(tokens);
-            constants.add(con);
+            constants.add(ConstNode.parse(tokens));
+            consumeNewlines(tokens);
         }
-        // consumeNewlines(tokens);
         while (startsFuncDef(tokens)) {
-            FuncDefNode funcDef = FuncDefNode.parse(tokens);
-            functions.add(funcDef);
+            functions.add(FuncDefNode.parse(tokens));
+            consumeNewlines(tokens);
         }
-        // consumeNewlines(tokens);
-        return new ClassBodyNode(instVars, null,constants, functions);
     }
+    return new ClassBodyNode(instVars, nl, constants, functions);
+}
 
-    private static boolean startsInstVar(ArrayList<JotlinToken> tokens) {
-        if (tokens.size() < 3) {
+private static boolean isAccessModifier(String text) {
+    return text.equals("Open") || text.equals("Closed") || text.equals("Shared");
+}
+
+private static boolean startsInstVar(ArrayList<JotlinToken> t) {
+    if (t.size() < 3 || t.get(0).getTokenType() != TokenType.Indent) {
+        return false;
+    }
+    int i = 1;
+    if (isAccessModifier(t.get(i).getToken())) {
+        i++;
+        if (i + 1 >= t.size() || t.get(i).getToken().equals("Class")) {
             return false;
         }
-        return tokens.get(0).getTokenType() == TokenType.Indent && tokens.get(1).getTokenType() == TokenType.Keyword
-                && (tokens.get(2).getTokenType() == TokenType.Id);
     }
+    return i + 1 < t.size()
+            && t.get(i).getTokenType() == TokenType.Keyword
+            && t.get(i + 1).getTokenType() == TokenType.Id;
+}
 
-    private static boolean startsConst(ArrayList<JotlinToken> tokens) {
-        if (tokens.size() < 2 || tokens.get(0).getTokenType() != TokenType.Indent) {
-            return false;
-        }
-        String modifier = tokens.get(1).getToken();
-        return modifier.equals("Open") || modifier.equals("Closed") || modifier.equals("Shared");
+private static boolean startsConst(ArrayList<JotlinToken> t) {
+    if (t.size() < 4 || t.get(0).getTokenType() != TokenType.Indent) {
+        return false;
     }
+    if (!isAccessModifier(t.get(1).getToken())) {
+        return false;
+    }
+    JotlinToken type = t.get(2);
+    TokenType after = t.get(3).getTokenType();
+    return type.getTokenType() == TokenType.Keyword
+            && !type.getToken().equals("Class")
+            && (after == TokenType.R_Arrow || after == TokenType.LineEnd);
+}
 
-    private static boolean startsFuncDef(ArrayList<JotlinToken> tokens) {
-        if (tokens.size() < 3 || tokens.get(0).getTokenType() != TokenType.Indent) {
-            return false;
-        }
-        String modifier = tokens.get(1).getToken();
-        if (!modifier.equals("Open") && !modifier.equals("Closed") && !modifier.equals("Shared")) {
-            return false;
-        }
-        int next = 2;
-        if (tokens.get(next).getTokenType() == TokenType.Keyword && tokens.get(next).getToken().equals("Class")) {
-            next++;
-        }
-        return next < tokens.size() && (tokens.get(next).getTokenType() == TokenType.Id || tokens.get(next).getTokenType() == TokenType.Keyword);
+private static boolean startsFuncDef(ArrayList<JotlinToken> tokens) {
+    if (tokens.size() < 3 || tokens.get(0).getTokenType() != TokenType.Indent) {
+        return false;
     }
+    if (!isAccessModifier(tokens.get(1).getToken())) {
+        return false;
+    }
+    int next = 2;
+    if (tokens.get(next).getTokenType() == TokenType.Keyword
+            && tokens.get(next).getToken().equals("Class")) {
+        next++;
+    }
+    return next < tokens.size() && tokens.get(next).getTokenType() == TokenType.Id;
+}
 
-    private static void consumeNewlines(ArrayList<JotlinToken> tokens) {
-        while (!tokens.isEmpty() && tokens.get(0).getTokenType() == TokenType.LineEnd) {
-            tokens.remove(0);
+private static void consumeNewlines(ArrayList<JotlinToken> t) {
+    while (!t.isEmpty()) {
+        int i = 0;
+        while (i < t.size() && t.get(i).getTokenType() == TokenType.Indent) {
+            i++;
+        }
+        if (i < t.size() && t.get(i).getTokenType() != TokenType.LineEnd) {
+            return;
+        }
+        for (int k = 0; k < i; k++) {
+            t.remove(0);
+        }
+        if (!t.isEmpty()) {
+            t.remove(0);
         }
     }
+}
 
     @Override
     public boolean validate() throws Exception {

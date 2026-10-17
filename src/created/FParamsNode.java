@@ -20,7 +20,7 @@ public class FParamsNode implements JotlinTree{
         tokens.removeFirst();
         FParamNode node = FParamNode.parse(tokens);
         nodes.add(node);
-        while(tokens.getFirst().getToken().equals(",")) {
+        while(!tokens.isEmpty() && tokens.getFirst().getTokenType() == TokenType.Comma) {
             tokens.removeFirst();
             try {
                 node = FParamNode.parse(tokens);
@@ -60,6 +60,7 @@ public class FParamsNode implements JotlinTree{
 
     @Override
     public String convertToJotlin() {
+        StringBuilder result = new StringBuilder();
         if (params.isEmpty()) {
             return "";
         }
@@ -70,7 +71,7 @@ public class FParamsNode implements JotlinTree{
             }
             result.append(params.get(i).convertToJotlin());
         }
-        return result.toString();
+        return result.toString();    
     }
     
 }

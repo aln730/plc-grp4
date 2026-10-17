@@ -3,25 +3,26 @@ package created;
 import java.util.ArrayList;
 import provided.*;
 
+public class OperandNode implements JotlinTree {
+    private JotlinTree op;
 //< operand > -> < identifier > | <num > | < func_call >
 
-public class OperandNode implements JotlinTree{
-
-    private JotlinTree operand;
-
-    public OperandNode(JotlinTree operand) {
-        this.operand = operand;
+    public OperandNode(JotlinTree op) {
+        this.op = op;
     }
 
-    public static JotlinTree parse(ArrayList<JotlinToken> tokens){
+    public static OperandNode parse(ArrayList<JotlinToken> tokens) {
         JotlinToken first = tokens.get(0);
-        if(first.getTokenType() == TokenType.Keyword || first.getTokenType() == TokenType.Id){
-            return IdentifierNode.parse(tokens);
-        } else if (first.getTokenType() == TokenType.Integer || first.getTokenType() == TokenType.Double){
-            return NumNode.parse(tokens); //return NumNode.parse
-        } else if (first.getTokenType() == TokenType.FC_Header){
-            return FunccallNode.parse(tokens);
-        } else{
+        if (first.getTokenType() == TokenType.Keyword || first.getTokenType() == TokenType.Id) {
+            JotlinTree id = IdentifierNode.parse(tokens);
+            return new OperandNode(id);
+        } else if (first.getTokenType() == TokenType.Integer || first.getTokenType() == TokenType.Double) {
+            JotlinTree num = NumNode.parse(tokens);
+            return new OperandNode(num);
+        } else if (first.getTokenType() == TokenType.FC_Header) {
+            JotlinTree call = FunccallNode.parse(tokens);
+            return new OperandNode(call);
+        } else {
             throw new IllegalArgumentException("operand must be Identifier, Num, or Func call");
         }
     }
@@ -36,28 +37,11 @@ public class OperandNode implements JotlinTree{
 
     @Override
     public String convertToJava() {
-        if (operand instanceof IdentifierNode) {
-            return operand.convertToJava();
-        } else if (operand instanceof IntegerNode || operand instanceof DoubleNode) {
-            return operand.convertToJava();
-        } else if (operand instanceof FunccallNode) {
-            return operand.convertToJava();
-        }
-        return "";
+        return op.convertToJava();
     }
 
     @Override
     public String convertToJotlin() {
-        if (operand instanceof IdentifierNode) {
-            return operand.convertToJotlin();
-        } else if (operand instanceof IntegerNode || operand instanceof DoubleNode) {
-            return operand.convertToJotlin();
-        } else if (operand instanceof FunccallNode) {
-            return operand.convertToJotlin();
-        }
-        return "";
+        return op.convertToJotlin();
     }
-
-
-    
 }

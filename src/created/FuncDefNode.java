@@ -8,13 +8,13 @@ import provided.*;
 public class FuncDefNode implements JotlinTree{
     private AmodNode node;
     private StaticNode stat;
-    private IdNode id;
-    private FParamNode params;
+    private JotlinToken id;
+    private FParamsNode params;
     private FReturnNode rtrn;
     private NewLineNode newline;
     private FBodyNode body;
 
-    private FuncDefNode(AmodNode n, StaticNode s, IdNode i, FParamNode p, FReturnNode r, NewLineNode nl, FBodyNode b){
+    private FuncDefNode(AmodNode n, StaticNode s, JotlinToken i, FParamsNode p, FReturnNode r, NewLineNode nl, FBodyNode b){
         node = n;
         stat = s;
         id = i;
@@ -35,8 +35,8 @@ public class FuncDefNode implements JotlinTree{
         if(id.getTokenType() != TokenType.Id){
             throw new IllegalArgumentException("expected id");
         }
-        IdNode newId = IdNode.parse(tokens);
-        FParamNode param = FParamNode.parse(tokens);
+        tokens.remove(0);
+        FParamsNode param = FParamsNode.parse(tokens);
         FReturnNode ret = FReturnNode.parse(tokens);
 
         if(tokens.get(0).getTokenType() != TokenType.LineEnd) {

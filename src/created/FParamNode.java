@@ -20,7 +20,7 @@ public class FParamNode implements JotlinTree{
             throw new IllegalArgumentException("Fparam must start with id token");
         }
         JotlinToken first = tokens.removeFirst();
-        if(!tokens.get(0).getToken().equals(':')) {
+        if(tokens.get(0).getTokenType() != TokenType.Colon) {
             throw new IllegalArgumentException("Fparam must have a ':' as the second character");
         }
         tokens.removeFirst();

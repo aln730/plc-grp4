@@ -6,22 +6,20 @@ import provided.*;
 
 
 public class NumNode implements JotlinTree{
-
-    private final JotlinTree number;
+    private JotlinTree number;
 
     public NumNode(JotlinTree number) {
         this.number = number;
     }
 
-    public static JotlinTree parse(ArrayList<JotlinToken> tokens) {
-
+    public static NumNode parse(ArrayList<JotlinToken> tokens) {
         JotlinToken first = tokens.get(0);
 
         if (first.getTokenType() == TokenType.Integer) {
-            return IntegerNode.parse(tokens);
+            return new NumNode(IntegerNode.parse(tokens));
         }
         else if (first.getTokenType() == TokenType.Double) {
-            return DoubleNode.parse(tokens);
+            return new NumNode(DoubleNode.parse(tokens));
         }
         else {
             throw new IllegalArgumentException(
