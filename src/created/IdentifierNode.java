@@ -6,8 +6,8 @@ import provided.*;
 
 
 public class IdentifierNode implements JotlinTree{
-    public static JotlinToken token1;
-    public static JotlinToken token2;
+    private JotlinToken token1;
+    private JotlinToken token2;
 
     public IdentifierNode(JotlinToken t1, JotlinToken t2){
         token1 = t1;
@@ -60,9 +60,9 @@ public class IdentifierNode implements JotlinTree{
     @Override
     public String convertToJotlin() {
         if (token1 == null) {
-            return token2.getToken();
+            return (token2 != null? token2.getToken():"");
         }
-        return token1.getToken() + "." + token2.getToken();
+        return (token1 != null? token1.getToken():"") + "." + (token2 != null? token2.getToken():"");
     }
 
 }
