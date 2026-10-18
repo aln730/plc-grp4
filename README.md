@@ -26,8 +26,8 @@ There are currently no known issues with **phase 1**, and it passes all provided
 In phase two we implemented all the nodes representing different parts of the grammar to build the JotlinTree. Each node is a separate class implementing JotlinTree so they can have different implementations of the validate, convertToJotlin and convertToJava methods for use later in the project. The convert to Jotlin mave have some differences in spacing.
 **To Build**:
 - **(Windows) 1:** Run java -cp out provided.JotlinParser src/samples/*.jott
-- **(Mac) 1:** javac -d out provided/*.java created/*.java
-- **(Mac) 2:** java -cp out provided.JotlinParser samples/*.jott moreExamples/*.jott
+- **(Mac) 1:** javac -d out provided'/*'.java created'/*'.java
+- **(Mac) 2:** java -cp out provided.JotlinParser samples'/*'.jott moreExamples'/*'.jott
 
 
 # Phase 3:
