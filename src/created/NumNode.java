@@ -8,7 +8,7 @@ import provided.*;
 public class NumNode implements JotlinTree{
     private JotlinTree number;
 
-    public NumNode (JotlinTree numnber) {
+    public NumNode (JotlinTree number) {
         this.number = number;
     }
 

@@ -60,11 +60,11 @@ public class VarDecNode implements JotlinTree {
                 javaType = "boolean";
                 break;
         }
-        return javaType + " " + id.getToken() + ";";
+        return tabs.convertToJava() + javaType + " " + id.getToken() + ";" + newLine.convertToJava();
     }
 
     @Override
     public String convertToJotlin() {
-        return type.getToken() + " " + id.getToken();
+        return tabs.convertToJotlin() + type.getToken() + " " + id.getToken() + newLine.convertToJotlin();
     }
 }

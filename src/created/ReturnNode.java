@@ -19,6 +19,7 @@ public class ReturnNode implements JotlinTree {
 
         if (first.getTokenType() != TokenType.L_Arrow) {
             throw new IllegalArgumentException("Error on " + first + ": expected '<-'");
+            // return new ReturnNode(null,null);
         }
 
         tokens.remove(0);
@@ -34,11 +35,17 @@ public class ReturnNode implements JotlinTree {
 
     @Override
     public String convertToJava() {
-        return "return " + expr.convertToJava() + ";";
+        if(expr == null) {
+            return "";
+        }
+        return "return " + expr.convertToJava() + ";" + nl.convertToJava();
     }
 
     @Override
     public String convertToJotlin() {
-        return "<-" + expr.convertToJotlin();
+        if(expr == null) {
+            return "";
+        }
+        return "<-" + expr.convertToJotlin() + nl.convertToJotlin();
     }
 }

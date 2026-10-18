@@ -87,7 +87,7 @@ public class ClassDefNode implements JotlinTree {
     @Override
     public String convertToJotlin() {
         String separator = oneLine ? " " : "\n";
-        return "Module " + moduleName.getToken() + separator + "Subclass " + subclassName.getToken() + "\n" + classBody.convertToJotlin();
+        return "Module " + moduleName.getToken() + separator + "Subclass " + subclassName.getToken() + newLines.convertToJotlin() + classBody.convertToJotlin();
     }
 }
 

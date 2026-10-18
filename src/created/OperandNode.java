@@ -33,25 +33,12 @@ public class OperandNode implements JotlinTree {
 
     @Override
     public String convertToJava() {
-        if (operand instanceof IdentifierNode) {
-            return operand.convertToJava();
-        } else if (operand instanceof IntegerNode || operand instanceof DoubleNode) {
-            return operand.convertToJava();
-        } else if (operand instanceof FunccallNode) {
-            return operand.convertToJava();
-        }
-        return "";
+        return operand.convertToJava();
+
     }
 
     @Override
     public String convertToJotlin() {
-        if (operand instanceof IdentifierNode) {
-            return operand.convertToJotlin();
-        } else if (operand instanceof IntegerNode || operand instanceof DoubleNode) {
-            return operand.convertToJotlin();
-        } else if (operand instanceof FunccallNode) {
-            return operand.convertToJotlin();
-        }
-        return "";
+        return operand.convertToJotlin();
     }
 }

@@ -8,16 +8,16 @@ public class WhileNode implements JotlinTree{
     
     private ExprNode expr;
     private BodyNode body;
+    private TabNode tabs;
 
-    private WhileNode(ExprNode e, BodyNode b){
+    private WhileNode(TabNode t, ExprNode e, BodyNode b){
         expr = e;
         body = b;
+        tabs = t;
     }
     
     public static WhileNode parse(ArrayList<JotlinToken> tokens){
-        while(!tokens.isEmpty() && tokens.get(0).getTokenType() == TokenType.Indent){
-            tokens.remove(0);
-        }
+        TabNode tabs = TabNode.parse(tokens);
         JotlinToken first = tokens.get(0);
         if(first.getTokenType() != TokenType.Keyword || !first.getToken().equals("While")){
             throw new IllegalArgumentException("Expecting keyword or while to start while loop");
@@ -40,7 +40,7 @@ public class WhileNode implements JotlinTree{
         }
         
         BodyNode body = BodyNode.parse(tokens);
-        return new WhileNode(expr, body);
+        return new WhileNode(tabs,expr, body);
     }
 
     @Override
@@ -55,7 +55,7 @@ public class WhileNode implements JotlinTree{
 
     @Override
     public String convertToJotlin() {
-        return "While [" + expr.convertToJotlin() + "]\n" + body.convertToJotlin();
+        return tabs.convertToJotlin() + "While [" + expr.convertToJotlin() + "]\n" + body.convertToJotlin();
     }
  
 }

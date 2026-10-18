@@ -45,11 +45,11 @@ public class IncludeNode implements JotlinTree {
 
     @Override
     public String convertToJava() {
-        return "import " +  (id != null ?  id.getToken():"") + ";";
+        return "import " +  (id != null ?  id.getToken():"") + ";" + nl.convertToJava();
     }
 
     @Override
     public String convertToJotlin() {
-        return "Include " +  (id != null ?  id.getToken():"") + ";";
+        return "Include " +  (id != null ?  id.getToken():"") + ";" + nl.convertToJotlin();
     }
 }
