@@ -53,11 +53,11 @@ public class InstVarNode implements JotlinTree {
 
     @Override
     public String convertToJava() {
-        return amod.convertToJava() + " " + type.convertToJava() + " " + id.convertToJava() + ";";
+        return "\t" + amod.convertToJava() + " " + type.convertToJava() + " " + id.convertToJava() + ";";
     }
 
     @Override
     public String convertToJotlin() {
-        return amod.convertToJotlin() + " " + type.convertToJotlin() + " " + id.convertToJotlin();
+        return "\t" + amod.convertToJotlin() + " " + type.convertToJotlin() + " " + id.convertToJotlin();
     }
 }

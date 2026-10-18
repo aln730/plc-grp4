@@ -21,7 +21,7 @@ public class StaticNode implements JotlinTree{
             tokens.remove(0);
             return new StaticNode(first);
         }
-        return null;
+        return new StaticNode(null);
     }
 
     @Override
@@ -39,7 +39,7 @@ public class StaticNode implements JotlinTree{
     @Override
     public String convertToJotlin() {
         // TODO Auto-generated method stub
-        return keyword != null ?  keyword.getToken():"";
+        return keyword != null ?  keyword.getToken() + " ":"";
     }
 
     

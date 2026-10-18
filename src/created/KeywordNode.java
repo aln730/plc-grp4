@@ -60,6 +60,6 @@ public class KeywordNode implements JotlinTree {
 
     @Override
     public String convertToJotlin() {
-        return (token == null )? token.getToken():"";
+        return (token != null )? token.getToken():"";
     }
 }
