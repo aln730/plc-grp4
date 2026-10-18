@@ -1,5 +1,5 @@
 package provided;
-import created.ClassNode;
+import created.*;
 import java.util.ArrayList;
 
 public class JotlinParser {
