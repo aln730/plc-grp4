@@ -56,12 +56,12 @@ public class FParamNode implements JotlinTree{
             default:
                 break;
         }
-        return type + " " + id.getToken();
+        return type + " " + (id != null ?  id.getToken():"");
     }
 
     @Override
     public String convertToJotlin() {
-        return id.getToken() + ":" + keyword.getToken();
+        return (id != null ?  id.getToken():"") + ":" + (keyword != null ?  keyword.getToken():"");
     }
     
 }

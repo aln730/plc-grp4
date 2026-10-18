@@ -27,7 +27,7 @@ public class StringNode implements JotlinTree{
 
 
     public String convertToJotlin() {
-        return '"' + token.getToken() + '"';
+        return '"' + (token != null ?  token.getToken():"") + '"';
     }
 
     public String convertToJava() {

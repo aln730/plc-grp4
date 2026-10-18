@@ -23,11 +23,11 @@ public class BooleanNode implements JotlinTree{
     }
 
     public String convertToJotlin() {
-        return token.getToken();
+        return token != null ?  token.getToken():"";
     }
 
     public String convertToJava() {
-        return token.getToken();
+        return token != null ?  token.getToken():"";
     }
 
     @Override

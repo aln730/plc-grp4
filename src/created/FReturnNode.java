@@ -31,12 +31,12 @@ public class FReturnNode implements JotlinTree{
 
     @Override
     public String convertToJava() {
-        return "return " + keyword.getToken();
+        return "return " + (keyword != null ?  keyword.getToken():"");
     }
 
     @Override
     public String convertToJotlin() {
-        return "<-" + keyword.getToken();
+        return "<-" + (keyword != null ?  keyword.getToken():"");
     }
 
 }

@@ -67,7 +67,7 @@ public class FuncDefNode implements JotlinTree{
         if (staticModifier != null && !staticModifier.isEmpty()) {
             result.append(staticModifier).append(" ");
         }
-        result.append(rtrn.convertToJava()).append(" ").append(id.getToken()).append("(");
+        result.append(rtrn.convertToJava()).append(" ").append((id != null ?  id.getToken():"")).append("(");
         result.append(params.convertToJava());
         result.append(") {\n");
         result.append(body.convertToJava());
@@ -80,7 +80,9 @@ public class FuncDefNode implements JotlinTree{
         StringBuilder result = new StringBuilder();
         result.append("\t");
         result.append(node.convertToJotlin()).append(" ");
-        result.append(stat.convertToJotlin());
+        if(stat != null) {
+            result.append(stat.convertToJotlin());
+        }
         result.append(id.getToken());
         result.append(params.convertToJotlin());
         result.append(rtrn.convertToJotlin());

@@ -24,11 +24,11 @@ public class RelOpNode implements JotlinTree{
     }
 
     public String convertToJotlin() {
-        return token.getToken();
+        return token != null ?  token.getToken():"";
     }
 
     public String convertToJava() {
-        return token.getToken();
+        return token != null ?  token.getToken():"";
     }
     @Override
     public boolean validate() throws Exception {

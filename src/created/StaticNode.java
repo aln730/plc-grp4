@@ -39,7 +39,7 @@ public class StaticNode implements JotlinTree{
     @Override
     public String convertToJotlin() {
         // TODO Auto-generated method stub
-        return keyword.getToken();
+        return keyword != null ?  keyword.getToken():"";
     }
 
     
