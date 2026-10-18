@@ -45,19 +45,17 @@ public class WhileNode implements JotlinTree{
 
     @Override
     public boolean validate() throws Exception {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'validate'");
+        return expr.validate() && body.validate();
     }
 
     @Override
-public String convertToJava() {
+    public String convertToJava() {
     return "while (" + expr.convertToJava() + ") " + body.convertToJava();
-}
+    }
 
     @Override
     public String convertToJotlin() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'convertToJotlin'");
+        return "While [" + expr.convertToJotlin() + "]\n" + body.convertToJotlin();
     }
  
 }

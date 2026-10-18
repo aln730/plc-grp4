@@ -6,38 +6,38 @@ import provided.*;
 
 
 public class NumNode implements JotlinTree{
+    private JotlinTree number;
+
+    public NumNode (JotlinTree numnber) {
+        this.number = number;
+    }
 
     public static JotlinTree parse(ArrayList<JotlinToken> tokens) {
 
         JotlinToken first = tokens.get(0);
 
         if (first.getTokenType() == TokenType.Integer) {
-            return IntegerNode.parse(tokens);
+            return new NumNode(IntegerNode.parse(tokens));
         }
         else if (first.getTokenType() == TokenType.Double) {
-            return DoubleNode.parse(tokens);
+            return new NumNode(DoubleNode.parse(tokens));
         }
         else {
             throw new IllegalArgumentException(
                 "Error on " + tokens.get(0) + ": expected Integer or Double");
         }
     }
-
     @Override
     public boolean validate() throws Exception {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'validate'");
+        return number != null && number.validate();
     }
-
     @Override
     public String convertToJava() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'convertToJava'");
+        return number == null ? "" : number.convertToJava();
     }
 
     @Override
     public String convertToJotlin() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'convertToJotlin'");
+        return number == null ? "" : number.convertToJotlin();
     }
 }

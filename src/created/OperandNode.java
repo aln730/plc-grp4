@@ -4,15 +4,20 @@ import java.util.ArrayList;
 import provided.*;
 
 public class OperandNode implements JotlinTree {
+    private JotlinTree operand;
+
+    public OperandNode(JotlinTree op) {
+        operand = op;
+    }
 
     public static JotlinTree parse(ArrayList<JotlinToken> tokens) {
         JotlinToken first = tokens.get(0);
         if (first.getTokenType() == TokenType.Keyword || first.getTokenType() == TokenType.Id) {
-            return IdentifierNode.parse(tokens);
+            return new OperandNode( IdentifierNode.parse(tokens));
         } else if (first.getTokenType() == TokenType.Integer || first.getTokenType() == TokenType.Double) {
-            return NumNode.parse(tokens);
+            return new OperandNode(NumNode.parse(tokens));
         } else if (first.getTokenType() == TokenType.FC_Header) {
-            return FunccallNode.parse(tokens);
+            return new OperandNode(FunccallNode.parse(tokens));
         } else {
             throw new IllegalArgumentException("operand must be Identifier, Num, or Func call");
         }
@@ -20,16 +25,33 @@ public class OperandNode implements JotlinTree {
 
     @Override
     public boolean validate() throws Exception {
-        throw new UnsupportedOperationException("Unimplemented method 'validate'");
+        if (operand == null) {
+            return false;
+        }
+        return operand.validate();
     }
 
     @Override
     public String convertToJava() {
-        throw new UnsupportedOperationException("Unimplemented method 'convertToJava'");
+        if (operand instanceof IdentifierNode) {
+            return operand.convertToJava();
+        } else if (operand instanceof IntegerNode || operand instanceof DoubleNode) {
+            return operand.convertToJava();
+        } else if (operand instanceof FunccallNode) {
+            return operand.convertToJava();
+        }
+        return "";
     }
 
     @Override
     public String convertToJotlin() {
-        throw new UnsupportedOperationException("Unimplemented method 'convertToJotlin'");
+        if (operand instanceof IdentifierNode) {
+            return operand.convertToJotlin();
+        } else if (operand instanceof IntegerNode || operand instanceof DoubleNode) {
+            return operand.convertToJotlin();
+        } else if (operand instanceof FunccallNode) {
+            return operand.convertToJotlin();
+        }
+        return "";
     }
 }

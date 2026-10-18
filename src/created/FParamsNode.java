@@ -41,14 +41,29 @@ public class FParamsNode implements JotlinTree{
 
     @Override
     public String convertToJava() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'convertToJava'");
+        StringBuilder result = new StringBuilder();
+        for (int i = 0; i < params.size(); i++) {
+            if (i > 0) {
+                result.append(", ");
+            }
+            result.append(params.get(i).convertToJava());
+        }
+        return result.toString();
     }
 
     @Override
     public String convertToJotlin() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'convertToJotlin'");
+        if (params.isEmpty()) {
+            return "";
+        }
+        StringBuilder result = new StringBuilder(" -> ");
+        for (int i = 0; i < params.size(); i++) {
+            if (i > 0) {
+                result.append(", ");
+            }
+            result.append(params.get(i).convertToJotlin());
+        }
+        return result.toString();
     }
     
 }

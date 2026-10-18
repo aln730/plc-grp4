@@ -40,15 +40,36 @@ public class ConstNode implements JotlinTree{
         throw new UnsupportedOperationException("Unimplemented method 'validate'");
     }
 
-    @Override
+     @Override
     public String convertToJava() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'convertToJava'");
+        StringBuilder result = new StringBuilder();
+        result.append(node.convertToJava()).append(" ");
+        String modifier = node.convertToJava();
+        if (modifier.isEmpty()) {
+            result.setLength(0);
+        }
+        result.append("static final ");
+        result.append(keyword.convertToJava());
+        result.append("(");
+        result.append(params.convertToJava());
+        result.append(") {\n");
+        result.append(body.convertToJava());
+        result.append("\n}");
+        return result.toString();
     }
 
     @Override
     public String convertToJotlin() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'convertToJotlin'");
+        StringBuilder result = new StringBuilder();
+        result.append("\t");
+        result.append(node.convertToJotlin()).append(" ");
+        result.append(keyword.convertToJotlin());
+        result.append(params.convertToJotlin());
+        result.append("\n");
+        result.append(body.convertToJotlin());
+        if (newLine != null) {
+            result.append(newLine.convertToJotlin());
+        }
+        return result.toString();
     }
 }
