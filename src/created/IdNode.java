@@ -1,6 +1,9 @@
-package provided;
+package created;
 
 import java.util.ArrayList;
+
+import provided.*;
+
 
 public class IdNode implements JotlinTree {
 

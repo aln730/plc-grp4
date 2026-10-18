@@ -57,6 +57,17 @@ public class JotlinTokenizer {
             continue;
           }
           if (first == '\t') {
+            boolean onlyWhitespaceLeft = true;
+            for (char c : lineChars) {
+              if (c != ' ' && c != '\t') {
+                onlyWhitespaceLeft = false;
+                break;
+              }
+            }
+            if (onlyWhitespaceLeft) {
+              lineChars.clear();
+              continue;
+            }
             throw new IllegalStateException(
                 "Syntax Error\nTab character found in the middle of a line.\n"
                     + fileName

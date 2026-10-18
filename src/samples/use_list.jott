@@ -1,5 +1,4 @@
-Module ListExample
-Subclass Object
+Module ListExample Subclass Object
 
 	Open Class main
 		List l

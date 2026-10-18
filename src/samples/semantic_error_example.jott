@@ -1,5 +1,4 @@
-Module BadProgram
-Subclass Object
+Module BadProgram Subclass Object
 
 	Open Class main
 		Integer x

@@ -1,5 +1,4 @@
-Module GradeTest
-Subclass Object
+Module GradeTest Subclass Object
 
 	Open Class main
 		Integer grade

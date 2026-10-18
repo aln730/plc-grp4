@@ -1,17 +1,19 @@
-package provided;
+package created;
 
 import java.util.ArrayList;
+import provided.*;
+
 
 public class IfStmtNode implements JotlinTree {
 
+    //Depth is the layer of the line of code
     private final int depth;
     private final ExprNode condition;
     private final BodyNode body;
     private final ArrayList<OrIfNode> orIfs;
     private final OtherwiseNode otherwise;   // null if absent
 
-    private IfStmtNode(int depth, ExprNode condition, BodyNode body,
-                       ArrayList<OrIfNode> orIfs, OtherwiseNode otherwise) {
+    private IfStmtNode(int depth, ExprNode condition, BodyNode body, ArrayList<OrIfNode> orIfs, OtherwiseNode otherwise) {
         this.depth = depth;
         this.condition = condition;
         this.body = body;
@@ -20,7 +22,7 @@ public class IfStmtNode implements JotlinTree {
     }
 
     public static IfStmtNode parse(ArrayList<JotlinToken> tokens) {
-        // the tab count is this If's depth; OrIf/Otherwise must match it
+        // the number of tabs is this If's depth
         int depth = 0;
         while (!tokens.isEmpty() && tokens.get(0).getTokenType() == TokenType.Indent) {
             tokens.remove(0);
@@ -39,7 +41,7 @@ public class IfStmtNode implements JotlinTree {
         expect(tokens, TokenType.LineEnd, "end of line");
         skipNewlines(tokens);
 
-        BodyNode body = BodyNode.parse(tokens, depth + 1);
+        BodyNode body = BodyNode.parse(tokens);
 
         ArrayList<OrIfNode> orIfs = new ArrayList<>();
         while (nextLineStartsWith(tokens, depth, "OrIf")) {
@@ -57,8 +59,7 @@ public class IfStmtNode implements JotlinTree {
         return new IfStmtNode(depth, condition, body, orIfs, otherwise);
     }
 
-    // Peeks at the next non-blank line without consuming it. True only if it has exactly
-    // `depth` tabs followed by the keyword, so nested Ifs attach their Otherwise correctly.
+    // Looks ahead at the next non-blank line. Returns true if it contains 'depth' amount of tabs followed by keyword.
     private static boolean nextLineStartsWith(ArrayList<JotlinToken> tokens, int depth, String keyword) {
         int i = 0;
         while (i < tokens.size() && tokens.get(i).getTokenType() == TokenType.LineEnd) {
@@ -105,8 +106,8 @@ public class IfStmtNode implements JotlinTree {
     @Override
     public String convertToJava() {
         StringBuilder sb = new StringBuilder();
-        sb.append("if (").append(condition.convertToJava()).append(") {\n");
-        sb.append(body.convertToJava()).append("}\n");
+        sb.append("if (").append(condition.convertToJava()).append(") ");
+        sb.append(body.convertToJava()).append("\n");
         for (OrIfNode o : orIfs) {
             sb.append(o.convertToJava());
         }

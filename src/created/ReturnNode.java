@@ -1,34 +1,31 @@
-package provided;
+package created;
 
 import java.util.ArrayList;
+import provided.*;
+
 
 public class ReturnNode implements JotlinTree {
 
-    private final int depth;
     private final ExprNode expr;
+    private final NewLineNode nl;
 
-    private ReturnNode(int depth, ExprNode expr) {
-        this.depth = depth;
+    private ReturnNode(ExprNode expr, NewLineNode nl) {
         this.expr = expr;
+        this.nl = nl;
     }
 
     public static ReturnNode parse(ArrayList<JotlinToken> tokens) {
-        // grammar has no <TBS> here, but returns are indented in practice
-        int depth = 0;
-        while (!tokens.isEmpty() && tokens.get(0).getTokenType() == TokenType.Indent) {
-            tokens.remove(0);
-            depth++;    
-        }
-
         JotlinToken first = tokens.get(0);
 
         if (first.getTokenType() != TokenType.L_Arrow) {
             throw new IllegalArgumentException("Error on " + first + ": expected '<-'");
+            // return new ReturnNode(null,null);
         }
 
         tokens.remove(0);
         ExprNode expr = ExprNode.parse(tokens);
-        return new ReturnNode(depth, expr);
+        NewLineNode nl = NewLineNode.parse(tokens);
+        return new ReturnNode(expr, nl);
     }
 
     @Override
@@ -38,11 +35,17 @@ public class ReturnNode implements JotlinTree {
 
     @Override
     public String convertToJava() {
-        return "return " + expr.convertToJava() + ";";
+        if(expr == null) {
+            return "";
+        }
+        return "return " + expr.convertToJava() + ";" + nl.convertToJava();
     }
 
     @Override
     public String convertToJotlin() {
-        return "\t".repeat(depth) + "<-" + expr.convertToJotlin();
+        if(expr == null) {
+            return "";
+        }
+        return "<-" + expr.convertToJotlin() + nl.convertToJotlin();
     }
 }

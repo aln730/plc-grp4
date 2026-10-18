@@ -1,0 +1,23 @@
+#Tests a constructor named wrong
+#Will pass phase 2 but fail phase 3
+
+Include ExistingClass
+
+Module Test Subclass Object
+	Closed ExistingClass size
+	
+	Closed WrongName -> s:ExistingClass
+		Self.size = s
+
+	Open getSize <- ExistingClass
+		<- Self.size
+
+	Open setSize -> s:ExistingClass
+		Self.size = s
+		
+	Open Class createTest -> s:ExistingClass <- Test
+		ExistingClass s
+		Test t
+		s = Create ExistingClass[ "hello" ]
+		t = Create Test[ s ]
+		<- t

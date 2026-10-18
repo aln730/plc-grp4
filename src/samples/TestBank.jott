@@ -1,7 +1,6 @@
 Include BankAccount
 
-Module TestBank
-Subclass Object
+Module TestBank Subclass Object
 
 	Open Class main
 		BankAccount acct

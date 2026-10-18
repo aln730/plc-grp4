@@ -1,0 +1,19 @@
+Module BankAccount Subclass Object
+
+	Closed Double balance
+
+	Open BankAccount -> start:Double
+		Self.balance = start
+
+	Open deposit -> amount:Double
+		Self.balance = Self.balance + amount
+
+	Open withdraw -> amount:Double <- Boolean
+		If[Self.balance >= amount]
+			Self.balance = Self.balance - amount
+			<- True
+		Otherwise
+			<- False
+
+	Open getBalance <- Double
+		<- Self.balance

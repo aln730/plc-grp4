@@ -1,0 +1,21 @@
+####################################################
+# Testing comment stripping
+# If[x > 0]
+# Otherwise
+# While[x < 10]
+# @@@@@
+# !!!!!
+# "unterminated string
+####################################################
+
+Module CommentStress Subclass Object
+
+	Open Class main
+		Integer x
+
+		x = 5
+
+		# decrement loop
+		While[x > 0]
+			::Printer.display[x]
+			x = x - 1

@@ -1,6 +1,8 @@
-package provided;
+package created;
 
 import java.util.ArrayList;
+import provided.*;
+
 
 public class KeywordNode implements JotlinTree {
 
@@ -58,6 +60,6 @@ public class KeywordNode implements JotlinTree {
 
     @Override
     public String convertToJotlin() {
-        return token.getToken();
+        return (token != null )? token.getToken():"";
     }
 }

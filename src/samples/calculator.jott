@@ -1,0 +1,11 @@
+Module Calculator Subclass Object
+
+	Shared Class add -> a:Integer, b:Integer <- Integer
+		<- a + b
+
+	Open Class main
+		Integer result
+
+		result = ::add[3, 4]
+
+		::Printer.display[result]

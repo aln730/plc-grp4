@@ -1,25 +1,28 @@
-package provided;
+package created;
 
 import java.util.ArrayList;
 
-public class IntegerNode implements JotlinTree {
+import provided.*;
+
+
+public class DoubleNode implements JotlinTree {
 
     private final String value;
 
-    private IntegerNode(String value) {
+    private DoubleNode(String value) {
         this.value = value;
     }
 
-    public static IntegerNode parse(ArrayList<JotlinToken> tokens) {
+    public static DoubleNode parse(ArrayList<JotlinToken> tokens) {
         JotlinToken first = tokens.get(0);
 
-        if (first.getTokenType() != TokenType.Integer) {
+        if (first.getTokenType() != TokenType.Double) {
             throw new IllegalArgumentException(
-                "Error on " + first + ": expected an Integer token");
-        }   
+                "Error on " + first + ": expected a Double token");
+        }
 
         tokens.remove(0);
-        return new IntegerNode(first.getToken());
+        return new DoubleNode(first.getToken());
     }
 
     @Override
