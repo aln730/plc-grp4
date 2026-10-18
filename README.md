@@ -4,7 +4,12 @@ Authors: Lucas Foster, Arnav Gawas, Avalon Gomez, Alora Smith, Joey Tam
 
 How to build project: open JotlinTokenizerTester and call your *input file*, *output file*, and *compare file* in that order
 - **1:** Navigate to testing folder
-- **2:** Run  java JotlinTokenizerTester.java /path/to/input.jott output.txt /path/to/compare.txt
+- **(Windows) 2:** Run  java JotlinTokenizerTester.java /path/to/input.jott output.txt /path/to/compare.txt
+- **(Mac) 2:** Run  javac JotlinTokenizerTester.java /path/to/input.jott output.txt /path/to/compare.txt
+- **(Windows) 3:** Run java -cp out provided.JotlinParser src/samples/*.jott
+- **(Mac) 3:** javac -d out provided/\*.java created/\*.java
+- **(Mac) 4:** java -cp out provided.JotlinParser samples/\*.jott moreExamples/\*.jott
+
   
 The project is to create a compiler to translate Jotlin to Java, it has been split into phases with each phase representing a different component of the compiler. 
 
@@ -25,8 +30,7 @@ There are currently no known issues with **phase 1**, and it passes all provided
 # Phase 2:
 In phase two we implemented all the nodes representing different parts of the grammar to build the JotlinTree. Each node is a separate class implementing JotlinTree so they can have different implementations of the validate, convertToJotlin and convertToJava methods for use later in the project. The convert to Jotlin mave have some differences in spacing.
 **To Build**:
-- **1:** Navigate to testing folder
-- **(Windows) 2:** Run java -cp out provided.JotlinParser src/samples/*.jott
+- **(Windows) 1:** Run java -cp out provided.JotlinParser src/samples/*.jott
 - **(Mac) 2:** javac -d out provided/\*.java created/\*.java
 - **(Mac) 3:** java -cp out provided.JotlinParser samples/\*.jott moreExamples/\*.jott
 
