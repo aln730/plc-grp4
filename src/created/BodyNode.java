@@ -5,10 +5,12 @@ import provided.*;
 public class BodyNode implements JotlinTree {
     private final ArrayList<BodyStmtNode> statements;
     private final ReturnNode returnNode;
+    private final TabNode tabs;
 
-    private BodyNode(ArrayList<BodyStmtNode> statements, ReturnNode returnNode) {
+    private BodyNode(ArrayList<BodyStmtNode> statements, ReturnNode returnNode, TabNode tabs) {
         this.statements = statements;
         this.returnNode = returnNode;
+        this.tabs = tabs;
     }
 
     public static BodyNode parse(ArrayList<JotlinToken> tokens) {
@@ -19,14 +21,13 @@ public class BodyNode implements JotlinTree {
             skipBlankLines(tokens);
         }
         ReturnNode returnNode = null;
+        TabNode tabs = null;
         if (nextIsReturn(tokens)) {
-            while (tokens.get(0).getTokenType() == TokenType.Indent) {
-                tokens.remove(0);
-            }
+            tabs = TabNode.parse(tokens);
             returnNode = ReturnNode.parse(tokens);
             skipBlankLines(tokens);
         }
-        return new BodyNode(statements, returnNode);
+        return new BodyNode(statements, returnNode,tabs);
     }
 
     private static void skipBlankLines(ArrayList<JotlinToken> t) {
@@ -96,6 +97,9 @@ public class BodyNode implements JotlinTree {
             result.append(statement.convertToJotlin());
         }
         if (returnNode != null) {
+            if(tabs != null) {
+                result.append(tabs.convertToJotlin());
+            }
             result.append(returnNode.convertToJotlin());
         }
         return result.toString();

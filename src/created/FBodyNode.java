@@ -9,13 +9,15 @@ public class FBodyNode implements JotlinTree {
     private ArrayList<BodyStmtNode> bodyStmtNodes;
     private ReturnNode returnVal;
     private NewLineNode newLines;
+    private TabNode tabs;
 
     public FBodyNode(ArrayList<VarDecNode> varDecNodes, ArrayList<BodyStmtNode> bodyStmtNodes,
-                     ReturnNode returnVal, NewLineNode newLines) {
+                     ReturnNode returnVal, NewLineNode newLines, TabNode tabs) {
         this.varDecNodes = varDecNodes;
         this.bodyStmtNodes = bodyStmtNodes;
         this.returnVal = returnVal;
         this.newLines = newLines;
+        this.tabs = tabs;
     }
 
     public static FBodyNode parse(ArrayList<JotlinToken> tokens) {
@@ -35,10 +37,9 @@ public class FBodyNode implements JotlinTree {
         }
 
         ReturnNode returnNode = null;
+        TabNode tabs = null;
         if (nextIsReturn(tokens)) {
-            while (tokens.get(0).getTokenType() == TokenType.Indent) {
-                tokens.remove(0);
-            }
+            tabs = TabNode.parse(tokens);
             returnNode = ReturnNode.parse(tokens);
             skipBlankLines(tokens);
         }
@@ -48,7 +49,7 @@ public class FBodyNode implements JotlinTree {
                 + (tokens.isEmpty() ? "" : tokens.get(0).getFileName() + ":" + tokens.get(0).getLineNumber()));
         }
 
-        return new FBodyNode(varNodes, bodyNodes, returnNode, null);
+        return new FBodyNode(varNodes, bodyNodes, returnNode, null, tabs);
     }
 
     private static void skipBlankLines(ArrayList<JotlinToken> t) {
@@ -137,6 +138,9 @@ public class FBodyNode implements JotlinTree {
             jotlin += bodyStmtNodes.get(i).convertToJotlin();
         }
         if (returnVal != null) {
+            if(tabs != null) {
+                jotlin += tabs.convertToJotlin();
+            }
             jotlin += returnVal.convertToJotlin();
         }
         if (newLines != null) {
