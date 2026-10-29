@@ -50,6 +50,12 @@ public class BodyStmtNode implements JotlinTree {
 
     @Override
     public boolean validate() throws Exception {
+        if(tabs != null && !tabs.validate()) {
+            return false;
+        }
+        if(newLines != null & !newLines.validate()) {
+            return false;
+        }
         return statement.validate();
     }
 

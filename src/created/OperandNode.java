@@ -25,10 +25,7 @@ public class OperandNode implements JotlinTree {
 
     @Override
     public boolean validate() throws Exception {
-        if (operand == null) {
-            return false;
-        }
-        return operand.validate();
+        return operand != null && operand.validate();
     }
 
     @Override

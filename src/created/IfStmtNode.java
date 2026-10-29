@@ -100,6 +100,7 @@ public class IfStmtNode implements JotlinTree {
         if (otherwise != null) {
             ok = ok && otherwise.validate();
         }
+        ok = depth > 0;
         return ok;
     }
 

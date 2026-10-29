@@ -26,7 +26,7 @@ public class IntegerNode implements JotlinTree {
 
     @Override
     public boolean validate() throws Exception {
-        return true;
+        return value != null && !value.isEmpty();
     }
 
     @Override

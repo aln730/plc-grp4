@@ -63,9 +63,9 @@ public class AsmtStmtNode implements JotlinTree {
     @Override
     public boolean validate() throws Exception {
         if (expr != null) {
-            return expr.validate();
+            return expr.validate() && tabs.validate() && id.validate();
         }
-        return params == null || params.validate();
+        return tabs.validate() && id.validate() && params.validate();
     }
 
     @Override

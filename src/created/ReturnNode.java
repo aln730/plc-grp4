@@ -30,7 +30,10 @@ public class ReturnNode implements JotlinTree {
 
     @Override
     public boolean validate() throws Exception {
-        return expr.validate();
+        if(expr != null) {
+            return expr.validate() && nl.validate();
+        }
+        return true;
     }
 
     @Override

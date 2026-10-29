@@ -45,8 +45,7 @@ public class IdentifierNode implements JotlinTree{
 
 	@Override
 	public boolean validate() throws Exception {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException("Unimplemented method 'validate'");
+        return token1 != null && token2 != null && !token1.getToken().isEmpty() && !token2.getToken().isEmpty();
 	}
 
 	@Override

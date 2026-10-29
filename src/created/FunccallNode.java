@@ -38,7 +38,7 @@ public class FunccallNode implements JotlinTree {
 
     @Override
     public boolean validate() throws Exception {
-        return params.validate();
+        return params.validate() && name.validate();
     }
 
     @Override
