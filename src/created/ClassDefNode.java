@@ -72,7 +72,7 @@ public class ClassDefNode implements JotlinTree {
 
     @Override
     public boolean validate() throws Exception {
-        return classBody.validate();
+        return classBody.validate() && moduleName != null && !moduleName.getToken().isEmpty()&& subclassName != null && !subclassName.getToken().isEmpty();
     }
 
     @Override

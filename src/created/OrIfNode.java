@@ -54,7 +54,7 @@ public class OrIfNode implements JotlinTree {
 
     @Override
     public boolean validate() throws Exception {
-        throw new UnsupportedOperationException("Unimplemented method 'validate'");
+        return depth >= 1 && expr.validate() && body.validate();
     }
 
     @Override

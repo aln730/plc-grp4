@@ -4,10 +4,10 @@ import provided.*;
 
 
 public class FParamNode implements JotlinTree{
-    private JotlinToken id;
-    private JotlinToken keyword;
+    private IdNode id;
+    private KeywordNode keyword;
     
-    public FParamNode(JotlinToken id, JotlinToken keyword) {
+    public FParamNode(IdNode id, KeywordNode keyword) {
         this.id = id;
         this.keyword = keyword;
     }
@@ -19,7 +19,7 @@ public class FParamNode implements JotlinTree{
         if(tokens.get(0).getTokenType() != TokenType.Id) {
             throw new IllegalArgumentException("Fparam must start with id token");
         }
-        JotlinToken first = tokens.removeFirst();
+        IdNode id = IdNode.parse(tokens);
         if(tokens.get(0).getTokenType() != TokenType.Colon) {
             throw new IllegalArgumentException("Fparam must have a ':' as the second character");
         }
@@ -27,19 +27,19 @@ public class FParamNode implements JotlinTree{
         if(tokens.get(0).getTokenType() != TokenType.Keyword) {
             throw new IllegalArgumentException("Fparam must end with keyword token");
         }
-        JotlinToken second = tokens.removeFirst();
-        return new FParamNode(first,second);
+        KeywordNode keyword = KeywordNode.parse(tokens);
+
+        return new FParamNode(id,keyword);
     }
 
     @Override
     public boolean validate() throws Exception {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'validate'");
+        return id.validate() && keyword.validate();
     }
 
     @Override
     public String convertToJava() {
-        String type = keyword.getToken();
+        String type = keyword.convertToJava();
         switch (type) {
             case "Integer":
                 type = "int";
@@ -56,12 +56,12 @@ public class FParamNode implements JotlinTree{
             default:
                 break;
         }
-        return type + " " + (id != null ?  id.getToken():"");
+        return type + " " + (id != null ?  id.convertToJava():"");
     }
 
     @Override
     public String convertToJotlin() {
-        return (id != null ?  id.getToken():"") + ":" + (keyword != null ?  keyword.getToken():"");
+        return (id != null ?  id.convertToJotlin():"") + ":" + (keyword != null ?  keyword.convertToJotlin():"");
     }
     
 }

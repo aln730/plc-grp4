@@ -52,8 +52,7 @@ public class FuncDefNode implements JotlinTree{
 
     @Override
     public boolean validate() throws Exception {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'validate'");
+        return node.validate() && stat.validate() && params.validate() && rtrn.validate() && newline.validate() &&body.validate() && id != null && !id.getToken().isEmpty();
     }
 
     @Override

@@ -36,7 +36,7 @@ public class ConstNode implements JotlinTree{
 
     @Override
     public boolean validate() throws Exception {
-        throw new UnsupportedOperationException("Unimplemented method 'validate'");
+        return node.validate() && keyword.validate() && params.validate() && body.validate() && newLine.validate();
     }
 
      @Override

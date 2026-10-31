@@ -5,21 +5,15 @@ import provided.*;
 
 
 public class ExprNode implements JotlinTree{
-    private JotlinTree oNode;
-    private MathOpNode mNode;
-    private RelOpNode rNode;
-    private JotlinTree oNode2;
-    private StringNode sNode;
-    private BooleanNode bNode;
+    private JotlinTree node1;
+    private JotlinTree op;
+    private JotlinTree node2;
 
 
-    public ExprNode(JotlinTree oNode, MathOpNode mNode,RelOpNode rNode,JotlinTree oNode2,StringNode sNode, BooleanNode bNode) {
-        this.oNode = oNode;
-        this.mNode = mNode;
-        this.rNode = rNode;
-        this.oNode2 = oNode2;
-        this.sNode = sNode;
-        this.bNode = bNode;
+    public ExprNode(JotlinTree node1, JotlinTree op,JotlinTree node2) {
+        this.node1 = node1;
+        this.op = op;
+        this.node2 = node2;
     }
 
     public static ExprNode parse(ArrayList<JotlinToken> tokens) {
@@ -27,11 +21,11 @@ public class ExprNode implements JotlinTree{
         //Checks if expression node is a string or a boolean
         if(first.getTokenType() == TokenType.String) {
             StringNode string = StringNode.parse(tokens);
-            return new ExprNode(null,null,null,null,string,null); 
+            return new ExprNode(string, null, null); 
         }
         else if(first.getToken().equals("False") || first.getToken().equals("True")){
             BooleanNode bool = BooleanNode.parse(tokens);
-            return new ExprNode(null,null,null,null,null,bool);
+            return new ExprNode(bool, null, null);
         }
 
         //If not a string or boolean, it must start with an operand
@@ -42,17 +36,16 @@ public class ExprNode implements JotlinTree{
         catch(IllegalArgumentException e) {
             throw new IllegalArgumentException("Expression node expects at least one operand node if not boolean or string");
         }
-        RelOpNode rel = null;
-        MathOpNode math = null;
+        JotlinTree op = null;
         JotlinToken second = tokens.getFirst();
         if(second.getTokenType() == TokenType.RelOp) {
-            rel = RelOpNode.parse(tokens);
+            op = RelOpNode.parse(tokens);
         }
         else if(second.getTokenType() == TokenType.MathOp) {
-            math = MathOpNode.parse(tokens);
+            op = MathOpNode.parse(tokens);
         }
         else {
-            return new ExprNode(op1,null,null,null,null,null); 
+            return new ExprNode(op1,null,null); 
         }
         JotlinTree op2 = null;
         try {
@@ -61,54 +54,39 @@ public class ExprNode implements JotlinTree{
         catch(IllegalArgumentException e) {
             throw new IllegalArgumentException("Expression node with an operand and relop/mathop expects a final operand");
         }
-        return new ExprNode(op1,math,rel,op2,null,null);
+        return new ExprNode(op1,op,op2);
     }
 
     @Override
     public String convertToJotlin() {
-        if(oNode != null && oNode2 == null) {
-            return oNode.convertToJotlin();
+        if(node1 != null && node2 == null) {
+            return node1.convertToJotlin();
         }
-        else if (oNode != null && oNode2 != null) {
-            if(rNode != null) {
-                return oNode.convertToJotlin() + rNode.convertToJotlin() + oNode2.convertToJotlin();
-            }
-            else {
-                return oNode.convertToJotlin() + mNode.convertToJotlin() + oNode2.convertToJotlin();
-            }
+        else if (node1 != null && node2 != null) {
+            return node1.convertToJotlin() + op.convertToJotlin() + node2.convertToJotlin();
         }
-        else if (bNode != null) {
-            return bNode.convertToJotlin();
-        }
-        else {
-            return sNode.convertToJotlin();
-        }
+        return null;
     }
 
     @Override
     public String convertToJava() {
-        if(oNode != null && oNode2 == null) {
-            return oNode.convertToJava();
+        if(node1 != null && node2 == null) {
+            return node1.convertToJava();
         }
-        else if (oNode != null && oNode2 != null) {
-            if(rNode != null) {
-                return oNode.convertToJava() + rNode.convertToJava() + oNode2.convertToJava();
-            }
-            else {
-                return oNode.convertToJava() + mNode.convertToJava() + oNode2.convertToJava();
-            }
+        else if (node1 != null && node2 != null) {
+            return node1.convertToJava() + op.convertToJava() + node2.convertToJava();
         }
-        else if (bNode != null) {
-            return bNode.convertToJava();
-        }
-        else {
-            return sNode.convertToJava();
-        }
+        return null;
     }
 
     @Override
     public boolean validate() throws Exception {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'validate'");
+        if(node1 != null && node2 == null) {
+            return node1.validate();
+        }
+        else if (node1 != null && node2 != null) {
+            return node1.validate() && op.validate() && node2.validate();
+        }
+        return false;
     }
 }

@@ -40,7 +40,7 @@ public class VarDecNode implements JotlinTree {
 
     @Override
     public boolean validate() throws Exception {
-        return type != null && id != null && !type.getToken().isEmpty() && !id.getToken().isEmpty();
+        return type != null && id != null && !type.getToken().isEmpty() && !id.getToken().isEmpty() && tabs.validate() && newLine.validate();
     }
 
     @Override
