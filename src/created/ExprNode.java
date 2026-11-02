@@ -85,7 +85,9 @@ public class ExprNode implements JotlinTree{
             return node1.validate();
         }
         else if (node1 != null && node2 != null) {
-            return node1.validate() && op.validate() && node2.validate();
+            OperandNode op1 = (OperandNode) node1;
+            OperandNode op2 = (OperandNode) node2;
+            return node1.validate() && op.validate() && node2.validate() && op1.getToken().getTokenType() == op2.getToken().getTokenType();
         }
         return false;
     }
