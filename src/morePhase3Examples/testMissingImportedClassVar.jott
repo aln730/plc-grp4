@@ -1,0 +1,32 @@
+#this will pass phase 3 but fail phase 4
+# The OtherClass was imported, but assume it does not have the the class var
+# List and Printer are built in classes
+
+Include MyOtherClass
+
+Module TestLists Subclass Object
+	Shared addToList -> count:Integer, start:Double <- List
+		List myList
+		myList = Create List[]
+		If[count < 0]
+			<- myList
+		OrIf[count == 0]
+			::Printer.display["listEmpty"]
+			<- myList
+		Otherwise
+			While[count >= 0]
+				::myList.add[start]
+				count = count - 1
+				start = start + count
+			<- myList
+
+	Open printHello
+		List myList
+		OtherClass myOtherClass
+		myOtherClass = Create MyOtherClass[]
+		::Printer.display[MyOtherClass.variable]
+		myList = ::addToList[5, 0.0]
+		While[::myList.count[] > 0]
+			::Printer.display[::myList.first[]]
+			::Printer.display[::myList.last[]]
+			::myList.pop[]

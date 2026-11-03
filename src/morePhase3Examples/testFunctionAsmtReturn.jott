@@ -1,0 +1,21 @@
+#this will fail phase 3.
+# Tests variable assigned valid type from function
+# WaddToList returns a list but assigned into an Integer
+# List and Printer are built in classes
+
+Module TestLists Subclass Object
+	Shared addToList -> count:Integer <- List
+		List myList
+		myList = Create List[]
+		While[count >= 0]
+			::myList.add[count]
+			count = count - 1 
+		<- myList
+
+	Open printHello
+		Integer myList
+		myList = ::addToList[5]
+		While[::myList.count[] > 0]
+			::Printer.display[::myList.first[]]
+			::Printer.display[::myList.last[]]
+			::myList.pop[]

@@ -1,0 +1,8 @@
+#this will pass phase3 and 4.
+# Tests very basic program with a function level variable
+
+Module HelloWorld Subclass Object
+	Open printHello
+		String hello
+		hello = "HelloWorld"
+		::Printer.display[hello]

@@ -1,0 +1,21 @@
+#this will pass phase 3 and 4.
+# Tests the usage of Self and function having same variable name as instance
+# List and Printer are built in classes
+
+Module TestLists Subclass Object
+	Open List myList
+	
+	Shared addToList -> count:Integer <- List
+		List myList
+		myList = Create List[]
+		While[count >= 0]
+			::myList.add[count]
+			count = count - 1 
+		<- myList
+
+	Open printHello
+		Self.myList = ::addToList[5]
+		While[::Self.myList.count[] > 0]
+			::Printer.display[::Self.myList.first[]]
+			::Printer.display[::Self.myList.last[]]
+			::Self.myList.pop[]

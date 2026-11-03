@@ -1,0 +1,26 @@
+#this will fail phase 3
+# Both if and Otherwise are there and returnable, but OrIf is not returnable
+# List and Printer are built in classes
+
+Module TestLists Subclass Object
+	Shared addToList -> count:Integer, start:Double <- List
+		List myList
+		myList = Create List[]
+		If[count < 0]
+			<- myList
+		OrIf[count == 0]
+			::Printer.display["listEmpty"]
+		Otherwise
+			While[count >= 0]
+				::myList.add[start]
+				count = count - 1
+				start = start + count
+			<- myList
+
+	Open printHello
+		List myList
+		myList = ::addToList[5, 0.0]
+		While[::myList.count[] > 0]
+			::Printer.display[::myList.first[]]
+			::Printer.display[::myList.last[]]
+			::myList.pop[]
