@@ -87,8 +87,40 @@ public class ExprNode implements JotlinTree{
         else if (node1 != null && node2 != null) {
             OperandNode op1 = (OperandNode) node1;
             OperandNode op2 = (OperandNode) node2;
-            return node1.validate() && op.validate() && node2.validate() && op1.getToken().getTokenType() == op2.getToken().getTokenType();
+            if(op.getClass() == MathOpNode.class) {
+                MathOpNode mathOp = (MathOpNode) op;
+                if (mathOp.getToken().equals("/")) {
+                    if(Integer.parseInt(op2.getTokenVal()) == 0) {
+                        return false;
+                    }
+                }
+            }
+            return node1.validate() && op.validate() && node2.validate() && op1.getType() == op2.getType();
         }
         return false;
+    }
+
+    public String getReturnType() {
+        if(op == null && node1 != null) {
+            if(node1.getClass() == StringNode.class) {
+                return "String";
+            }
+            if(node1.getClass() == BooleanNode.class) {
+                return "Boolean";
+            }
+       }
+       else {
+            OperandNode op1 = (OperandNode) (node1);
+            if(op != null && op.getClass() == RelOpNode.class) {
+                return "Boolean";
+            }
+            else if(op.getClass() == MathOpNode.class && op1.getType() == TokenType.Double) {
+                return "Double";
+            }
+            else if(op.getClass() == MathOpNode.class && op1.getType() == TokenType.Integer) {
+                return "Integer";
+            }
+       }
+        return null;
     }
 }

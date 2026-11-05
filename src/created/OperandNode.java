@@ -41,7 +41,13 @@ public class OperandNode implements JotlinTree {
         return operand.convertToJotlin();
     }
 
-    public JotlinToken getToken() {
-        return this.token;
+    public String getTokenVal() {
+        return token.getToken();
+    }
+    public TokenType getType() {
+        return token.getTokenType();
+    }
+    public JotlinTree getOperand() {
+        return operand;
     }
 }

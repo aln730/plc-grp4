@@ -104,6 +104,9 @@ public class FBodyNode implements JotlinTree {
         int i = skipTabs(t);
         return i < t.size() && t.get(i).getTokenType() == TokenType.L_Arrow;
     }
+    public String getReturnType() {
+        return returnVal.getReturnType();
+    }
 
     @Override
     public boolean validate() throws Exception {
@@ -111,13 +114,21 @@ public class FBodyNode implements JotlinTree {
             if(!varDec.validate()) {
                 return false;
             }
+            if(returnVal != null) {
+                if(!varDec.getType().equals(returnVal.getReturnType())) {
+                    return false;
+                }
+            }
         }
         for(BodyStmtNode bodyStmt:bodyStmtNodes) {
             if(!bodyStmt.validate()) {
                 return false;
             }            
         }
-        return returnVal.validate();
+        if (returnVal != null && !returnVal.validate()) { 
+            return false;
+        }
+        return true;
     }
 
     @Override
