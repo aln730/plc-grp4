@@ -1,0 +1,9 @@
+#this will pass phase3 and 4.
+# Tests very basic program with a class level function
+
+Module HelloWorld Subclass Object
+	Shared Class hello <- String
+		<- "Hello"
+
+	Open printHello
+		::Printer.display[::HelloWorld.hello[]]

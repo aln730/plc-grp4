@@ -1,0 +1,5 @@
+#this will pass phase3 and 4.
+# Tests very basic program
+Module HelloWorld Subclass Object
+	Open printHello
+		::Printer.display["HelloWorld"]
