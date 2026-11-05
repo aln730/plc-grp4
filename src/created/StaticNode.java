@@ -34,13 +34,11 @@ public class StaticNode implements JotlinTree{
 
     @Override
     public String convertToJava() {
-        // TODO Auto-generated method stub
         return " static ";
     }
 
     @Override
     public String convertToJotlin() {
-        // TODO Auto-generated method stub
         return keyword != null ?  keyword.getToken() + " ":"";
     }
 

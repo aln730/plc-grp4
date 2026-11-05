@@ -17,6 +17,7 @@ public class ReturnNode implements JotlinTree {
     public static ReturnNode parse(ArrayList<JotlinToken> tokens) {
         JotlinToken first = tokens.get(0);
 
+        // Return can be an empty string, so null return node is okay
         if (first.getTokenType() != TokenType.L_Arrow) {
             // throw new IllegalArgumentException("Error on " + first + ": expected '<-'");
             return new ReturnNode(null,null);
