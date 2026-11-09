@@ -93,14 +93,14 @@ public class IfStmtNode implements JotlinTree {
 
     @Override
     public boolean validate() throws Exception {
-        boolean ok = condition.validate() && body.validate();
+        boolean ok = condition.validate() && body.validate() && condition.getReturnType().equals("Boolean");
         for (OrIfNode o : orIfs) {
             ok = ok && o.validate();
         }
         if (otherwise != null) {
             ok = ok && otherwise.validate();
         }
-        ok = depth > 0;
+        ok = ok && depth > 0;
         return ok;
     }
 
