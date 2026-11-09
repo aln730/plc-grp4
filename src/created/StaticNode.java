@@ -27,18 +27,20 @@ public class StaticNode implements JotlinTree{
     @Override
     public boolean validate() throws Exception {
         if(keyword != null) {
-            return !keyword.getToken().equals("Class");
+            return !keyword.getToken().isEmpty();
         }
         return true;
     }
 
     @Override
     public String convertToJava() {
+        // TODO Auto-generated method stub
         return " static ";
     }
 
     @Override
     public String convertToJotlin() {
+        // TODO Auto-generated method stub
         return keyword != null ?  keyword.getToken() + " ":"";
     }
 

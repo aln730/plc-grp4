@@ -36,14 +36,6 @@ public class FunccallNode implements JotlinTree {
         return new FunccallNode(name, params);
     }
 
-    public String evaluateType() {
-        return SymbolTable.getFunctionName(name.evaluateValue()).returnType;
-    }
-
-    public String evaluateValue() {
-        return null;
-    }
-
     @Override
     public boolean validate() throws Exception {
         return params.validate() && name.validate();

@@ -5,19 +5,21 @@ import provided.*;
 
 public class OperandNode implements JotlinTree {
     private JotlinTree operand;
+    private JotlinToken token;
 
-    public OperandNode(JotlinTree op) {
+    public OperandNode(JotlinTree op, JotlinToken token) {
         operand = op;
+        this.token = token;
     }
 
     public static JotlinTree parse(ArrayList<JotlinToken> tokens) {
         JotlinToken first = tokens.get(0);
         if (first.getTokenType() == TokenType.Keyword || first.getTokenType() == TokenType.Id) {
-            return new OperandNode( IdentifierNode.parse(tokens));
+            return new OperandNode( IdentifierNode.parse(tokens), first);
         } else if (first.getTokenType() == TokenType.Integer || first.getTokenType() == TokenType.Double) {
-            return new OperandNode(NumNode.parse(tokens));
+            return new OperandNode(NumNode.parse(tokens), first);
         } else if (first.getTokenType() == TokenType.FC_Header) {
-            return new OperandNode(FunccallNode.parse(tokens));
+            return new OperandNode(FunccallNode.parse(tokens), first);
         } else {
             throw new IllegalArgumentException("operand must be Identifier, Num, or Func call");
         }
@@ -38,33 +40,8 @@ public class OperandNode implements JotlinTree {
     public String convertToJotlin() {
         return operand.convertToJotlin();
     }
-    public String evaluateValue() {
-        if (operand.getClass() == NumNode.class) {
-            NumNode num = (NumNode) operand;
-            return num.getValue();
-        }
-        else if(operand.getClass() == IdentifierNode.class) {
-            IdentifierNode id = (IdentifierNode) operand;
-            return id.evaluateValue();
-        }
-        else {
-            FunccallNode funcCall = (FunccallNode) operand;
-            return funcCall.evaluateValue();
-        }
-    }
 
-    public String evaluateType() {
-        if (operand.getClass() == NumNode.class) {
-            NumNode number = (NumNode) operand;
-            return number.getType();
-        }
-        else if(operand.getClass() == IdentifierNode.class) {
-            IdentifierNode id = (IdentifierNode) operand;
-            return id.evaluateType();
-        }
-        else {
-            FunccallNode funcCall = (FunccallNode) operand;
-            return funcCall.evaluateType();
-        }
+    public JotlinToken getToken() {
+        return this.token;
     }
 }

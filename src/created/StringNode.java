@@ -12,7 +12,7 @@ public class StringNode implements JotlinTree{
     }
     public static StringNode parse(ArrayList<JotlinToken> tokens) {
         if(tokens.size() < 1) {
-            throw new IllegalArgumentException("Not enough tokens for string");
+            throw new IllegalArgumentException("Not enough ");
         }
         JotlinToken first = tokens.getFirst();
         if(first.getTokenType() == TokenType.String) {

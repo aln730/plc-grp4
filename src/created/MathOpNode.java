@@ -22,22 +22,16 @@ public class MathOpNode implements JotlinTree{
         throw new IllegalArgumentException("Expected MathOp token");
     }
 
-    @Override
     public String convertToJotlin() {
         return token != null ?  token.getToken():"";
     }
 
-    @Override
     public String convertToJava() {
         return token != null ?  token.getToken():"";
     }
     @Override
     public boolean validate() throws Exception {
         return token != null && !token.getToken().isEmpty();
-    }
-
-    public String getToken() {
-        return token.getToken();
     }
 
 }

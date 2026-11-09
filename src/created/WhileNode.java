@@ -45,7 +45,7 @@ public class WhileNode implements JotlinTree{
 
     @Override
     public boolean validate() throws Exception {
-        return expr.validate() && body.validate() && tabs.validate() && expr.getReturnType().equals("Boolean");
+        return expr.validate() && body.validate() && tabs.validate();
     }
 
     @Override

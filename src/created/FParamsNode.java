@@ -11,7 +11,10 @@ public class FParamsNode implements JotlinTree{
 
     public static FParamsNode parse(ArrayList<JotlinToken> tokens) {
         ArrayList<FParamNode> nodes = new ArrayList<>();
-        if(tokens.size() < 1 || tokens.getFirst().getTokenType() != TokenType.R_Arrow) {
+        if(tokens.size() < 1) {
+            return new FParamsNode(nodes);
+        }
+        if(tokens.getFirst().getTokenType() != TokenType.R_Arrow) {
             return new FParamsNode(nodes);
         }
         tokens.removeFirst();
@@ -28,10 +31,6 @@ public class FParamsNode implements JotlinTree{
             }
         }
         return new FParamsNode(nodes);
-    }
-
-    public ArrayList<FParamNode> getParams() {
-        return params;
     }
 
     @Override

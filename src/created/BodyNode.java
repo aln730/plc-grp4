@@ -61,9 +61,6 @@ public class BodyNode implements JotlinTree {
         int i = skipTabs(t);
         return i < t.size() && t.get(i).getTokenType() == TokenType.L_Arrow;
     }
-    public String getReturnType() {
-        return returnNode.getReturnType();
-    }
 
     @Override
     public boolean validate() throws Exception {

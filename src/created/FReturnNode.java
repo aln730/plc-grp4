@@ -5,9 +5,9 @@ import provided.*;
 
 public class FReturnNode implements JotlinTree{
 
-    private KeywordNode keyword;
+    private JotlinToken keyword;
 
-    public FReturnNode(KeywordNode keyword) {
+    public FReturnNode(JotlinToken keyword) {
         this.keyword = keyword;
     }
 
@@ -20,30 +20,25 @@ public class FReturnNode implements JotlinTree{
         if (tokens.isEmpty() || tokens.getFirst().getTokenType() != TokenType.Keyword) {
             throw new IllegalArgumentException("Left arrow should be followed by keyword");
         }
-        KeywordNode keyword = KeywordNode.parse(tokens);
-        return new FReturnNode(keyword);
+        return new FReturnNode(tokens.removeFirst());
     }
 
     @Override
     public boolean validate() throws Exception {
         if(keyword != null) {
-            if(!keyword.isBuiltinType()) {
-                //May need to check if keyword refers to created class
-                return false;
-            }
-            return keyword.validate();
+            return !keyword.getToken().isEmpty();
         }
         return true;
     }
 
     @Override
     public String convertToJava() {
-        return "return " + (keyword != null ?  keyword.convertToJava():"");
+        return "return " + (keyword != null ?  keyword.getToken():"");
     }
 
     @Override
     public String convertToJotlin() {
-        return "<-" + (keyword != null ?  keyword.convertToJotlin():"");
+        return "<-" + (keyword != null ?  keyword.getToken():"");
     }
 
 }

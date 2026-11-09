@@ -25,10 +25,6 @@ public class DoubleNode implements JotlinTree {
         return new DoubleNode(first.getToken());
     }
 
-    public String getValue() {
-        return value;
-    }
-
     @Override
     public boolean validate() throws Exception {
         return value != null && !value.isEmpty();
