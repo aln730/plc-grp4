@@ -6,11 +6,11 @@ import provided.*;
 
 public class VarDecNode implements JotlinTree {
     private final TabNode tabs;
-    private final JotlinToken type;
-    private final JotlinToken id;
+    private final KeywordNode type;
+    private final IdNode id;
     private final NewLineNode newLine;
 
-    private VarDecNode(TabNode tabs, JotlinToken type, JotlinToken id, NewLineNode newLine) {
+    private VarDecNode(TabNode tabs, KeywordNode type, IdNode id, NewLineNode newLine) {
         this.tabs = tabs;
         this.type = type;
         this.id = id;
@@ -26,11 +26,11 @@ public class VarDecNode implements JotlinTree {
         if (tokens.isEmpty() || tokens.get(0).getTokenType() != TokenType.Keyword) {
             throw new IllegalArgumentException("Expected a type keyword in variable declaration");
         }
-        JotlinToken type = tokens.remove(0);
+        KeywordNode type = KeywordNode.parse(tokens);
         if (tokens.isEmpty() || tokens.get(0).getTokenType() != TokenType.Id) {
             throw new IllegalArgumentException("Expected an identifier in variable declaration");
         }
-        JotlinToken id = tokens.remove(0);
+        IdNode id = IdNode.parse(tokens);
         if (tokens.isEmpty() || tokens.get(0).getTokenType() != TokenType.LineEnd) {
             throw new IllegalArgumentException("Expected a newline after variable declaration");
         }
@@ -40,12 +40,12 @@ public class VarDecNode implements JotlinTree {
 
     @Override
     public boolean validate() throws Exception {
-        return type != null && id != null && !type.getToken().isEmpty() && !id.getToken().isEmpty() && tabs.validate() && newLine.validate();
+        return type.validate() && id.validate() && tabs.validate() && newLine.validate();
     }
 
     @Override
     public String convertToJava() {
-        String javaType = type.getToken();
+        String javaType = type.getValue();
         switch (javaType) {
             case "Integer":
                 javaType = "int";
@@ -60,11 +60,15 @@ public class VarDecNode implements JotlinTree {
                 javaType = "boolean";
                 break;
         }
-        return tabs.convertToJava() + javaType + " " + id.getToken() + ";" + newLine.convertToJava();
+        return tabs.convertToJava() + javaType + " " + id.convertToJava() + ";" + newLine.convertToJava();
+    }
+
+    public String getType() {
+        return type.getValue();
     }
 
     @Override
     public String convertToJotlin() {
-        return tabs.convertToJotlin() + type.getToken() + " " + id.getToken() + newLine.convertToJotlin();
+        return tabs.convertToJotlin() + type.convertToJotlin() + " " + id.convertToJotlin() + newLine.convertToJotlin();
     }
 }

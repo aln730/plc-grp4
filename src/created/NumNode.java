@@ -27,6 +27,25 @@ public class NumNode implements JotlinTree{
                 "Error on " + tokens.get(0) + ": expected Integer or Double");
         }
     }
+
+    public String getType() {
+        if(number.getClass() == DoubleNode.class) {
+            return "Double";
+        }
+        else{
+            return "Integer";
+        }
+    }
+    public String getValue() {
+        if(number.getClass() == DoubleNode.class) {
+            DoubleNode d = (DoubleNode) number;
+            return d.getValue();
+        }
+        else{
+            IntegerNode i = (IntegerNode) number;
+            return i.getValue();
+        }
+    }
     @Override
     public boolean validate() throws Exception {
         return number != null && number.validate();

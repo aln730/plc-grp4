@@ -32,8 +32,19 @@ public class FParamNode implements JotlinTree{
         return new FParamNode(id,keyword);
     }
 
+    public String getName() {
+        return id.getId();
+    }
+    public String getType() {
+        return keyword.getValue();
+    }
+
     @Override
     public boolean validate() throws Exception {
+        if(!keyword.isBuiltinType()) {
+            //May need to check that keyword references a created class
+            return false;
+        }
         return id.validate() && keyword.validate();
     }
 

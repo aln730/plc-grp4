@@ -42,6 +42,22 @@ public class IdentifierNode implements JotlinTree{
             throw new IllegalArgumentException("Expected Keyword or Id");
         }
     }
+    public String evaluateValue() {
+        return null;  
+    }
+
+    public String evaluateType() {
+       if(token1 != null) {
+            if(token1.getToken().equals("Self")) {
+                return SymbolTable.getCurrReturn();
+            }
+            else {
+                
+            }
+       }
+       else if(token2 != null) {}
+       return null;
+    }
 
 	@Override
 	public boolean validate() throws Exception {
