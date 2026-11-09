@@ -37,7 +37,7 @@ public class OtherwiseNode implements JotlinTree {
 
     @Override
     public boolean validate() throws Exception {
-        return body.validate() && depth > 0;
+        return body.validate() && depth > 0 && body != null;
     }
 
     @Override

@@ -52,7 +52,7 @@ public class ParamsNode implements JotlinTree{
     @Override
     public boolean validate() throws Exception {
         for(ExprNode param:params) {
-            if(!param.validate()) {
+            if(param == null || !param.validate()) {
                 return false;
             }
         }

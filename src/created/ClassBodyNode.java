@@ -109,17 +109,17 @@ private static void consumeNewlines(ArrayList<JotlinToken> t) {
     @Override
     public boolean validate() throws Exception {
         for (InstVarNode instVar : instVars) {
-            if (!instVar.validate()) {
+            if (!instVar.validate() || instVar == null) {
                 return false;
             }
         }
         for (ConstNode constant : constants) {
-            if (!constant.validate()) {
+            if (!constant.validate() || constant == null) {
                 return false;
             }
         }
         for (FuncDefNode function : functions) {
-            if (!function.validate()) {
+            if (!function.validate() || function == null) {
                 return false;
             }
         }

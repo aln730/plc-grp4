@@ -53,10 +53,10 @@ public class BodyStmtNode implements JotlinTree {
         if(tabs != null && !tabs.validate()) {
             return false;
         }
-        if(newLines != null & !newLines.validate()) {
+        if(newLines != null && !newLines.validate()) {
             return false;
         }
-        return statement.validate();
+        return statement.validate() && statement != null;
     }
 
     @Override
