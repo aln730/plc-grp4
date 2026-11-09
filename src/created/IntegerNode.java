@@ -23,6 +23,10 @@ public class IntegerNode implements JotlinTree {
         tokens.remove(0);
         return new IntegerNode(first.getToken());
     }
+    
+    public String getValue() {
+        return value;
+    }
 
     @Override
     public boolean validate() throws Exception {

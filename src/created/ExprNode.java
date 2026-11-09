@@ -90,12 +90,12 @@ public class ExprNode implements JotlinTree{
             if(op.getClass() == MathOpNode.class) {
                 MathOpNode mathOp = (MathOpNode) op;
                 if (mathOp.getToken().equals("/")) {
-                    if(Integer.parseInt(op2.getTokenVal()) == 0) {
+                    if(Integer.parseInt(op2.evaluateValue()) == 0) {
                         return false;
                     }
                 }
             }
-            return node1.validate() && op.validate() && node2.validate() && op1.getType() == op2.getType();
+            return node1.validate() && op.validate() && node2.validate() && op1.evaluateType().equals(op2.evaluateType());
         }
         return false;
     }
@@ -105,7 +105,7 @@ public class ExprNode implements JotlinTree{
             if(node1.getClass() == StringNode.class) {
                 return "String";
             }
-            if(node1.getClass() == BooleanNode.class) {
+            else {
                 return "Boolean";
             }
        }
@@ -114,13 +114,12 @@ public class ExprNode implements JotlinTree{
             if(op != null && op.getClass() == RelOpNode.class) {
                 return "Boolean";
             }
-            else if(op.getClass() == MathOpNode.class && op1.getType() == TokenType.Double) {
+            else if(op.getClass() == MathOpNode.class && op1.evaluateType() == "Double") {
                 return "Double";
             }
-            else if(op.getClass() == MathOpNode.class && op1.getType() == TokenType.Integer) {
+            else {
                 return "Integer";
             }
        }
-        return null;
     }
 }
