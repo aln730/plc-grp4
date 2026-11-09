@@ -29,12 +29,13 @@ public class NumNode implements JotlinTree{
     }
 
     public String getType() {
-        if(number.getClass() == DoubleNode.class) {
-            return "Double";
+        if (number instanceof IntegerNode) {
+            return ((IntegerNode) number).getType();
         }
-        else{
-            return "Integer";
+        if (number instanceof DoubleNode) {
+            return ((DoubleNode) number).getType();
         }
+        throw new IllegalStateException("NumNode holds an unknown number type");
     }
     public String getValue() {
         if(number.getClass() == DoubleNode.class) {

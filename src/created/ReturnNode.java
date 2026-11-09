@@ -31,10 +31,14 @@ public class ReturnNode implements JotlinTree {
 
     @Override
     public boolean validate() throws Exception {
-        if(expr != null) {
-            return expr.validate() && nl.validate();
+        if (expr == null) {
+            return true;
         }
-        return true;
+        if (!expr.validate() || !nl.validate()) {
+            return false;
+        }
+        String declared = SymbolTable.getCurrReturn();
+        return declared != null && declared.equals(expr.getReturnType());
     }
 
     @Override

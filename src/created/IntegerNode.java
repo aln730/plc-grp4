@@ -28,6 +28,10 @@ public class IntegerNode implements JotlinTree {
         return value;
     }
 
+    public String getType() {
+        return "Integer";
+    }
+
     @Override
     public boolean validate() throws Exception {
         return value != null && !value.isEmpty();

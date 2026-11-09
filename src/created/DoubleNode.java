@@ -1,7 +1,6 @@
 package created;
 
 import java.util.ArrayList;
-
 import provided.*;
 
 
@@ -27,6 +26,10 @@ public class DoubleNode implements JotlinTree {
 
     public String getValue() {
         return value;
+    }
+
+    public String getType() {
+        return "Double";
     }
 
     @Override
