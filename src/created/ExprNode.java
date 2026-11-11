@@ -1,6 +1,5 @@
 package created;
 import java.util.ArrayList;
-
 import provided.*;
 
 
@@ -81,45 +80,52 @@ public class ExprNode implements JotlinTree{
 
     @Override
     public boolean validate() throws Exception {
-        if(node1 != null && node2 == null) {
+        if(node1 == null) {
+            return false;
+        }
+        if(node2 == null) {
             return node1.validate();
         }
-        else if (node1 != null && node2 != null) {
-            OperandNode op1 = (OperandNode) node1;
-            OperandNode op2 = (OperandNode) node2;
-            if(op.getClass() == MathOpNode.class) {
-                MathOpNode mathOp = (MathOpNode) op;
-                if (mathOp.getToken().equals("/")) {
-                    if(Integer.parseInt(op2.evaluateValue()) == 0) {
-                        return false;
-                    }
-                }
-            }
-            return node1.validate() && op.validate() && node2.validate() && op1.evaluateType().equals(op2.evaluateType());
+        if (!node1.validate() || !op.validate() || !node2.validate()) {
+            return false;
         }
-        return false;
+
+        OperandNode op1 = (OperandNode) node1;
+        OperandNode op2 = (OperandNode) node2;
+        String type1 = op1.evaluateType();
+        String type2 = op2.evaluateType();
+
+        if (type1 == null || type2 == null) {
+            return true;
+        }
+        if (!type1.equals(type2) || !(type1.equals("Integer") || type1.equals("Double"))) {
+            return false;
+        }
+        if (op instanceof MathOpNode && ((MathOpNode) op).getToken().equals("/")) {
+            String val = op2.evaluateValue();
+            if (type2.equals("Integer") && val != null && val.matches("\\d+") && Integer.parseInt(val) == 0) {
+                return false;
+            }
+        }
+        return true;
     }
 
     public String getReturnType() {
-        if(op == null && node1 != null) {
-            if(node1.getClass() == StringNode.class) {
+        if (node1 == null) {
+            return null;
+        }
+        if (op == null) {
+            if (node1 instanceof StringNode) {
                 return "String";
             }
-            else {
+            if (node1 instanceof BooleanNode) {
                 return "Boolean";
             }
-       }
-       else {
-            OperandNode op1 = (OperandNode) (node1);
-            if(op != null && op.getClass() == RelOpNode.class) {
-                return "Boolean";
-            }
-            else if(op.getClass() == MathOpNode.class && op1.evaluateType() == "Double") {
-                return "Double";
-            }
-            else {
-                return "Integer";
-            }
-       }
+            return ((OperandNode) node1).evaluateType();
+        }
+        if (op instanceof RelOpNode) {
+            return "Boolean";
+        }
+        return ((OperandNode) node1).evaluateType();
     }
 }

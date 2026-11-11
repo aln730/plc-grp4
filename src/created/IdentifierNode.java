@@ -1,7 +1,6 @@
 package created;
 
 import java.util.ArrayList;
-
 import provided.*;
 
 
@@ -42,6 +41,14 @@ public class IdentifierNode implements JotlinTree{
             throw new IllegalArgumentException("Expected Keyword or Id");
         }
     }
+
+    public String getType() {
+        if (token1 == null || token1.getToken().equals("Self")) {
+            return SymbolTable.typeOf(token2.getToken());
+        }
+        throw new IllegalStateException("No type determined");
+    }
+
     public String evaluateValue() {
         return null;  
     }
@@ -60,9 +67,12 @@ public class IdentifierNode implements JotlinTree{
     }
 
 	@Override
-	public boolean validate() throws Exception {
-        return token1 != null && token2 != null && !token1.getToken().isEmpty() && !token2.getToken().isEmpty();
-	}
+    public boolean validate() throws Exception {
+        if (token2 == null || token2.getToken().isEmpty()) {
+            return false;
+        }
+        return token1 == null || !token1.getToken().isEmpty();
+    }
 
 	@Override
     public String convertToJava() {
