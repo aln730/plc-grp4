@@ -29,9 +29,9 @@ public class FuncDefNode implements JotlinTree{
         }
         tokens.remove(0);
         AmodNode a_mod = AmodNode.parse(tokens);
-        //assuming a_mod is not a node
+ 
         StaticNode stat = StaticNode.parse(tokens);
-        //assuming static is not a node
+
         JotlinToken id = tokens.get(0);
         if(id.getTokenType() != TokenType.Id){
             throw new IllegalArgumentException("expected id");
@@ -48,6 +48,10 @@ public class FuncDefNode implements JotlinTree{
         FBodyNode fBody = FBodyNode.parse(tokens);
 
         return new FuncDefNode(a_mod, stat, id, param, ret, newLine, fBody);
+    }
+
+    public String getId(){
+        return id.toString();
     }
 
     @Override
