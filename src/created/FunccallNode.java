@@ -50,12 +50,11 @@ public class FunccallNode implements JotlinTree {
 
     @Override
     public boolean validate() throws Exception {
-        if (!name.validate() || !params.validate()) {
+        SymbolTable.FunctionInfo info = SymbolTable.getFunctionName(name.evaluateValue());
+        if (info == null || !params.validate()) {
             return false;
         }
-        SymbolTable.FunctionInfo info = SymbolTable.getFunctionName(name.evaluateValue());
-
-        return info != null;
+        return true;
     }
 
     @Override

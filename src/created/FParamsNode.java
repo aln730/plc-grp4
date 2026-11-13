@@ -48,7 +48,6 @@ public class FParamsNode implements JotlinTree{
             if(!param.validate()) {
                 return false;
             }
-            SymbolTable.declare(param.getName(), param.getType());
         }
         return true;
     }
