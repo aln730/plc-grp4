@@ -1,7 +1,6 @@
 package created;
 
 import java.util.ArrayList;
-
 import provided.*;
 
 
@@ -25,9 +24,17 @@ public class DoubleNode implements JotlinTree {
         return new DoubleNode(first.getToken());
     }
 
+    public String getValue() {
+        return value;
+    }
+
+    public String getType() {
+        return "Double";
+    }
+
     @Override
     public boolean validate() throws Exception {
-        return true;
+        return value != null && !value.isEmpty();
     }
 
     @Override

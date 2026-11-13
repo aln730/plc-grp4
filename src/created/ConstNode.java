@@ -36,7 +36,13 @@ public class ConstNode implements JotlinTree{
 
     @Override
     public boolean validate() throws Exception {
-        throw new UnsupportedOperationException("Unimplemented method 'validate'");
+        SymbolTable.pushScope();
+        try{
+            return node.validate() && keyword.validate() && params.validate() && body.validate() && newLine.validate() && keyword.getValue().equals(body.getReturnType());
+        } finally  {
+            SymbolTable.popScope();
+        }
+        
     }
 
      @Override
@@ -70,5 +76,12 @@ public class ConstNode implements JotlinTree{
             result.append(newLine.convertToJotlin());
         }
         return result.toString();
+    }
+
+    public void registerConst() {
+        SymbolTable.addFunction(
+            keyword.getValue(),
+            new SymbolTable.FunctionInfo(params.getTypes(), body.getReturnType())
+        );
     }
 }

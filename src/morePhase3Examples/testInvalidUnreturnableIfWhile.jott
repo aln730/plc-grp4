@@ -1,0 +1,23 @@
+#this will fail phase 3
+# There is no return path after the if not being returnable
+# List and Printer are built in classes
+
+Module TestLists Subclass Object
+	Shared addToList -> count:Integer, start:Integer <- List
+		List myList
+		myList = Create List[]
+		If[count <= 0]
+			<- myList
+		While[count >= 0]
+			::myList.add[start]
+			count = count - 1
+			start = start + count
+			<- myList
+
+	Open printHello
+		List myList
+		myList = ::addToList[5, 0.0]
+		While[::myList.count[] > 0]
+			::Printer.display[::myList.first[]]
+			::Printer.display[::myList.last[]]
+			::myList.pop[]

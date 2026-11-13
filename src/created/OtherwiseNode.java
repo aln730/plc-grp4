@@ -37,7 +37,15 @@ public class OtherwiseNode implements JotlinTree {
 
     @Override
     public boolean validate() throws Exception {
-        return body.validate();
+        if (body == null || depth <= 0) {
+            return false;
+        }
+        SymbolTable.pushScope();
+        try {
+            return body.validate();
+        } finally {
+            SymbolTable.popScope();
+        }
     }
 
     @Override

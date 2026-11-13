@@ -40,7 +40,7 @@ public class IncludeNode implements JotlinTree {
 
     @Override
     public boolean validate() throws Exception {
-        return id != null && !id.getToken().isEmpty();
+        return id != null && (id.getTokenType() == TokenType.Id || id.getTokenType() == TokenType.Keyword) && !id.getToken().isEmpty();
     }
 
     @Override

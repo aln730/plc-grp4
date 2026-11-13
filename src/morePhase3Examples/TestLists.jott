@@ -1,0 +1,20 @@
+#this will pass phase3 and 4.
+# Tests list functionality
+# List and Printer are built in classes
+
+Module TestLists Subclass Object
+	Shared addToList -> count:Integer <- List
+		List myList
+		myList = Create List[]
+		While[count >= 0]
+			::myList.add[count]
+			count = count - 1
+		<- myList
+
+	Open printHello
+		List myList
+		myList = ::addToList[5]
+		While[::myList.count[] > 0]
+			::Printer.display[::myList.first[]]
+			::Printer.display[::myList.last[]]
+			::myList.pop[]

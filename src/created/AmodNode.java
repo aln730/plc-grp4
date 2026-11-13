@@ -28,7 +28,7 @@ public class AmodNode implements JotlinTree {
 
     @Override
     public boolean validate() throws Exception {
-        return true;
+        return token != null && !token.getToken().isEmpty();
     }
 
     @Override

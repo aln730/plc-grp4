@@ -25,9 +25,13 @@ public class IdNode implements JotlinTree {
         return new IdNode(first.getToken());
     }
 
+    public String getId() {
+        return value;
+    }
+
     @Override
     public boolean validate() throws Exception {
-        return true;
+        return value != null && !value.isEmpty();
     }
 
     @Override

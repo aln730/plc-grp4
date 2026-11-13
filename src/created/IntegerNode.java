@@ -23,10 +23,18 @@ public class IntegerNode implements JotlinTree {
         tokens.remove(0);
         return new IntegerNode(first.getToken());
     }
+    
+    public String getValue() {
+        return value;
+    }
+
+    public String getType() {
+        return "Integer";
+    }
 
     @Override
     public boolean validate() throws Exception {
-        return true;
+        return value != null && !value.isEmpty();
     }
 
     @Override

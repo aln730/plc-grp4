@@ -36,9 +36,25 @@ public class FunccallNode implements JotlinTree {
         return new FunccallNode(name, params);
     }
 
+    public boolean matchesFuncDef(FuncDefNode def){
+        return SymbolTable.typeOf(def.getId()).equals(name.toString());
+    }
+
+    public String evaluateType() {
+        return SymbolTable.getFunctionName(name.evaluateValue()).returnType;
+    }
+
+    public String evaluateValue() {
+        return null;
+    }
+
     @Override
     public boolean validate() throws Exception {
-        return params.validate();
+        SymbolTable.FunctionInfo info = SymbolTable.getFunctionName(name.evaluateValue());
+        if (info == null || !params.validate()) {
+            return false;
+        }
+        return true;
     }
 
     @Override

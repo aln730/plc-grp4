@@ -25,10 +25,7 @@ public class OperandNode implements JotlinTree {
 
     @Override
     public boolean validate() throws Exception {
-        if (operand == null) {
-            return false;
-        }
-        return operand.validate();
+        return operand != null && operand.validate();
     }
 
     @Override
@@ -40,5 +37,34 @@ public class OperandNode implements JotlinTree {
     @Override
     public String convertToJotlin() {
         return operand.convertToJotlin();
+    }
+    public String evaluateValue() {
+        if (operand.getClass() == NumNode.class) {
+            NumNode num = (NumNode) operand;
+            return num.getValue();
+        }
+        else if(operand.getClass() == IdentifierNode.class) {
+            IdentifierNode id = (IdentifierNode) operand;
+            return id.evaluateValue();
+        }
+        else {
+            FunccallNode funcCall = (FunccallNode) operand;
+            return funcCall.evaluateValue();
+        }
+    }
+
+    public String evaluateType() {
+        if (operand.getClass() == NumNode.class) {
+            NumNode number = (NumNode) operand;
+            return number.getType();
+        }
+        else if(operand.getClass() == IdentifierNode.class) {
+            IdentifierNode id = (IdentifierNode) operand;
+            return id.evaluateType();
+        }
+        else {
+            FunccallNode funcCall = (FunccallNode) operand;
+            return funcCall.evaluateType();
+        }
     }
 }

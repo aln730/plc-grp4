@@ -29,9 +29,9 @@ public class FuncDefNode implements JotlinTree{
         }
         tokens.remove(0);
         AmodNode a_mod = AmodNode.parse(tokens);
-        //assuming a_mod is not a node
+ 
         StaticNode stat = StaticNode.parse(tokens);
-        //assuming static is not a node
+
         JotlinToken id = tokens.get(0);
         if(id.getTokenType() != TokenType.Id){
             throw new IllegalArgumentException("expected id");
@@ -50,10 +50,44 @@ public class FuncDefNode implements JotlinTree{
         return new FuncDefNode(a_mod, stat, id, param, ret, newLine, fBody);
     }
 
+    public String getId(){
+        return id.getToken();
+    }
+
+    public ArrayList<String> getTypes() {
+        ArrayList<String> types = new ArrayList<>();
+        for (FParamNode p : params.getParams()) {
+            types.add(p.getType());
+        }
+        return types;
+    }
+
+    public void registerFunc() {
+        SymbolTable.addFunction(id.getToken(), new SymbolTable.FunctionInfo(params.getTypes(), rtrn.getType()));
+    }
+
     @Override
     public boolean validate() throws Exception {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'validate'");
+        if (id == null || id.getToken().isEmpty()) {
+            return false;
+        }
+        if (!node.validate() || (stat != null && !stat.validate()) || !newline.validate()) {
+            return false;
+        }
+        SymbolTable.pushScope();
+        try {
+            SymbolTable.setCurrReturn(rtrn.getType());
+            if (!params.validate()) {
+                return false;
+            }
+            if (!rtrn.validate()) {
+                return false;
+            }
+            return body.validate();
+        } finally {
+            SymbolTable.setCurrReturn(null);
+            SymbolTable.popScope();
+        }
     }
 
     @Override

@@ -1,13 +1,12 @@
 package created;
 import java.util.ArrayList;
-
 import provided.*;
 
 public class FReturnNode implements JotlinTree{
 
-    private JotlinToken keyword;
+    private KeywordNode keyword;
 
-    public FReturnNode(JotlinToken keyword) {
+    public FReturnNode(KeywordNode keyword) {
         this.keyword = keyword;
     }
 
@@ -20,23 +19,31 @@ public class FReturnNode implements JotlinTree{
         if (tokens.isEmpty() || tokens.getFirst().getTokenType() != TokenType.Keyword) {
             throw new IllegalArgumentException("Left arrow should be followed by keyword");
         }
-        return new FReturnNode(tokens.removeFirst());
+        KeywordNode keyword = KeywordNode.parse(tokens);
+        return new FReturnNode(keyword);
+    }
+    
+    public boolean matchesFuncDef(FuncDefNode func){
+        return SymbolTable.typeOf(func.getId()).equals(keyword.toString());
+    }
+
+    public String getType() {
+        return keyword == null ? null : keyword.getValue();
     }
 
     @Override
     public boolean validate() throws Exception {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'validate'");
+        return keyword == null || keyword.validate();
     }
 
     @Override
     public String convertToJava() {
-        return "return " + (keyword != null ?  keyword.getToken():"");
+        return keyword == null ? "void" : keyword.convertToJava();
     }
 
     @Override
     public String convertToJotlin() {
-        return "<-" + (keyword != null ?  keyword.getToken():"");
+        return keyword == null ? "" : " <- " + keyword.convertToJotlin();
     }
 
 }

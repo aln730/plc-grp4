@@ -17,9 +17,10 @@ public class ReturnNode implements JotlinTree {
     public static ReturnNode parse(ArrayList<JotlinToken> tokens) {
         JotlinToken first = tokens.get(0);
 
+        // Return can be an empty string, so null return node is okay
         if (first.getTokenType() != TokenType.L_Arrow) {
-            throw new IllegalArgumentException("Error on " + first + ": expected '<-'");
-            // return new ReturnNode(null,null);
+            // throw new IllegalArgumentException("Error on " + first + ": expected '<-'");
+            return new ReturnNode(null,null);
         }
 
         tokens.remove(0);
@@ -30,7 +31,14 @@ public class ReturnNode implements JotlinTree {
 
     @Override
     public boolean validate() throws Exception {
-        return expr.validate();
+        if (expr == null) {
+            return true;
+        }
+        if (!expr.validate() || !nl.validate()) {
+            return false;
+        }
+        String declared = SymbolTable.getCurrReturn();
+        return declared != null && declared.equals(expr.getReturnType());
     }
 
     @Override
@@ -47,5 +55,13 @@ public class ReturnNode implements JotlinTree {
             return "";
         }
         return "<-" + expr.convertToJotlin() + nl.convertToJotlin();
+    }
+
+    public String getReturnType() {
+        if(expr != null) {
+            return expr.getReturnType();
+        }
+        return null;
+
     }
 }
