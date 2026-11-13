@@ -34,12 +34,21 @@ public class FParamsNode implements JotlinTree{
         return params;
     }
 
+    public ArrayList<String> getTypes(){
+        ArrayList<String> types = new ArrayList<>();
+        for(FParamNode p : params){
+            types.add(p.getType());
+        }
+        return types;
+    }
+
     @Override
     public boolean validate() throws Exception {
         for(FParamNode param:params) {
             if(!param.validate()) {
                 return false;
             }
+            SymbolTable.declare(param.getName(), param.getType());
         }
         return true;
     }

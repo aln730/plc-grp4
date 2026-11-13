@@ -51,12 +51,43 @@ public class FuncDefNode implements JotlinTree{
     }
 
     public String getId(){
-        return id.toString();
+        return id.getToken();
+    }
+
+    public ArrayList<String> getTypes() {
+        ArrayList<String> types = new ArrayList<>();
+        for (FParamNode p : params.getParams()) {
+            types.add(p.getType());
+        }
+        return types;
+    }
+
+    public void registerFunc() {
+        SymbolTable.addFunction(id.getToken(), new SymbolTable.FunctionInfo(params.getTypes(), rtrn.getType()));
     }
 
     @Override
     public boolean validate() throws Exception {
-        return node.validate() && stat.validate() && params.validate() && rtrn.validate() && newline.validate() &&body.validate() && id != null && !id.getToken().isEmpty();
+        if (id == null || id.getToken().isEmpty()) {
+            return false;
+        }
+        if (!node.validate() || (stat != null && !stat.validate()) || !newline.validate()) {
+            return false;
+        }
+        SymbolTable.pushScope();
+        try {
+            SymbolTable.setCurrReturn(rtrn.getType());
+            if (!params.validate()) {
+                return false;
+            }
+            if (!rtrn.validate()) {
+                return false;
+            }
+            return body.validate();
+        } finally {
+            SymbolTable.setCurrReturn(null);
+            SymbolTable.popScope();
+        }
     }
 
     @Override
