@@ -22,6 +22,10 @@ public class FReturnNode implements JotlinTree{
         KeywordNode keyword = KeywordNode.parse(tokens);
         return new FReturnNode(keyword);
     }
+    
+    public boolean matchesFuncDef(FuncDefNode func){
+        return SymbolTable.typeOf(func.getId()).equals(keyword.toString());
+    }
 
     public String getType() {
         return keyword == null ? null : keyword.getValue();
