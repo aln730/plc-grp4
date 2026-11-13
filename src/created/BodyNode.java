@@ -68,7 +68,7 @@ public class BodyNode implements JotlinTree {
     @Override
     public boolean validate() throws Exception {
         for (BodyStmtNode statement : statements) {
-            if (!statement.validate() || statement == null) {
+            if (statement == null || !statement.validate()) {
                 return false;
             }
         }

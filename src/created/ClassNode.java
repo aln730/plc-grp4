@@ -36,11 +36,11 @@ public class ClassNode implements JotlinTree {
     @Override
     public boolean validate() throws Exception {
         for (IncludeNode include : includes) {
-            if (!include.validate()) {
+            if (include == null || !include.validate()) {
                 return false;
             }
         }
-        return classDef.validate();
+        return classDef != null && classDef.validate();
     }
 
     @Override
