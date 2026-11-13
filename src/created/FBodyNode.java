@@ -43,10 +43,10 @@ public class FBodyNode implements JotlinTree {
         //     returnNode = ReturnNode.parse(tokens);
         //     skipBlankLines(tokens);
         // }
-        if(tokens.getFirst().getTokenType() == TokenType.Indent) {
+        if (nextIsReturn(tokens)) {
             tabs = TabNode.parse(tokens);
+            returnNode = ReturnNode.parse(tokens);
         }
-        returnNode = ReturnNode.parse(tokens);
         skipBlankLines(tokens);
 
         if (varNodes.isEmpty() && bodyNodes.isEmpty() && returnNode == null) {
@@ -109,8 +109,9 @@ public class FBodyNode implements JotlinTree {
         int i = skipTabs(t);
         return i < t.size() && t.get(i).getTokenType() == TokenType.L_Arrow;
     }
+    
     public String getReturnType() {
-        return returnVal.getReturnType();
+        return returnVal == null ? null : returnVal.getReturnType();
     }
 
     @Override

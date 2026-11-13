@@ -41,7 +41,8 @@ public class FunccallNode implements JotlinTree {
     }
 
     public String evaluateType() {
-        return SymbolTable.getFunctionName(name.evaluateValue()).returnType;
+        SymbolTable.FunctionInfo info = SymbolTable.getFunctionName(name.getMemberName());
+        return info == null ? null : info.returnType;
     }
 
     public String evaluateValue() {
@@ -50,14 +51,14 @@ public class FunccallNode implements JotlinTree {
 
     @Override
     public boolean validate() throws Exception {
-        if (!name.validate() || !params.validate()) {
-            return false;
-        }
-        SymbolTable.FunctionInfo info = SymbolTable.getFunctionName(name.evaluateValue());
+        if (!params.validate()) return false;
 
-        return info != null;
+        String functionName = name.evaluateValue();
+        if (functionName == null) functionName = name.getMemberName();
+
+        return SymbolTable.getFunctionName(functionName) != null
+                || name.evaluateValue() == null;
     }
-
     @Override
     public String convertToJava() {
         return name.convertToJava() + "(" + params.convertToJava() + ")";

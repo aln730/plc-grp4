@@ -49,9 +49,9 @@ public class ClassBodyNode implements JotlinTree {
         int i = 1;
         if (isAccessModifier(t.get(i).getToken())) {
             i++;
-            if (i + 1 >= t.size() || t.get(i).getToken().equals("Class")) {
-                return false;
-            }
+        }
+        if (i < t.size() && t.get(i).getToken().equals("Class")) {
+            i++;
         }
         return i + 1 < t.size()
                 && t.get(i).getTokenType() == TokenType.Keyword

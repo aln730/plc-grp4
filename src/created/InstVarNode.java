@@ -31,6 +31,10 @@ public class InstVarNode implements JotlinTree {
         }
 
         AmodNode amod = AmodNode.parse(tokens);
+        if (tokens.get(0).getToken().equals("Class")) {
+            tokens.remove(0);
+        }
+
         KeywordNode type = KeywordNode.parse(tokens);
         IdNode id = IdNode.parse(tokens);
 
