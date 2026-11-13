@@ -115,14 +115,9 @@ public class FBodyNode implements JotlinTree {
 
     @Override
     public boolean validate() throws Exception {
-        for(VarDecNode varDec:varDecNodes) {
-            if(!varDec.validate()) {
+        for (VarDecNode varDec : varDecNodes) {
+            if (!varDec.validate()) {
                 return false;
-            }
-            if(returnVal != null) {
-                if(!varDec.getType().equals(returnVal.getReturnType())) {
-                    return false;
-                }
             }
         }
         for(BodyStmtNode bodyStmt:bodyStmtNodes) {
