@@ -1,6 +1,5 @@
 package created;
 import java.util.ArrayList;
-
 import provided.*;
 
 public class FReturnNode implements JotlinTree{
@@ -24,26 +23,23 @@ public class FReturnNode implements JotlinTree{
         return new FReturnNode(keyword);
     }
 
+    public String getType() {
+        return keyword == null ? null : keyword.getValue();
+    }
+
     @Override
     public boolean validate() throws Exception {
-        if(keyword != null) {
-            if(!keyword.isBuiltinType()) {
-                //May need to check if keyword refers to created class
-                return false;
-            }
-            return keyword.validate();
-        }
-        return true;
+        return keyword == null || keyword.validate();
     }
 
     @Override
     public String convertToJava() {
-        return "return " + (keyword != null ?  keyword.convertToJava():"");
+        return keyword == null ? "void" : keyword.convertToJava();
     }
 
     @Override
     public String convertToJotlin() {
-        return "<-" + (keyword != null ?  keyword.convertToJotlin():"");
+        return keyword == null ? "" : " <- " + keyword.convertToJotlin();
     }
 
 }

@@ -108,7 +108,14 @@ public class ClassBodyNode implements JotlinTree {
     @Override
     public boolean validate() throws Exception {
         SymbolTable.pushScope();
-        try {for (InstVarNode instVar : instVars) {
+        try {
+            for (FuncDefNode function : functions){
+                if (function == null){
+                    return false;
+                }
+                function.registerFunc();
+            }
+            for (InstVarNode instVar : instVars) {
             if (instVar == null || !instVar.validate()) {
                 return false;
             }
