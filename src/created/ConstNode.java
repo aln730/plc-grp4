@@ -36,7 +36,13 @@ public class ConstNode implements JotlinTree{
 
     @Override
     public boolean validate() throws Exception {
-        return node.validate() && keyword.validate() && params.validate() && body.validate() && newLine.validate() && keyword.getValue().equals(body.getReturnType());
+        SymbolTable.pushScope();
+        try{
+            return node.validate() && keyword.validate() && params.validate() && body.validate() && newLine.validate() && keyword.getValue().equals(body.getReturnType());
+        } finally  {
+            SymbolTable.popScope();
+        }
+        
     }
 
      @Override
