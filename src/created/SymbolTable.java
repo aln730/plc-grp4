@@ -26,6 +26,28 @@ public class SymbolTable {
         scopes.clear();
         functions.clear();
         currReturn = null;
+        addBuiltins();
+    }
+
+    private static void addBuiltins() {
+        functions.put("Printer.display", new FunctionInfo(list("Any"), "void"));
+        functions.put("List.add", new FunctionInfo(list("Any"), "void"));
+        functions.put("List.first", new FunctionInfo(list(), null));
+        functions.put("List.last", new FunctionInfo(list(), null));
+        functions.put("List.pop", new FunctionInfo(list(), null));
+        functions.put("List.count", new FunctionInfo(list(), "Integer"));
+    }
+
+    private static ArrayList<String> list(String... types) {
+        ArrayList<String> lst = new ArrayList<>();
+        for(String t : types) {
+            lst.add(t);
+        }
+        return lst;
+    }
+
+    public static boolean isBuiltinClass(String name) {
+        return name.equals("Printer") || name.equals("List");
     }
 
     // If there is a new scope (function body or if/while statements), add a new scope

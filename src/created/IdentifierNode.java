@@ -50,7 +50,10 @@ public class IdentifierNode implements JotlinTree{
     }
 
     public String evaluateValue() {
-        return token1 == null ? token2.getToken() : null;
+        if (token1 == null) {
+            return token2.getToken();
+        }
+        return token1.getToken() + "." + token2.getToken();
     }
 
     public String evaluateType() {
