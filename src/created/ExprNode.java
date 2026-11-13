@@ -106,6 +106,9 @@ public class ExprNode implements JotlinTree{
             if (type2.equals("Integer") && val != null && val.matches("\\d+") && Integer.parseInt(val) == 0) {
                 return false;
             }
+            if(type2.equals("Double") && val != null && val.matches("\\d+") && Double.parseDouble(val) == 0){
+                return false;
+            }
         }
         return true;
     }
