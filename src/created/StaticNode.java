@@ -31,6 +31,12 @@ public class StaticNode implements JotlinTree{
         }
         return true;
     }
+    public String getStatic() {
+        if(keyword != null) {
+            return null;
+        }
+        return keyword.getToken();
+    }
 
     @Override
     public String convertToJava() {

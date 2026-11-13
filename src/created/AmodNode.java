@@ -31,6 +31,10 @@ public class AmodNode implements JotlinTree {
         return token != null && !token.getToken().isEmpty();
     }
 
+    public String getAmod() {
+        return token.getToken();
+    }
+
     @Override
     public String convertToJava() {
         switch (token.getToken()) {

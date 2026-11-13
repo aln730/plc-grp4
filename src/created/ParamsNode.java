@@ -49,6 +49,14 @@ public class ParamsNode implements JotlinTree{
         return result.toString();
     }
 
+    public ArrayList<String> getReturnTypes() {
+        ArrayList<String> types = new ArrayList<>();
+        for(ExprNode e:params) {
+            types.add(e.getReturnType());
+        }
+        return types;
+    }
+
     @Override
     public boolean validate() throws Exception {
         for(ExprNode param:params) {

@@ -1,6 +1,8 @@
 package created;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+
 
 import provided.*;
 
@@ -42,9 +44,45 @@ public class IdentifierNode implements JotlinTree{
             throw new IllegalArgumentException("Expected Keyword or Id");
         }
     }
+    public String evaluateValue() {
+       if(token1 != null) {
+            if(token1.getToken().equals("Self")) {
+                HashMap<String, String[]> scope = SymbolTable.newestScope();
+                if (scope.containsKey(token2.getToken())) {
+                    return scope.get(token2.getToken())[1];
+                }
+                return null;
+            }
+       }
+        return SymbolTable.valueOf(token2.getToken());    
+    }
+
+    public String evaluateType() {
+       if(token1 != null && token1.getToken().equals("Self")) {
+            HashMap<String, String[]> scope = SymbolTable.newestScope();
+            if (scope.containsKey(token2.getToken())) {
+                return scope.get(token2.getToken())[0];
+            }
+            return null;
+       }
+        return SymbolTable.typeOf(token2.getToken());
+    }
+
+    public String getName() {
+        if(token2 != null) {
+            return token2.getToken();
+        }
+        return null;
+    }
 
 	@Override
 	public boolean validate() throws Exception {
+        if(token1 != null && token1.getToken().equals("Printer") && token2 != null && token2.getToken().equals("display")) {
+            return true;
+        }
+        if(token1 != null && token1.getToken().equals("Printer") && token2 != null && token2.getToken().equals("display")) {
+            return true;
+        }
         return token1 != null && token2 != null && !token1.getToken().isEmpty() && !token2.getToken().isEmpty();
 	}
 

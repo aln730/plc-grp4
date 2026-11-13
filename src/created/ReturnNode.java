@@ -36,6 +36,13 @@ public class ReturnNode implements JotlinTree {
         return true;
     }
 
+    public String getReturn() {
+        if(expr != null) {
+            return expr.evaluateValue();
+        }
+        return null;
+    }
+
     @Override
     public String convertToJava() {
         if(expr == null) {
