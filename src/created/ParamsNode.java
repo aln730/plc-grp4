@@ -1,6 +1,5 @@
 package created;
 import java.util.ArrayList;
-
 import provided.*;
 
 
@@ -27,6 +26,23 @@ public class ParamsNode implements JotlinTree{
         return new ParamsNode(params);
     }
 
+    public int size() {
+        return params.size();
+    }
+    
+    public String getParamType(int index) {
+        return params.get(index).getReturnType();
+    }
+
+    public ArrayList<String> evaluateValues() {
+        ArrayList<String> values = new ArrayList<>();
+        for (ExprNode param : params) {
+            values.add(param.evaluateValue());
+        }
+        return values;
+    }
+
+    @Override
     public String convertToJava() {
         StringBuilder result = new StringBuilder();
         for (int i = 0; i < params.size(); i++) {
@@ -38,6 +54,7 @@ public class ParamsNode implements JotlinTree{
         return result.toString();
     }
 
+    @Override
     public String convertToJotlin() {
         StringBuilder result = new StringBuilder();
         for (int i = 0; i < params.size(); i++) {

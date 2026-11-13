@@ -62,8 +62,38 @@ public class FuncDefNode implements JotlinTree{
         return types;
     }
 
+    public String evaluateValue(ArrayList<String> arguments) {
+        ArrayList<FParamNode> parameters = params.getParams();
+
+        if (arguments.size() != parameters.size()) {
+            throw new IllegalArgumentException("Incorrect number of arguments");
+        }
+        SymbolTable.pushScope();
+        try {
+            for (int i = 0; i < parameters.size(); i++) {
+                FParamNode parameter = parameters.get(i);
+
+                SymbolTable.declare(
+                    parameter.getName(),
+                    parameter.getType(),
+                    arguments.get(i)
+                );
+            }
+
+            return body.evaluateValue();
+
+        } finally {
+            SymbolTable.popScope();
+        }
+    }
+
     public void registerFunc() {
-        SymbolTable.addFunction(id.getToken(), new SymbolTable.FunctionInfo(params.getTypes(), rtrn.getType()));
+    SymbolTable.addFunction(id.getToken(),
+        new SymbolTable.FunctionInfo(
+            params.getTypes(),
+            rtrn.getType(),
+            this
+        ));
     }
 
     @Override
