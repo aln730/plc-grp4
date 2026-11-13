@@ -96,18 +96,20 @@ public class ExprNode implements JotlinTree{
         String type2 = op2.evaluateType();
 
         if (type1 == null || type2 == null) {
-            return true;
+            return false;
         }
         if (!type1.equals(type2) || !(type1.equals("Integer") || type1.equals("Double"))) {
             return false;
         }
         if (op instanceof MathOpNode && ((MathOpNode) op).getToken().equals("/")) {
             String val = op2.evaluateValue();
-            if (type2.equals("Integer") && val != null && val.matches("\\d+") && Integer.parseInt(val) == 0) {
-                return false;
-            }
-            if(type2.equals("Double") && val != null && val.matches("\\d+") && Double.parseDouble(val) == 0){
-                return false;
+
+            if (val != null) {
+                try {
+                    if (Double.parseDouble(val) == 0.0) {
+                        return false;
+                    }
+                } catch (NumberFormatException ignored) {}
             }
         }
         return true;

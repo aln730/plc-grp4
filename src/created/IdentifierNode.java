@@ -50,27 +50,23 @@ public class IdentifierNode implements JotlinTree{
     }
 
     public String evaluateValue() {
-        return null;  
+        return token1 == null ? token2.getToken() : null;
     }
 
     public String evaluateType() {
-       if(token1 != null) {
-            if(token1.getToken().equals("Self")) {
-                return SymbolTable.getCurrReturn();
-            }
-            else {
-                
-            }
-       }
-       else if(token2 != null) {}
-       return null;
+        return getType();
     }
 
-	@Override
+    @Override
     public boolean validate() throws Exception {
         if (token2 == null || token2.getToken().isEmpty()) {
             return false;
         }
+
+        if (token1 == null) {
+            SymbolTable.typeOf(token2.getToken());
+        }
+
         return token1 == null || !token1.getToken().isEmpty();
     }
 
