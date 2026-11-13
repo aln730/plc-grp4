@@ -3,7 +3,7 @@
 # List and Printer are built in classes
 
 Module TestLists Subclass Object
-	Shared addToList -> count:Integer, start:Double <- List
+	Shared addToList -> count:Integer, start:Integer <- List
 		List myList
 		myList = Create List[]
 		If[count <= 0]

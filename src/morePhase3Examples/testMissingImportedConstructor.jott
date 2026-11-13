@@ -5,7 +5,7 @@
 Include MyOtherClass
 
 Module TestLists Subclass Object
-	Shared addToList -> count:Integer, start:Double <- List
+	Shared addToList -> count:Integer, start:Integer <- List
 		List myList
 		myList = Create List[]
 		If[count < 0]
@@ -17,7 +17,7 @@ Module TestLists Subclass Object
 			While[count >= 0]
 				::myList.add[start]
 				count = count - 1
-				start = start + count
+				start = start + 1.1
 			<- myList
 
 	Open printHello

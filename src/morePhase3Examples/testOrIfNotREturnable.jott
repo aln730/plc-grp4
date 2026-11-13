@@ -14,7 +14,7 @@ Module TestLists Subclass Object
 			While[count >= 0]
 				::myList.add[start]
 				count = count - 1
-				start = start + count
+				start = start + 1.1
 			<- myList
 
 	Open printHello
