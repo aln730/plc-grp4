@@ -40,7 +40,11 @@ public class VarDecNode implements JotlinTree {
 
     @Override
     public boolean validate() throws Exception {
-        return type.validate() && id.validate() && tabs.validate() && newLine.validate();
+        if (!type.validate() || !id.validate() || !tabs.validate() || !newLine.validate()) {
+            return false;
+        }
+        SymbolTable.declare(id.getId(), type.getValue());
+        return true;
     }
 
     @Override

@@ -48,7 +48,11 @@ public class InstVarNode implements JotlinTree {
 
     @Override
     public boolean validate() throws Exception {
-        return amod.validate() && type.validate() && id.validate() && nl.validate();
+        if (!amod.validate() || !type.validate() || !id.validate() || !nl.validate()) {
+            return false;
+        }
+        SymbolTable.declare(id.getId(), type.getValue());
+        return true;
     }
 
     @Override
