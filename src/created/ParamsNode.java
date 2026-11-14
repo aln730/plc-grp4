@@ -25,10 +25,6 @@ public class ParamsNode implements JotlinTree{
         }
         return new ParamsNode(params);
     }
-
-    public int size() {
-        return params.size();
-    }
     
     public String getParamType(int index) {
         return params.get(index).getReturnType();
