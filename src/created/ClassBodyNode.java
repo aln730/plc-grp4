@@ -121,21 +121,20 @@ public class ClassBodyNode implements JotlinTree {
                 }
             }
             for (InstVarNode instVar : instVars) {
-                if (instVar == null || !instVar.validate()) {
-                    return false;
-                }
+            if (instVar == null || !instVar.validate()) {
+                return false;
             }
-            for (ConstNode constant : constants) {
-                if (constant == null || !constant.validate()) {
-                    return false;
-                }
-                constant.registerConst();
+        }
+        for (ConstNode constant : constants) {
+            if (constant == null || !constant.validate()) {
+                return false;
             }
-            for (FuncDefNode function : functions) {
-                if (function == null || !function.validate()) {
-                    return false;
-                }
+        }
+        for (FuncDefNode function : functions) {
+            if (function == null || !function.validate()) {
+                return false;
             }
+        }
         } finally {
             SymbolTable.popScope();
         }

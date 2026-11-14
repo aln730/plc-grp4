@@ -114,13 +114,6 @@ public class FBodyNode implements JotlinTree {
         return returnVal == null ? null : returnVal.getReturnType();
     }
 
-    public String evaluateValue() {
-        if (returnVal == null) {
-            return null;
-        }
-        return returnVal.evaluateValue();
-    }
-
     @Override
     public boolean validate() throws Exception {
         SymbolTable.pushScope();   // locals live in their own scope, so they may reuse a parameter's name

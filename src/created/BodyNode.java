@@ -80,14 +80,6 @@ public class BodyNode implements JotlinTree {
         return returnNode == null || returnNode.validate();
     }
 
-    public String evaluateValue() {
-        if (returnNode == null) {
-            return null;
-        }
-
-        return returnNode.evaluateValue();
-    }
-
     @Override
     public String convertToJava() {
         StringBuilder result = new StringBuilder();

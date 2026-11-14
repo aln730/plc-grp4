@@ -29,13 +29,6 @@ public class ReturnNode implements JotlinTree {
         return new ReturnNode(expr, nl);
     }
 
-    public String evaluateValue() {
-        if (expr == null) {
-            return null;
-        }
-        return expr.evaluateValue();
-    }
-
     @Override
     public boolean validate() throws Exception {
         if (expr == null) {
