@@ -80,39 +80,104 @@ public class ExprNode implements JotlinTree{
 
     @Override
     public boolean validate() throws Exception {
-        if(node1 == null) {
+        if (node1 == null) {
             return false;
         }
-        if(node2 == null) {
-            return node1.validate();
+        if (!node1.validate()) {
+            return false;
         }
-        if (!node1.validate() || !op.validate() || !node2.validate()) {
+        if (node2 == null) {
+            return true;
+        }
+        if (!op.validate() || !node2.validate()) {
+            return false;
+        }
+        if (!(node1 instanceof OperandNode) ||
+            !(node2 instanceof OperandNode)) {
             return false;
         }
 
         OperandNode op1 = (OperandNode) node1;
         OperandNode op2 = (OperandNode) node2;
+
         String type1 = op1.evaluateType();
         String type2 = op2.evaluateType();
 
         if (type1 == null || type2 == null) {
             return false;
         }
-        if (!type1.equals(type2) || !(type1.equals("Integer") || type1.equals("Double"))) {
+
+        if (!type1.equals(type2)) {
             return false;
         }
-        if (op instanceof MathOpNode && ((MathOpNode) op).getToken().equals("/")) {
-            String val = op2.evaluateValue();
 
-            if (val != null) {
+        if (!type1.equals("Integer") && !type1.equals("Double")) {
+            return false;
+        }
+
+        if (op instanceof MathOpNode &&
+            ((MathOpNode) op).getToken().equals("/")) {
+
+            String value = op2.evaluateValue();
+
+            if (value != null) {
                 try {
-                    if (Double.parseDouble(val) == 0.0) {
-                        return false;
+                    if (Double.parseDouble(value) == 0.0) {
+                        throw new IllegalArgumentException(
+                            "Division by zero"
+                        );
                     }
-                } catch (NumberFormatException ignored) {}
+                } catch (NumberFormatException e) {
+                    return false;
+                }
             }
         }
+
         return true;
+    }
+
+    public String evaluateValue() {
+        if (node1 == null) {
+            return null;
+        }
+
+        if (node2 == null) {
+            if (node1 instanceof OperandNode) {
+                return ((OperandNode) node1).evaluateValue();
+            }
+
+            return null;
+        }
+        if (!(op instanceof MathOpNode)) {
+            return null;
+        }
+
+        OperandNode left = (OperandNode) node1;
+        OperandNode right = (OperandNode) node2;
+        String value1 = left.evaluateValue();
+        String value2 = right.evaluateValue();
+
+        if (value1 == null || value2 == null) {
+            return null;
+        }
+        double a = Double.parseDouble(value1);
+        double b = Double.parseDouble(value2);
+
+        switch (((MathOpNode) op).getToken()) {
+            case "+":
+                return String.valueOf(a + b);
+            case "-":
+                return String.valueOf(a - b);
+            case "*":
+                return String.valueOf(a * b);
+            case "/":
+                if (b == 0.0) {
+                    throw new ArithmeticException("Division by zero");
+                }
+                return String.valueOf(a / b);
+            default:
+                return null;
+        }
     }
 
     public String getReturnType() {

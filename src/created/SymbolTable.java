@@ -6,14 +6,21 @@ import java.util.HashMap;
 public class SymbolTable {
     private static final ArrayList<HashMap<String, String>> scopes = new ArrayList<>();
 
+    private static final ArrayList<HashMap<String, String>> values =
+        new ArrayList<>();
+
     // Stores the function's parameters and the type of what it should return
     public static class FunctionInfo {
         public final ArrayList<String> paramTypes;
         public final String returnType;
+        public final FuncDefNode definition;
 
-        public FunctionInfo(ArrayList<String> paramTypes, String returnType) {
+        public FunctionInfo(ArrayList<String> paramTypes,
+                            String returnType,
+                            FuncDefNode definition) {
             this.paramTypes = paramTypes;
             this.returnType = returnType;
+            this.definition = definition;
         }
     }
 
@@ -24,6 +31,7 @@ public class SymbolTable {
     // Resets variables to ensure that old code doesn't override new code
     public static void reset() {
         scopes.clear();
+        values.clear();
         functions.clear();
         currReturn = null;
         addBuiltins();
@@ -53,11 +61,23 @@ public class SymbolTable {
     // If there is a new scope (function body or if/while statements), add a new scope
     public static void pushScope() {
         scopes.add(new HashMap<>());
+        values.add(new HashMap<>());
     }
 
     // When exiting statement or function body, removes the scope
     public static void popScope() {
         scopes.remove(scopes.size() - 1);
+        values.remove(values.size() - 1);
+    }
+
+    public static void setValue(String name, String value) {
+        for (int i = values.size() - 1; i >= 0; i--) {
+            if (values.get(i).containsKey(name)) {
+                values.get(i).put(name, value);
+                return;
+            }
+        }
+        throw new IllegalStateException("Variable not declared: " + name);
     }
 
     // Declares a new variable 
@@ -68,7 +88,23 @@ public class SymbolTable {
         if (scopes.get(scopes.size() - 1).containsKey(name)) {
             throw new IllegalStateException("Variable has already been declared: " + name);
         }
-        scopes.get(scopes.size() - 1). put(name, type);
+        scopes.get(scopes.size() - 1).put(name, type);
+        values.get(values.size() - 1).put(name, null);
+    }
+
+    public static void declare(String name, String type, String value) {
+        declare(name, type);
+        setValue(name, value);
+    }
+
+    public static String valueOf(String name) {
+        for (int i = values.size() - 1; i >= 0; i--) {
+            if (values.get(i).containsKey(name)) {
+                return values.get(i).get(name);
+            }
+        }
+
+        return null;
     }
 
     public static String typeOf(String name) {

@@ -50,10 +50,10 @@ public class IdentifierNode implements JotlinTree{
     }
 
     public String evaluateValue() {
-        if (token1 == null) {
-            return token2.getToken();
+        if (token1 == null || token1.getToken().equals("Self")) {
+            return SymbolTable.valueOf(token2.getToken());
         }
-        return token1.getToken() + "." + token2.getToken();
+        return null;
     }
 
     public String evaluateType() {

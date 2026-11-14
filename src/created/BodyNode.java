@@ -61,7 +61,11 @@ public class BodyNode implements JotlinTree {
         int i = skipTabs(t);
         return i < t.size() && t.get(i).getTokenType() == TokenType.L_Arrow;
     }
+
     public String getReturnType() {
+        if (returnNode == null) {
+            return null;
+        }
         return returnNode.getReturnType();
     }
 
@@ -73,6 +77,14 @@ public class BodyNode implements JotlinTree {
             }
         }
         return returnNode == null || returnNode.validate();
+    }
+
+    public String evaluateValue() {
+        if (returnNode == null) {
+            return null;
+        }
+
+        return returnNode.evaluateValue();
     }
 
     @Override

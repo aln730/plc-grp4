@@ -104,8 +104,16 @@ public class FBodyNode implements JotlinTree {
         int i = skipTabs(t);
         return i < t.size() && t.get(i).getTokenType() == TokenType.L_Arrow;
     }
+
     public String getReturnType() {
         return returnVal.getReturnType();
+    }
+
+    public String evaluateValue() {
+        if (returnVal == null) {
+            return null;
+        }
+        return returnVal.evaluateValue();
     }
 
     @Override
