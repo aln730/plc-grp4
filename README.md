@@ -44,5 +44,15 @@ In phase two we implemented all the nodes representing different parts of the gr
 
 
 # Phase 3:
+In phase three the analyzer was implemented which takes and traverses through the JotlinTree created in phase two. The analyzer checks the tree and validates the nodes to make sure that semantic rules were followed. This includes variable declaration checking, verifying variable types, and validating the expressions and function calls.
+**To Build**:
+- **1:** Navigate to project root directory
+- **(Windows) 2:** Run javac -d out src/created/*.java src/provided/*.java
+- **(Windows) 3:** Run java -cp out provided.JotlinMain src/morePhase3Examples/*.jott
+- **(Linux) 2:** Run javac -d out src/created/*.java src/provided/*.java
+- **(Linux) 3:** Run java -cp out provided.JotlinMain src/morePhase3Examples/*.jott
+- **(Mac) 2:** Run javac -d out src/created/*.java src/provided/*.java
+- **(Mac) 3:** Run java -cp out provided.JotlinMain src/morePhase3Examples/*.jott
+
 # Phase 4:
 # Notes Section:
