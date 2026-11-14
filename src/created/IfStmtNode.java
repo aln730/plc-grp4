@@ -96,8 +96,7 @@ public class IfStmtNode implements JotlinTree {
         if (!condition.validate()) return false;
 
         String conditionType = condition.getReturnType();
-        if (!"Boolean".equals(conditionType)
-                && !SymbolTable.isIncludedClass(conditionType)) {
+        if (!"Boolean".equals(conditionType)) {
             return false;
         }
         SymbolTable.pushScope();
