@@ -79,9 +79,9 @@ public class ConstNode implements JotlinTree{
     }
 
     public void registerConst() {
-        SymbolTable.addFunction(
-            keyword.getValue(),
-            new SymbolTable.FunctionInfo(params.getTypes(), body.getReturnType())
-        );
-    }
+    SymbolTable.addFunction(
+        keyword.getValue(),
+        new SymbolTable.FunctionInfo(params.getTypes(), body.getReturnType(), null)
+    );
+}
 }

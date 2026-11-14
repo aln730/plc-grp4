@@ -8,5 +8,7 @@ public class JotlinMain {
         SymbolTable.reset();
         JotlinTree tree = JotlinParser.parse(JotlinTokenizer.tokenize(args[0]));
         JotlinAnalyzer.analyze(tree);
+        
+        System.out.println(tree.convertToJava());
     }
 }

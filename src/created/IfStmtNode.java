@@ -93,9 +93,9 @@ public class IfStmtNode implements JotlinTree {
 
     @Override
     public boolean validate() throws Exception {
-        if (!condition.validate() || !"Boolean".equals(condition.getReturnType())) {
-            return false;
-        }
+        if (!condition.validate()) return false;
+
+        if (!"Boolean".equals(condition.getReturnType())) return false;
         SymbolTable.pushScope();
         try {
             if (!body.validate()) {

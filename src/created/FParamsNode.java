@@ -42,6 +42,14 @@ public class FParamsNode implements JotlinTree{
         return types;
     }
 
+    public ArrayList<String> getNames() {
+        ArrayList<String> names = new ArrayList<>();
+        for (FParamNode p : params) {
+            names.add(p.getName());
+        }
+        return names;
+    }
+
     @Override
     public boolean validate() throws Exception {
         for(FParamNode param:params) {

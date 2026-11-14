@@ -41,22 +41,55 @@ public class FunccallNode implements JotlinTree {
     }
 
     public String evaluateType() {
-        return SymbolTable.getFunctionName(name.evaluateValue()).returnType;
+        SymbolTable.FunctionInfo info = SymbolTable.getFunctionName(name.getMemberName());
+        return info == null ? null : info.returnType;
     }
 
     public String evaluateValue() {
-        return null;
+        SymbolTable.FunctionInfo info =
+            SymbolTable.getFunctionName(name.evaluateValue());
+
+        if (info == null) {
+            throw new IllegalArgumentException("Function is undefined");
+        }
+
+        ArrayList<String> arguments = params.evaluateValues();
+
+        if (arguments.size() != info.paramTypes.size()) {
+            throw new IllegalArgumentException(
+                "Incorrect number of arguments"
+            );
+        }
+
+        for (int i = 0; i < arguments.size(); i++) {
+            if (arguments.get(i) == null) {
+                throw new IllegalArgumentException(
+                    "Function argument has no value"
+                );
+            }
+
+            String actualType = params.getParamType(i);
+            String expectedType = info.paramTypes.get(i);
+
+            if (!expectedType.equals(actualType)) {
+                throw new IllegalArgumentException(
+                    "Incorrect argument type"
+                );
+            }
+        }
+        return info.definition.evaluateValue(arguments);
     }
 
     @Override
     public boolean validate() throws Exception {
-        SymbolTable.FunctionInfo info = SymbolTable.getFunctionName(name.evaluateValue());
-        if (info == null || !params.validate()) {
-            return false;
-        }
-        return true;
-    }
+        if (!params.validate()) return false;
 
+        String functionName = name.evaluateValue();
+        if (functionName == null) functionName = name.getMemberName();
+
+        return SymbolTable.getFunctionName(functionName) != null
+                || name.evaluateValue() == null;
+    }
     @Override
     public String convertToJava() {
         return name.convertToJava() + "(" + params.convertToJava() + ")";

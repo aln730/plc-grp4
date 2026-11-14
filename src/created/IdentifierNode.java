@@ -43,18 +43,22 @@ public class IdentifierNode implements JotlinTree{
     }
 
     public String getType() {
-        if (token1 == null || token1.getToken().equals("Self")) {
-            return SymbolTable.typeOf(token2.getToken());
-        }
-        throw new IllegalStateException("No type determined");
+        return SymbolTable.typeOf(token2.getToken());
     }
 
     public String evaluateValue() {
-        return token1 == null ? token2.getToken() : null;
+        if (token1 == null || token1.getToken().equals("Self")) {
+            return SymbolTable.valueOf(token2.getToken());
+        }
+        return null;
     }
 
     public String evaluateType() {
         return getType();
+    }
+
+    public String getMemberName() {
+        return token2.getToken();
     }
 
     @Override

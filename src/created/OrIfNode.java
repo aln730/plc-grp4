@@ -54,7 +54,10 @@ public class OrIfNode implements JotlinTree {
 
     @Override
     public boolean validate() throws Exception {
-        return depth >= 1 && expr.validate() && body.validate();
+        return depth >= 1
+                && expr.validate()
+                && "Boolean".equals(expr.getReturnType())
+                && body.validate();
     }
 
     @Override
