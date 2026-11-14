@@ -95,10 +95,6 @@ public class ExprNode implements JotlinTree{
         String type1 = op1.evaluateType();
         String type2 = op2.evaluateType();
 
-        System.out.println("Left operand type: " + type1);
-        System.out.println("Right operand type: " + type2);
-        System.out.println("Types match: " + type1.equals(type2));
-
         if (type1 == null || type2 == null) {
             return false;
         }
