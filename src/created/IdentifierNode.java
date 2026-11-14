@@ -66,10 +66,7 @@ public class IdentifierNode implements JotlinTree{
     }
 
     public String evaluateValue() {
-        if (token1 == null || token1.getToken().equals("Self")) {
-            return SymbolTable.valueOf(token2.getToken());
-        }
-        return null;
+        return token1 == null ? token2.getToken() : null;
     }
 
     public String evaluateType() {
