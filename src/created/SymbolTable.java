@@ -38,12 +38,12 @@ public class SymbolTable {
     }
 
     private static void addBuiltins() {
-        functions.put("Printer.display", new FunctionInfo(list("Any"), "void"));
-        functions.put("List.add", new FunctionInfo(list("Any"), "void"));
-        functions.put("List.first", new FunctionInfo(list(), null));
-        functions.put("List.last", new FunctionInfo(list(), null));
-        functions.put("List.pop", new FunctionInfo(list(), null));
-        functions.put("List.count", new FunctionInfo(list(), "Integer"));
+        functions.put("Printer.display", new FunctionInfo(list("Any"), "void", null));
+        functions.put("List.add", new FunctionInfo(list("Any"), "void", null));
+        functions.put("List.first", new FunctionInfo(list(), null, null));
+        functions.put("List.last", new FunctionInfo(list(), null, null));
+        functions.put("List.pop", new FunctionInfo(list(), null, null));
+        functions.put("List.count", new FunctionInfo(list(), "Integer", null));
     }
 
     private static ArrayList<String> list(String... types) {
