@@ -26,6 +26,9 @@ public class SymbolTable {
         scopes.clear();
         functions.clear();
         currReturn = null;
+        currClass = null;
+        includes.clear();
+        constructors.clear();
     }
 
     // If there is a new scope (function body or if/while statements), add a new scope
@@ -72,5 +75,26 @@ public class SymbolTable {
 
     public static String getCurrReturn() {
         return currReturn;
+    }
+
+    private static String currClass;
+    private static final java.util.HashSet<String> includes = new java.util.HashSet<>();
+    private static final java.util.ArrayList<java.util.ArrayList<String>> constructors = new java.util.ArrayList<>();
+
+    public static void setCurrClass(String c) { currClass = c; }
+    public static String getCurrClass() { return currClass; }
+    public static void addInclude(String c) { includes.add(c); }
+    public static void addConstructor(java.util.ArrayList<String> types) { constructors.add(types); }
+    public static java.util.ArrayList<java.util.ArrayList<String>> getConstructors() { return constructors; }
+
+    // builtin types, List, this class, or an included class
+    public static boolean isKnownClass(String type) {
+        if (type == null) { return false; }
+        switch (type) {
+            case "Integer": case "Double": case "String": case "Bool": case "Boolean": case "List":
+                return true;
+            default:
+                return type.equals(currClass) || includes.contains(type);
+        }
     }
 }

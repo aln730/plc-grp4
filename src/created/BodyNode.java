@@ -14,15 +14,19 @@ public class BodyNode implements JotlinTree {
     }
 
     public static BodyNode parse(ArrayList<JotlinToken> tokens) {
+        return parse(tokens, 0);
+    }
+
+    public static BodyNode parse(ArrayList<JotlinToken> tokens, int minDepth) {
         ArrayList<BodyStmtNode> statements = new ArrayList<>();
         skipBlankLines(tokens);
-        while (nextIsBodyStmt(tokens)) {
+        while (skipTabs(tokens) >= minDepth && nextIsBodyStmt(tokens)) {
             statements.add(BodyStmtNode.parse(tokens));
             skipBlankLines(tokens);
         }
         ReturnNode returnNode = null;
         TabNode tabs = null;
-        if (nextIsReturn(tokens)) {
+        if (skipTabs(tokens) >= minDepth && nextIsReturn(tokens)) {
             tabs = TabNode.parse(tokens);
             returnNode = ReturnNode.parse(tokens);
             skipBlankLines(tokens);
@@ -107,5 +111,17 @@ public class BodyNode implements JotlinTree {
             result.append(returnNode.convertToJotlin());
         }
         return result.toString();
+    }
+
+    public boolean isReturnable() {
+        if (returnNode != null && returnNode.hasReturn()) {
+            return true;
+        }
+        for (BodyStmtNode s : statements) {
+            if (s != null && s.isReturnable()) {
+                return true;
+            }
+        }
+        return false;
     }
 }

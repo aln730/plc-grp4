@@ -72,6 +72,7 @@ public class ClassDefNode implements JotlinTree {
 
     @Override
     public boolean validate() throws Exception {
+        SymbolTable.setCurrClass(moduleName == null ? null : moduleName.getToken());
         return classBody != null && classBody.validate() && moduleName != null && !moduleName.getToken().isEmpty() 
         && subclassName != null && !subclassName.getToken().isEmpty();
     }

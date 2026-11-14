@@ -64,4 +64,8 @@ public class ReturnNode implements JotlinTree {
         return null;
 
     }
+
+    public boolean hasReturn() {
+        return expr != null;
+    }
 }

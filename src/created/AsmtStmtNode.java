@@ -65,16 +65,53 @@ public class AsmtStmtNode implements JotlinTree {
         if (!tabs.validate() || !id.validate()) {
             return false;
         }
-
         String varType = id.getType();
-
         if (expr != null) {
-            return expr.validate() && varType.equals(expr.getReturnType());
+            if (!expr.validate()) {
+                return false;
+            }
+            return varType == null || varType.equals(expr.getReturnType());
         }
         if (params != null && !params.validate()) {
             return false;
         }
-        return varType.equals(className.getValue());
+        String created = className.getValue();
+        if (varType != null && !varType.equals(created) && SymbolTable.isKnownClass(varType)) {
+            return false;   // a class we know about is assigned a different class
+        }
+        return constructorMatches(created);
+    }
+
+    private static boolean sameTypes(ArrayList<String> expected, ArrayList<String> given) {
+        if (expected.size() != given.size()) {
+            return false;
+        }
+        for (int i = 0; i < expected.size(); i++) {
+            if (given.get(i) != null && !given.get(i).equals(expected.get(i))) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private boolean constructorMatches(String created) {
+        ArrayList<String> given = params == null ? new ArrayList<>() : params.getTypes();
+        if (created.equals("List")) {
+            return given.isEmpty();
+        }
+        if (!created.equals(SymbolTable.getCurrClass())) {
+            return true;   // constructors of other classes are virtual until linking (phase 4)
+        }
+        ArrayList<ArrayList<String>> constructors = SymbolTable.getConstructors();
+        if (constructors.isEmpty()) {
+            return given.isEmpty();
+        }
+        for (ArrayList<String> c : constructors) {
+            if (sameTypes(c, given)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     @Override

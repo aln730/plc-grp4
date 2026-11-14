@@ -104,6 +104,7 @@ public class ExprNode implements JotlinTree{
         if (op instanceof MathOpNode && !type1.equals("Integer") && !type1.equals("Double")) return false;
         if (op instanceof MathOpNode && ((MathOpNode) op).getToken().equals("/")) {
             String val = op2.evaluateValue();
+        }
 
             if (val != null) {
                 try {

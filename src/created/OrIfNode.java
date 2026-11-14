@@ -48,7 +48,7 @@ public class OrIfNode implements JotlinTree {
             tokens.remove(0);
         }
 
-        BodyNode body = BodyNode.parse(tokens);
+        BodyNode body = BodyNode.parse(tokens, depth + 1);
         return new OrIfNode(depth, expr, body);
     }
 
@@ -68,5 +68,9 @@ public class OrIfNode implements JotlinTree {
     @Override
     public String convertToJotlin() {
         return "\t".repeat(depth) + "OrIf[" + expr.convertToJotlin() + "]\n" + body.convertToJotlin();
+    }
+
+    public boolean isReturnable() {
+        return body.isReturnable();
     }
 }

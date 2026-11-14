@@ -115,6 +115,11 @@ public class ClassBodyNode implements JotlinTree {
                 }
                 function.registerFunc();
             }
+            for (ConstNode constant : constants) {
+                if (constant != null) {
+                    constant.registerConst();
+                }
+            }
             for (InstVarNode instVar : instVars) {
             if (instVar == null || !instVar.validate()) {
                 return false;

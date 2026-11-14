@@ -17,6 +17,10 @@ public class WhileNode implements JotlinTree{
     }
     
     public static WhileNode parse(ArrayList<JotlinToken> tokens){
+        int depth = 0;
+        while (depth < tokens.size() && tokens.get(depth).getTokenType() == TokenType.Indent) {
+            depth++;
+        }
         TabNode tabs = TabNode.parse(tokens);
         JotlinToken first = tokens.get(0);
         if(first.getTokenType() != TokenType.Keyword || !first.getToken().equals("While")){
@@ -39,7 +43,7 @@ public class WhileNode implements JotlinTree{
             tokens.remove(0);
         }
         
-        BodyNode body = BodyNode.parse(tokens);
+        BodyNode body = BodyNode.parse(tokens, depth + 1);
         return new WhileNode(tabs,expr, body);
     }
 

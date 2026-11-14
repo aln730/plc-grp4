@@ -31,7 +31,7 @@ public class OtherwiseNode implements JotlinTree {
         while (!tokens.isEmpty() && tokens.get(0).getTokenType() == TokenType.LineEnd) {
             tokens.remove(0);
         }
-        BodyNode body = BodyNode.parse(tokens);
+        BodyNode body = BodyNode.parse(tokens, depth + 1);
         return new OtherwiseNode(depth, body);
     }
 
@@ -56,5 +56,9 @@ public class OtherwiseNode implements JotlinTree {
     @Override
     public String convertToJotlin() {
         return "\t".repeat(depth) + "Otherwise\n" + body.convertToJotlin();
+    }
+
+    public boolean isReturnable() {
+        return body.isReturnable();
     }
 }
