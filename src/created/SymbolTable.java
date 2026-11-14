@@ -1,86 +1,47 @@
+
 package created;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 
 public class SymbolTable {
     private static final ArrayList<HashMap<String, String>> scopes = new ArrayList<>();
 
-    private static final ArrayList<HashMap<String, String>> values =
-        new ArrayList<>();
-
-    // Stores the function's parameters and the type of what it should return
     public static class FunctionInfo {
         public final ArrayList<String> paramTypes;
         public final String returnType;
-        public final FuncDefNode definition;
 
-        public FunctionInfo(ArrayList<String> paramTypes,
-                            String returnType,
-                            FuncDefNode definition) {
+        public FunctionInfo(ArrayList<String> paramTypes, String returnType) {
             this.paramTypes = paramTypes;
             this.returnType = returnType;
-            this.definition = definition;
         }
     }
 
-    // HashMap that holds all of the existing functions 
     private static final HashMap<String, FunctionInfo> functions = new HashMap<>();
     private static String currReturn;
+    private static String currClass;
 
-    // Resets variables to ensure that old code doesn't override new code
+    private static final HashSet<String> includes = new HashSet<>();
+    private static final ArrayList<ArrayList<String>> constructors = new ArrayList<>();
+
     public static void reset() {
         scopes.clear();
-        values.clear();
         functions.clear();
         currReturn = null;
-        addBuiltins();
+        currClass = null;
+        includes.clear();
+        constructors.clear();
     }
 
-    private static void addBuiltins() {
-        functions.put("Printer.display", new FunctionInfo(list("Any"), "void", null));
-        functions.put("List.add", new FunctionInfo(list("Any"), "void", null));
-        functions.put("List.first", new FunctionInfo(list(), null, null));
-        functions.put("List.last", new FunctionInfo(list(), null, null));
-        functions.put("List.pop", new FunctionInfo(list(), null, null));
-        functions.put("List.count", new FunctionInfo(list(), "Integer", null));
-    }
-
-    private static ArrayList<String> list(String... types) {
-        ArrayList<String> lst = new ArrayList<>();
-        for(String t : types) {
-            lst.add(t);
-        }
-        return lst;
-    }
-
-    public static boolean isBuiltinClass(String name) {
-        return name.equals("Printer") || name.equals("List");
-    }
-
-    // If there is a new scope (function body or if/while statements), add a new scope
     public static void pushScope() {
         scopes.add(new HashMap<>());
-        values.add(new HashMap<>());
     }
 
-    // When exiting statement or function body, removes the scope
     public static void popScope() {
         scopes.remove(scopes.size() - 1);
-        values.remove(values.size() - 1);
     }
 
-    public static void setValue(String name, String value) {
-        for (int i = values.size() - 1; i >= 0; i--) {
-            if (values.get(i).containsKey(name)) {
-                values.get(i).put(name, value);
-                return;
-            }
-        }
-        throw new IllegalStateException("Variable not declared: " + name);
-    }
-
-    // Declares a new variable 
     public static void declare(String name, String type) {
         if (scopes.isEmpty()) {
             throw new IllegalStateException("No scope has been declared");
@@ -89,22 +50,6 @@ public class SymbolTable {
             throw new IllegalStateException("Variable has already been declared: " + name);
         }
         scopes.get(scopes.size() - 1).put(name, type);
-        values.get(values.size() - 1).put(name, null);
-    }
-
-    public static void declare(String name, String type, String value) {
-        declare(name, type);
-        setValue(name, value);
-    }
-
-    public static String valueOf(String name) {
-        for (int i = values.size() - 1; i >= 0; i--) {
-            if (values.get(i).containsKey(name)) {
-                return values.get(i).get(name);
-            }
-        }
-
-        return null;
     }
 
     public static String typeOf(String name) {
@@ -130,5 +75,48 @@ public class SymbolTable {
 
     public static String getCurrReturn() {
         return currReturn;
+    }
+
+    public static void setCurrClass(String c) {
+        currClass = c;
+    }
+
+    public static String getCurrClass() {
+        return currClass;
+    }
+
+    public static void addInclude(String c) {
+        includes.add(c);
+    }
+
+    public static boolean isIncludedClass(String type) {
+        return type != null && includes.contains(type);
+    }
+
+    public static boolean canDeferTypeMismatch(String type1, String type2) {
+        return isIncludedClass(type1) || isIncludedClass(type2);
+    }
+
+    public static boolean isKnownClass(String type) {
+        if (type == null) return false;
+        switch (type) {
+            case "Integer":
+            case "Double":
+            case "String":
+            case "Bool":
+            case "Boolean":
+            case "List":
+                return true;
+            default:
+                return type.equals(currClass) || includes.contains(type);
+        }
+    }
+
+    public static void addConstructor(ArrayList<String> types) {
+        constructors.add(types);
+    }
+
+    public static ArrayList<ArrayList<String>> getConstructors() {
+        return constructors;
     }
 }

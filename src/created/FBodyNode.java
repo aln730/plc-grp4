@@ -123,6 +123,15 @@ public class FBodyNode implements JotlinTree {
 
     @Override
     public boolean validate() throws Exception {
+        SymbolTable.pushScope();   // locals live in their own scope, so they may reuse a parameter's name
+        try {
+            return validateBody();
+        } finally {
+            SymbolTable.popScope();
+        }
+    }
+
+    private boolean validateBody() throws Exception {
         for (VarDecNode varDec : varDecNodes) {
             if (!varDec.validate()) {
                 return false;
@@ -176,5 +185,17 @@ public class FBodyNode implements JotlinTree {
             jotlin += newLines.convertToJotlin();
         }
         return jotlin;
+    }
+
+    public boolean isReturnable() {
+        if (returnVal != null && returnVal.hasReturn()) {
+            return true;
+        }
+        for (BodyStmtNode s : bodyStmtNodes) {
+            if (s != null && s.isReturnable()) {
+                return true;
+            }
+        }
+        return false;
     }
 }

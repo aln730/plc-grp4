@@ -38,7 +38,7 @@ public class ConstNode implements JotlinTree{
     public boolean validate() throws Exception {
         SymbolTable.pushScope();
         try{
-            return node.validate() && keyword.validate() && params.validate() && body.validate() && newLine.validate() && keyword.getValue().equals(body.getReturnType());
+            return node.validate() && keyword.validate() && params.validate() && body.validate() && newLine.validate() && keyword.getValue().equals(SymbolTable.getCurrClass());
         } finally  {
             SymbolTable.popScope();
         }
@@ -79,9 +79,6 @@ public class ConstNode implements JotlinTree{
     }
 
     public void registerConst() {
-    SymbolTable.addFunction(
-        keyword.getValue(),
-        new SymbolTable.FunctionInfo(params.getTypes(), body.getReturnType(), null)
-    );
-}
+        SymbolTable.addConstructor(params.getTypes());
+    }
 }

@@ -41,7 +41,7 @@ public class IfStmtNode implements JotlinTree {
         expect(tokens, TokenType.LineEnd, "end of line");
         skipNewlines(tokens);
 
-        BodyNode body = BodyNode.parse(tokens);
+        BodyNode body = BodyNode.parse(tokens, depth + 1);
 
         ArrayList<OrIfNode> orIfs = new ArrayList<>();
         while (nextLineStartsWith(tokens, depth, "OrIf")) {
@@ -95,7 +95,12 @@ public class IfStmtNode implements JotlinTree {
     public boolean validate() throws Exception {
         if (!condition.validate()) return false;
 
-        if (!"Boolean".equals(condition.getReturnType())) return false;
+        String conditionType = condition.getReturnType();
+
+        if (!"Boolean".equals(conditionType)
+                && !SymbolTable.isIncludedClass(conditionType)) {
+            return false;
+        }
         SymbolTable.pushScope();
         try {
             if (!body.validate()) {
@@ -138,5 +143,17 @@ public class IfStmtNode implements JotlinTree {
             sb.append(otherwise.convertToJotlin());
         }
         return sb.toString();
+    }
+
+    public boolean isReturnable() {
+        if (otherwise == null || !body.isReturnable() || !otherwise.isReturnable()) {
+            return false;
+        }
+        for (OrIfNode o : orIfs) {
+            if (!o.isReturnable()) {
+                return false;
+            }
+        }
+        return true;
     }
 }

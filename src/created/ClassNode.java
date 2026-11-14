@@ -39,6 +39,7 @@ public class ClassNode implements JotlinTree {
             if (include == null || !include.validate()) {
                 return false;
             }
+            SymbolTable.addInclude(include.getName());
         }
         return classDef != null && classDef.validate();
     }

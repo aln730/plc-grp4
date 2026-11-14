@@ -113,7 +113,13 @@ public class FuncDefNode implements JotlinTree{
             if (!rtrn.validate()) {
                 return false;
             }
-            return body.validate();
+            System.out.println(id.getToken() + " returnable: " + body.isReturnable());
+            if (rtrn.getType() != null && !body.isReturnable()) {
+                return false;
+            }
+            boolean valid = body.validate();
+            System.out.println(id.getToken() + " body valid: " + valid);
+            return valid;
         } finally {
             SymbolTable.setCurrReturn(null);
             SymbolTable.popScope();

@@ -75,5 +75,16 @@ public class ParamsNode implements JotlinTree{
         }
         return true;
     }
-}
 
+    public int size() {
+        return params.size();
+    }
+
+    public ArrayList<String> getTypes() {
+        ArrayList<String> types = new ArrayList<>();
+        for (ExprNode e : params) {
+            types.add(e.getReturnType());
+        }
+        return types;
+    }
+}

@@ -76,4 +76,8 @@ public class BodyStmtNode implements JotlinTree {
         }
         return out;
     }
+
+    public boolean isReturnable() {
+        return statement instanceof IfStmtNode && ((IfStmtNode) statement).isReturnable();
+    }
 }

@@ -52,4 +52,6 @@ public class IncludeNode implements JotlinTree {
     public String convertToJotlin() {
         return "Include " +  (id != null ?  id.getToken():"") + ";" + nl.convertToJotlin();
     }
+
+    public String getName() { return id.getToken(); }
 }
