@@ -62,38 +62,8 @@ public class FuncDefNode implements JotlinTree{
         return types;
     }
 
-    public String evaluateValue(ArrayList<String> arguments) {
-        ArrayList<FParamNode> parameters = params.getParams();
-
-        if (arguments.size() != parameters.size()) {
-            throw new IllegalArgumentException("Incorrect number of arguments");
-        }
-        SymbolTable.pushScope();
-        try {
-            for (int i = 0; i < parameters.size(); i++) {
-                FParamNode parameter = parameters.get(i);
-
-                SymbolTable.declare(
-                    parameter.getName(),
-                    parameter.getType(),
-                    arguments.get(i)
-                );
-            }
-
-            return body.evaluateValue();
-
-        } finally {
-            SymbolTable.popScope();
-        }
-    }
-
     public void registerFunc() {
-    SymbolTable.addFunction(id.getToken(),
-        new SymbolTable.FunctionInfo(
-            params.getTypes(),
-            rtrn.getType(),
-            this
-        ));
+        SymbolTable.addFunction(id.getToken(), new SymbolTable.FunctionInfo(params.getTypes(), rtrn.getType()));
     }
 
     @Override
@@ -113,13 +83,10 @@ public class FuncDefNode implements JotlinTree{
             if (!rtrn.validate()) {
                 return false;
             }
-            System.out.println(id.getToken() + " returnable: " + body.isReturnable());
             if (rtrn.getType() != null && !body.isReturnable()) {
-                return false;
+                return false;   // declared a return type but not every path returns
             }
-            boolean valid = body.validate();
-            System.out.println(id.getToken() + " body valid: " + valid);
-            return valid;
+            return body.validate();
         } finally {
             SymbolTable.setCurrReturn(null);
             SymbolTable.popScope();
