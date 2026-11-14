@@ -98,13 +98,20 @@ public class ExprNode implements JotlinTree{
         if (type1 == null || type2 == null) {
             return false;
         }
+
         if (!type1.equals(type2)) {
+            if (!(op instanceof RelOpNode &&
+                    SymbolTable.canDeferTypeMismatch(type1, type2))) {
+                return false;
+            }
+        }
+
+        if (op instanceof MathOpNode &&
+                (!type1.equals("Integer") && !type1.equals("Double"))) {
             return false;
         }
-        if (op instanceof MathOpNode && !type1.equals("Integer") && !type1.equals("Double")) return false;
         if (op instanceof MathOpNode && ((MathOpNode) op).getToken().equals("/")) {
             String val = op2.evaluateValue();
-        }
 
             if (val != null) {
                 try {

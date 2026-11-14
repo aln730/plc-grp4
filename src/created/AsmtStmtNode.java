@@ -70,7 +70,10 @@ public class AsmtStmtNode implements JotlinTree {
             if (!expr.validate()) {
                 return false;
             }
-            return varType == null || varType.equals(expr.getReturnType());
+            String exprType = expr.getReturnType();
+
+            return varType == null || varType.equals(exprType)
+                    || SymbolTable.canDeferTypeMismatch(varType, exprType);
         }
         if (params != null && !params.validate()) {
             return false;
@@ -87,7 +90,8 @@ public class AsmtStmtNode implements JotlinTree {
             return false;
         }
         for (int i = 0; i < expected.size(); i++) {
-            if (given.get(i) != null && !given.get(i).equals(expected.get(i))) {
+            if (given.get(i) != null && !given.get(i).equals(expected.get(i))
+                    && !SymbolTable.canDeferTypeMismatch(expected.get(i), given.get(i))) {
                 return false;
             }
         }
@@ -100,7 +104,7 @@ public class AsmtStmtNode implements JotlinTree {
             return given.isEmpty();
         }
         if (!created.equals(SymbolTable.getCurrClass())) {
-            return true;   // constructors of other classes are virtual until linking (phase 4)
+            return true;
         }
         ArrayList<ArrayList<String>> constructors = SymbolTable.getConstructors();
         if (constructors.isEmpty()) {

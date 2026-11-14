@@ -95,7 +95,11 @@ public class IfStmtNode implements JotlinTree {
     public boolean validate() throws Exception {
         if (!condition.validate()) return false;
 
-        if (!"Boolean".equals(condition.getReturnType())) return false;
+        String conditionType = condition.getReturnType();
+        if (!"Boolean".equals(conditionType)
+                && !SymbolTable.isIncludedClass(conditionType)) {
+            return false;
+        }
         SymbolTable.pushScope();
         try {
             if (!body.validate()) {
@@ -140,7 +144,6 @@ public class IfStmtNode implements JotlinTree {
         return sb.toString();
     }
 
-    // an If is returnable only with an Otherwise and a return on every branch
     public boolean isReturnable() {
         if (otherwise == null || !body.isReturnable() || !otherwise.isReturnable()) {
             return false;

@@ -38,7 +38,11 @@ public class ReturnNode implements JotlinTree {
             return false;
         }
         String declared = SymbolTable.getCurrReturn();
-        return declared != null && declared.equals(expr.getReturnType());
+        String actual = expr.getReturnType();
+
+        return declared != null &&
+                (declared.equals(actual) ||
+                SymbolTable.canDeferTypeMismatch(declared, actual));
     }
 
     @Override
