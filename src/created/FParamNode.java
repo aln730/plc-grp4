@@ -41,15 +41,7 @@ public class FParamNode implements JotlinTree{
 
     @Override
     public boolean validate() throws Exception {
-        if (!id.validate() || !keyword.validate()) {
-            return false;
-        }
-        if (!keyword.isBuiltinType()) {
-            // May need to check that keyword references a created class
-            return false;
-        }
-        SymbolTable.declare(id.getId(), keyword.getValue());
-        return true;
+        return id.validate() && keyword.validate();
     }
 
     @Override

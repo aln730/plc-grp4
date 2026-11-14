@@ -63,12 +63,9 @@ public class BodyNode implements JotlinTree {
     }
 
     public String getReturnType() {
-        if (returnNode == null) {
-            return null;
-        }
-        return returnNode.getReturnType();
+        return returnNode == null ? null : returnNode.getReturnType();
     }
-
+    
     @Override
     public boolean validate() throws Exception {
         for (BodyStmtNode statement : statements) {

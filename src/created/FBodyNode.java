@@ -38,11 +38,16 @@ public class FBodyNode implements JotlinTree {
 
         ReturnNode returnNode = null;
         TabNode tabs = null;
-         if (nextIsReturn(tokens)) {
-             tabs = TabNode.parse(tokens);
-             returnNode = ReturnNode.parse(tokens);
-             skipBlankLines(tokens);
+        // if (nextIsReturn(tokens)) {
+        //     tabs = TabNode.parse(tokens);
+        //     returnNode = ReturnNode.parse(tokens);
+        //     skipBlankLines(tokens);
+        // }
+        if (nextIsReturn(tokens)) {
+            tabs = TabNode.parse(tokens);
+            returnNode = ReturnNode.parse(tokens);
         }
+        skipBlankLines(tokens);
 
         if (varNodes.isEmpty() && bodyNodes.isEmpty() && returnNode == null) {
             throw new IllegalArgumentException("Syntax Error\nFunction body cannot be empty.\n"
@@ -104,9 +109,9 @@ public class FBodyNode implements JotlinTree {
         int i = skipTabs(t);
         return i < t.size() && t.get(i).getTokenType() == TokenType.L_Arrow;
     }
-
+    
     public String getReturnType() {
-        return returnVal.getReturnType();
+        return returnVal == null ? null : returnVal.getReturnType();
     }
 
     public String evaluateValue() {

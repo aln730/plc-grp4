@@ -25,11 +25,8 @@ public class StaticNode implements JotlinTree{
     }
 
     @Override
-    public boolean validate() throws Exception {
-        if(keyword != null) {
-            return !keyword.getToken().equals("Class");
-        }
-        return true;
+    public boolean validate() {
+        return keyword == null || keyword.getToken().equals("Class");
     }
 
     @Override
