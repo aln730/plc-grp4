@@ -51,6 +51,7 @@ public class IdentifierNode implements JotlinTree{
         return token1 == null ? null : token1.getToken();
     }
 
+    //print statement to go here and check for type handling
     public String getType() {
         if (token1 == null) {
             return SymbolTable.typeOf(token2.getToken());

@@ -127,7 +127,7 @@ public class ExprNode implements JotlinTree{
     public String getReturnType() {
         if (node1 == null) {
             return null;
-        }
+        } //could be issue
         if (op == null) {
             if (node1 instanceof StringNode) {
                 return "String";
